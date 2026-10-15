@@ -1,0 +1,1066 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Casa La Estancia 3D</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112..125,400;112..125,600;112..125,700;112..125,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><script type="text/plain" id="headtags-src"><title>Casa La Estancia 3D</title><meta name="claude:viewport-fit-sides" content="cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112..125,400;112..125,600;112..125,700;112..125,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"></script><style id="app-css">/* Layout: a full-bleed 3D study model at dusk; instruments float at the edges like an architect's annotation layer. Single deliberate night look. */
+:root{
+ --ink:#080b11; --glass:rgba(10,14,22,.66); --line:rgba(236,232,224,.12); --line2:rgba(236,232,224,.22);
+ --paper:#ece8e0; --mist:#9aa1ad; --light:#ffbf69; --sound:#c9b8ff; --air:#7fdcff; --ok:#8de3b0;
+ --f-wide:"Archivo",ui-sans-serif,system-ui,sans-serif;
+ --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+ --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+ color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--ink);color:var(--paper);font-family:var(--f-body);font-size:14px;line-height:1.45;overflow:hidden;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--light);outline-offset:2px}
+#app{position:relative;height:100%;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#gl:active{cursor:grabbing}
+.tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mist)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.hud{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid var(--line)}
+
+/* top */
+.top{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));pointer-events:none;z-index:5}
+.top>*{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:14px;padding:6px 12px 6px 6px;border-radius:10px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.mk{font-family:var(--f-wide);font-weight:800;font-stretch:125%;font-size:15px;letter-spacing:.02em;background:var(--light);color:var(--ink);padding:5px 8px;border-radius:4px}
+.mk i{font-style:normal;font-weight:400;margin-left:2px}
+.pj{font-family:var(--f-wide);font-stretch:125%;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:flex;flex-direction:column;line-height:1.2}
+.pj em{font-style:normal;font-family:var(--f-mono);font-weight:400;font-size:10.5px;letter-spacing:.06em;color:var(--mist);text-transform:none}
+.loc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1px;padding:6px 14px;border-radius:12px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.loc b{font-family:var(--f-wide);font-stretch:125%;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase}
+.loc span{font-family:var(--f-mono);font-size:10.5px;color:var(--mist);letter-spacing:.06em}
+.qbtn{background:var(--paper);color:var(--ink);border:0;border-radius:999px;padding:9px 16px;font-family:var(--f-wide);font-stretch:125%;font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+
+/* section (levels) */
+.section{padding:8px 10px 8px 8px;border-radius:12px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:absolute;left:max(16px,env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:5}
+.lv{display:grid;grid-template-columns:26px auto;grid-template-rows:auto auto;column-gap:10px;align-items:center;background:none;border:0;padding:6px 8px 6px 0;text-align:left}
+.lv .bar{grid-row:1/3;height:30px;border:1px solid var(--line2);border-radius:3px;background:rgba(255,255,255,.03);transition:background .3s,border-color .3s}
+.lv .ln{font-family:var(--f-wide);font-stretch:125%;font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.lv .np{font-family:var(--f-mono);font-size:10px;color:var(--mist);opacity:.7}
+.lv[aria-pressed="true"] .bar{background:var(--light);border-color:var(--light);box-shadow:0 0 18px rgba(255,191,105,.5)}
+.lv[aria-pressed="true"] .ln{color:var(--paper)}
+.lv:hover .bar{border-color:var(--light)}
+
+/* labels */
+#labels{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.lb{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:rgba(8,11,17,.55);padding:3px 7px;border-radius:3px;white-space:nowrap;border:1px solid transparent;transition:border-color .2s,color .2s}
+.lb:hover{border-color:var(--line2)}
+.lb.sel{border-color:var(--light);color:var(--light)}
+.lb.ctx{opacity:.55;cursor:default}
+.lb.sm{font-size:9px;padding:2px 5px;opacity:.8}
+body.walking #labels{display:none}
+
+/* dock */
+.dock{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;z-index:5;width:250px}
+.modes{display:grid;grid-template-columns:1fr 1fr;padding:3px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.modes button{background:none;border:0;border-radius:999px;padding:8px 0;font-family:var(--f-wide);font-stretch:125%;font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.modes button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+.clock-r{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.clock-r input{flex:1;min-width:0;accent-color:var(--light)}
+.clock-r .num{font-size:13px;min-width:40px;text-align:right}
+.snd{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:var(--glass);border:1px solid var(--line);font-size:12.5px;color:var(--mist);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.snd svg{width:16px;height:16px}
+.snd[aria-pressed="true"]{color:var(--sound);border-color:rgba(201,184,255,.4)}
+
+/* scenes */
+.scenes{position:absolute;left:290px;right:336px;justify-content:center;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:6px;z-index:5;overflow-x:auto;scrollbar-width:none;padding:2px}
+.scenes::-webkit-scrollbar{display:none}
+.sc:first-child{margin-left:auto}.sc:last-child{margin-right:auto}
+.sc{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px;border-radius:12px;background:var(--glass);border:1px solid var(--line);text-align:left;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:border-color .2s,transform .2s}
+.sc b{font-family:var(--f-wide);font-stretch:125%;font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+.sc span{font-family:var(--f-mono);font-size:10.5px;color:var(--mist)}
+.sc:hover{border-color:var(--light);transform:translateY(-2px)}
+.sc.run{border-color:var(--light);box-shadow:0 0 0 1px var(--light) inset}
+
+/* echo */
+.echo{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:300px;z-index:5;padding:14px 16px;border-radius:16px;background:linear-gradient(160deg,rgba(40,30,22,.7),rgba(10,14,22,.78));border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.eh{display:flex;justify-content:space-between;align-items:center}
+.clock{font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:34px;letter-spacing:-.01em;line-height:1}
+.ring{width:26px;height:26px;border-radius:50%;border:2.5px solid rgba(255,255,255,.15)}
+.ring.on{border-color:var(--air);box-shadow:0 0 16px var(--air);animation:pl 1.1s ease-in-out infinite}
+@keyframes pl{50%{box-shadow:0 0 28px var(--air)}}
+.greet{font-size:12px;color:var(--mist);margin-top:4px}
+.say{font-family:var(--f-wide);font-stretch:112%;font-weight:600;font-size:15px;margin-top:10px}
+.say.dim{color:var(--mist);font-weight:400;font-size:13px;font-family:var(--f-body)}
+.steps{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:3px;max-height:84px;overflow:hidden}
+.steps li{font-size:12.5px;display:flex;gap:7px;align-items:center;animation:si .3s ease both}
+.steps li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ok);flex:none}
+@keyframes si{from{opacity:0;transform:translateX(-4px)}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:10.5px;color:var(--mist)}
+.stats span{display:flex;flex-direction:column}
+.stats b{font-family:var(--f-mono);font-weight:500;font-size:14px;color:var(--paper)}
+
+/* panel */
+.panel{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:66px;bottom:calc(16px + env(safe-area-inset-bottom,0px) + 290px);width:300px;z-index:5;padding:14px 16px;border-radius:16px;overflow-y:auto;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transform:translateX(calc(100% + 24px));transition:transform .35s ease}
+.panel.open{transform:none}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ph h3{font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:18px;letter-spacing:.02em;text-transform:uppercase;margin:3px 0 0;line-height:1.1}
+.ic{width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);background:none;display:grid;place-items:center;flex:none;padding:0}
+.ic svg{width:14px;height:14px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.chip{font-family:var(--f-mono);font-size:10px;letter-spacing:.04em;padding:2px 7px;border-radius:3px;border:1px solid var(--line2);color:var(--mist)}
+.chip.s{border-color:rgba(201,184,255,.4);color:var(--sound)}
+.blk{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.bh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.k{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mist)}
+.k svg{width:14px;height:14px}
+.k em{font-style:normal;letter-spacing:.04em;text-transform:none;color:#e9c37a;opacity:.85}
+.k.l{color:var(--light)} .k.s{color:var(--sound)} .k.a{color:var(--air)}
+.mini{background:none;border:1px solid var(--line2);border-radius:6px;padding:3px 8px;font-size:11.5px;color:var(--mist);margin-left:4px}
+.mini:hover{color:var(--paper)}
+.circs{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.circ{display:flex;align-items:center;gap:7px;padding:8px 9px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.02);font-size:12.5px;text-align:left;transition:background .2s,border-color .2s}
+.circ i{width:9px;height:9px;border-radius:50%;background:#3a3f48;flex:none;transition:background .25s,box-shadow .25s}
+.circ[aria-pressed="true"]{border-color:rgba(255,191,105,.55);background:rgba(255,191,105,.09)}
+.circ[aria-pressed="true"] i{background:var(--light);box-shadow:0 0 10px var(--light)}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.play{width:36px;height:36px;border-radius:50%;border:1px solid var(--sound);background:none;color:var(--sound);display:grid;place-items:center;flex:none}
+.play svg{width:14px;height:14px}
+.play[aria-pressed="true"]{background:var(--sound);color:var(--ink)}
+.row select{flex:1;min-width:0;background:rgba(0,0,0,.3);border:1px solid var(--line2);border-radius:7px;padding:6px;font-size:12.5px}
+input[type=range]{width:100%}
+.rs{accent-color:var(--sound);margin-top:8px}.rc{accent-color:var(--light)}
+.rd{width:30px;height:30px;border-radius:50%;border:1px solid var(--line2);background:none;font-size:16px;line-height:1}
+.deg{font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:28px;min-width:64px;text-align:center;line-height:1}
+.deg small{font-size:12px;color:var(--mist);font-weight:400}
+.seg{display:flex;gap:3px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line2);background:none;border-radius:6px;padding:4px 7px;font-size:11px;color:var(--mist)}
+.seg button[aria-pressed="true"]{border-color:var(--air);color:var(--air)}
+.tog{position:relative;width:38px;height:22px;border-radius:99px;border:1px solid var(--line2);background:rgba(0,0,0,.3);padding:0;flex:none}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--mist);transition:transform .2s,background .2s}
+.tog[aria-pressed="true"]::after{transform:translateX(16px);background:var(--ok)}
+.tog.a[aria-pressed="true"]::after{background:var(--air)}
+.hint{font-size:12px;color:var(--mist);margin:8px 0 0}
+
+/* walk */
+.walkhint{position:absolute;left:50%;top:100px;transform:translateX(-50%);z-index:4;font-size:12px;color:var(--mist);background:var(--glass);border:1px solid var(--line);padding:6px 12px;border-radius:999px;display:none;white-space:nowrap}
+kbd{font-family:var(--f-mono);font-size:10px;border:1px solid var(--line2);border-radius:3px;padding:0 4px;margin-right:2px;color:var(--paper)}
+body.walking .walkhint{display:block}
+body.walking #gl{cursor:crosshair}
+.joy{position:absolute;left:calc(24px + env(safe-area-inset-left,0px));bottom:calc(200px + env(safe-area-inset-bottom,0px));width:110px;height:110px;border-radius:50%;border:1px solid var(--line2);background:rgba(10,14,22,.35);z-index:6;display:none;touch-action:none}
+.joyk{position:absolute;left:35px;top:35px;width:40px;height:40px;border-radius:50%;background:var(--paper);opacity:.85}
+@media (pointer:coarse){body.walking .joy{display:block}body.walking .walkhint{display:none}}
+
+/* intro */
+.intro{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end;padding:0 max(24px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(24px,env(safe-area-inset-left,0px));background:linear-gradient(180deg,rgba(8,11,17,0) 20%,rgba(8,11,17,.75) 55%,rgba(8,11,17,.95) 100%);transition:opacity .8s ease}
+.intro.gone{opacity:0;pointer-events:none}
+.ii{max-width:640px}
+.intro h1{font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:clamp(44px,8vw,104px);line-height:.9;letter-spacing:-.01em;text-transform:uppercase;margin:10px 0 14px}
+.intro p{color:var(--mist);font-size:15px;max-width:52ch;margin:0}
+.facts{display:flex;gap:22px;margin:18px 0 22px;flex-wrap:wrap}
+.facts span{display:flex;flex-direction:column;font-size:11px;color:var(--mist);text-transform:uppercase;letter-spacing:.12em;font-family:var(--f-mono)}
+.facts b{font-family:var(--f-wide);font-stretch:125%;font-size:26px;color:var(--paper);letter-spacing:0}
+.go{background:var(--light);color:var(--ink);border:0;border-radius:999px;padding:13px 24px;font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+
+/* quote */
+.quote{position:absolute;inset:0;z-index:15;background:rgba(6,8,12,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow-y:auto}
+.qin{max-width:1100px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.qhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.qhead h2{font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:clamp(28px,4.5vw,52px);text-transform:uppercase;line-height:.95;margin:8px 0 22px}
+.qgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+.qmodes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.qmodes button{text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line2);background:none}
+.qmodes b{display:block;font-family:var(--f-wide);font-stretch:112%;font-size:14px}
+.qmodes span{font-size:12px;color:var(--mist)}
+.qmodes button[aria-pressed="true"]{border-color:var(--light);box-shadow:0 0 0 1px var(--light) inset}
+.qt{width:100%;border-collapse:collapse}
+.qt td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top;font-size:13.5px}
+.qt td b{font-weight:500}
+.qt td span{display:block;font-size:12px;color:var(--mist);margin-top:1px}
+.qt td.n{text-align:right;font-family:var(--f-mono);font-size:12.5px;white-space:nowrap;padding-left:14px}
+.qt i{font-style:normal;color:#e9c37a}
+.qt .gh td{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--light);padding-top:22px;border-bottom-color:var(--line2)}
+.qopt{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qopt .tag{grid-column:1/-1;color:var(--light)}
+.oi{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.oi.on{border-color:rgba(141,227,176,.45)}
+.oi input{accent-color:var(--ok);margin-top:3px}
+.oi span{flex:1;min-width:0}
+.oi b{display:block;font-weight:500;font-size:13px}
+.oi small{display:block;font-size:11.5px;color:var(--mist)}
+.oi em{font-style:normal;font-family:var(--f-mono);font-size:12px}
+.qsum{position:sticky;top:0;padding:18px;border-radius:16px;border:1px solid var(--line2);background:rgba(255,255,255,.03)}
+.qsum .big{font-family:var(--f-wide);font-stretch:125%;font-weight:800;font-size:34px;margin:4px 0}
+.qsum .sm{font-size:12px;color:var(--mist);margin-top:6px}
+.qsum .pend{font-size:12px;color:#e9c37a;margin-top:10px}
+.qsum .ct{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:3px;font-size:13px}
+.qsum .sel{user-select:all;font-family:var(--f-mono);font-size:12px;overflow-wrap:anywhere}
+.qfoot{color:var(--mist);font-size:12px;margin-top:28px}
+
+/* admin */
+.fab{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));top:62px;z-index:16;background:none;border:1px dashed var(--light);color:var(--light);border-radius:999px;padding:6px 12px;font-size:11.5px}
+.drawer{position:absolute;inset:0;z-index:25;background:rgba(5,7,9,.6);display:flex;justify-content:flex-end}
+.din{width:min(560px,100%);height:100%;overflow-y:auto;background:#0e131c;border-left:1px solid var(--line2);padding:20px max(16px,env(safe-area-inset-right,0px)) 30px 18px}
+.din h3{font-family:var(--f-wide);font-stretch:125%;font-size:20px;text-transform:uppercase;margin:4px 0 0}
+.gen{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.gen label{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--mist)}
+.din input,.din select{background:rgba(0,0,0,.35);border:1px solid var(--line2);border-radius:7px;padding:6px 8px;font-size:12.5px;width:100%;min-width:0}
+.ar{display:grid;grid-template-columns:minmax(0,1fr) 58px 86px;gap:5px;padding:6px 0;border-bottom:1px solid var(--line)}
+.ar.two{grid-template-columns:minmax(0,1fr) 58px 86px 86px}
+.acts{position:sticky;bottom:0;background:#0e131c;padding-top:12px;display:flex;justify-content:flex-end}
+.btn{border-radius:9px;padding:9px 16px;border:1px solid var(--line2);background:none}
+.btn.p{background:var(--light);color:var(--ink);border-color:var(--light);font-weight:600}
+.nogl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:30;background:var(--ink);text-align:center;padding:24px}
+
+@media (max-width:1100px){.scenes{left:280px;right:16px;justify-content:flex-start}.echo{display:none}.panel{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:760px){
+ .loc{display:none}.pj em{display:none}
+ .section{top:60px;transform:none;flex-direction:row;gap:2px;left:max(12px,env(safe-area-inset-left,0px))}
+ .lv{grid-template-columns:auto;padding:4px}.lv .bar{display:none}.lv .np{display:none}.lv .ln{font-size:10px;padding:5px 7px;border:1px solid var(--line2);border-radius:5px;background:var(--glass)}
+ .lv[aria-pressed="true"] .ln{background:var(--light);color:var(--ink);border-color:var(--light)}
+ .dock{width:auto;right:max(12px,env(safe-area-inset-right,0px));left:max(12px,env(safe-area-inset-left,0px));bottom:calc(64px + env(safe-area-inset-bottom,0px));flex-direction:row;flex-wrap:wrap}
+ .modes{flex:1 1 160px}.clock-r{flex:2 1 180px}.snd span{display:none}
+ .scenes{left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));justify-content:flex-start}
+ .panel{left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));width:auto;top:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-height:55%;z-index:7;transform:translateY(calc(100% + 30px))}
+ .panel.open{transform:none}
+ .qgrid,.qopt,.qmodes{grid-template-columns:minmax(0,1fr)}
+ .qsum{position:static}
+ .joy{bottom:calc(130px + env(safe-area-inset-bottom,0px))}
+ .walkhint{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.pre #labels,.pre .dock,.pre .scenes,.pre .echo,.pre .panel,.pre .section,.pre .loc{opacity:0;pointer-events:none}
+#labels,.dock,.scenes,.echo,.section,.loc{transition:opacity .6s ease}
+</style><script type="text/plain" id="shell-src"><canvas id="gl" aria-label="Casa La Estancia en 3D"></canvas>
+<div id="labels"></div>
+<div class="nogl" id="nogl" hidden><b>Tu navegador no pudo iniciar el 3D.</b><span>Abre esta página en Chrome, Safari o Edge actualizados.</span></div>
+
+<header class="top">
+ <div class="brand"><span class="mk">DO<i>SMART</i></span><span class="pj">Casa La Estancia<em>Calle La Coruña 242 · La Molina</em></span></div>
+ <div class="loc" id="loc"></div>
+ <button class="qbtn" id="qopen">Cotización</button>
+</header>
+
+<nav class="section" id="section" aria-label="Niveles"></nav>
+
+<div class="dock">
+ <div class="modes" role="group" aria-label="Vista">
+  <button id="mOrbit" aria-pressed="true">Maqueta</button>
+  <button id="mWalk" aria-pressed="false">Recorrer</button>
+ </div>
+ <label class="clock-r"><span class="tag">Hora</span><input type="range" id="time" min="5" max="24" step="0.25" aria-label="Hora del día"><span class="num" id="tl"></span></label>
+ <button class="snd" id="snd" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></svg><span>Activar sonido</span></button>
+</div>
+
+<div class="scenes" id="scenes" aria-label="Escenas de Alexa"></div>
+<aside class="echo" id="echo" aria-live="polite"></aside>
+<aside class="panel open" id="panel"></aside>
+
+<div class="walkhint"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> caminar · arrastra para mirar · toca el piso para ir</span></div>
+<div class="joy" id="joy"><div class="joyk" id="joyk"></div></div>
+
+<div class="intro" id="intro">
+ <div class="ii">
+  <div class="tag">Propuesta DO SMART para la Fam. Gibaja</div>
+  <h1>Casa<br>La Estancia</h1>
+  <p>Levantada en 3D desde los planos eléctricos IE-03 e IE-04. Recórrela, enciende cada circuito, pon música por ambiente y pídele escenas a Alexa.</p>
+  <div class="facts"><span><b>4</b>niveles</span><span><b>80</b>interruptores</span><span><b>7</b>zonas Sonos</span><span><b>7</b>aires</span></div>
+  <button class="go" id="intro-go">Entrar a la casa</button>
+ </div>
+</div>
+
+<div class="quote" id="quote" hidden>
+ <div class="qin">
+  <div class="qhead"><div><div class="tag">Cotización · Casa La Estancia</div><h2>Lo que incluye tu casa</h2></div><button class="ic" id="qclose" aria-label="Cerrar cotización"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="qgrid"><div id="qbody"></div><aside class="qsum" id="qsum"></aside></div>
+  <p class="qfoot">Cantidades según planos eléctricos IE-03 e IE-04 (mayo 2025). Se ajustan al plano final antes de instalar.</p>
+ </div>
+</div>
+<button class="fab" id="fab" hidden>Editar precios</button>
+<div class="drawer" id="drawer" hidden></div>
+</script><div id="app"></div><script type="application/json" id="geo">{"walls":{"p1":[[-7.0,0.11,3.2,0.04],[-2.81,0.11,1.03,0.04],[-0.79,0.11,1.03,0.04],[1.23,0.11,1.07,0.04],[2.34,0.11,0.15,0.04],[2.53,0.11,0.15,0.04],[2.72,0.11,0.15,0.04],[2.91,0.11,0.15,0.04],[3.1,0.11,23.66,0.04],[27.41,0.11,0.72,0.04],[28.82,0.11,0.69,0.04],[30.19,0.11,10.82,0.04],[-7.0,0.15,48.01,0.08],[-7.0,0.23,23.36,0.04],[17.35,0.23,1.03,0.04],[19.37,0.23,21.11,0.04],[0.05,0.26,0.08,0.04],[17.69,0.26,0.08,0.04],[-7.0,0.26,0.23,0.19],[-6.96,0.45,0.19,0.08],[-6.96,0.53,0.23,0.08],[-6.92,0.61,0.19,0.15],[-6.92,0.76,0.23,0.08],[-6.88,0.83,0.19,0.15],[-6.88,0.99,0.23,0.08],[-6.84,1.06,0.19,0.19],[-6.81,1.25,0.19,0.23],[-6.77,1.48,0.19,0.19],[-6.73,1.67,0.15,0.04],[-6.73,1.71,0.19,0.19],[-6.69,1.9,0.15,0.08],[-6.69,1.98,0.19,0.11],[0.05,2.05,0.38,0.04],[0.55,2.05,0.19,0.04],[0.89,2.05,0.15,0.04],[1.2,2.05,0.15,0.04],[1.5,2.05,3.5,0.04],[5.81,2.05,0.46,0.04],[6.38,2.05,0.19,0.04],[6.95,2.05,0.46,0.04],[7.79,2.05,0.42,0.04],[8.62,2.05,0.42,0.04],[9.46,2.05,9.26,0.04],[18.76,2.05,0.3,0.04],[0.01,2.09,4.99,0.04],[5.81,2.09,13.26,0.04],[-0.02,2.13,5.03,0.04],[5.81,2.13,2.97,0.04],[8.82,2.13,10.25,0.04],[-6.65,2.09,0.15,0.11],[-0.02,2.17,3.81,0.04],[3.9,2.17,1.1,0.04],[5.81,2.17,9.87,0.04],[16.05,2.17,3.01,0.04],[0.13,2.21,3.62,0.04],[3.94,2.21,0.11,0.04],[4.24,2.21,0.11,0.04],[4.55,2.21,0.11,0.04],[5.81,2.21,0.04,0.04],[5.96,2.21,0.46,0.04],[6.45,2.21,2.25,0.04],[8.78,2.21,6.86,0.04],[16.09,2.21,0.38,0.04],[16.89,2.21,0.42,0.04],[17.73,2.21,0.42,0.04],[18.57,2.21,0.46,0.04],[11.06,2.25,0.19,0.04],[-6.65,2.21,0.19,0.15],[4.85,2.21,0.15,0.15],[-6.69,2.36,0.23,0.04],[-6.65,2.4,0.19,0.04],[4.85,2.36,0.11,0.08],[-0.02,2.44,0.19,0.04],[11.1,2.28,0.15,0.19],[4.85,2.44,0.08,0.11],[-6.65,2.44,0.23,0.19],[0.01,2.47,0.15,0.15],[0.05,2.63,0.11,0.04],[-6.62,2.63,0.19,0.08],[11.06,2.47,0.19,0.3],[4.85,2.55,0.15,0.3],[-6.62,2.7,0.23,0.19],[11.06,2.78,0.15,0.11],[-6.58,2.89,0.19,0.04],[4.89,2.85,0.11,0.11],[11.06,2.89,0.11,0.08],[-0.02,2.66,0.19,0.38],[-6.58,2.93,0.23,0.19],[4.85,2.97,0.15,0.19],[-6.54,3.12,0.19,0.08],[-0.02,3.04,0.15,0.15],[11.06,2.97,0.15,0.23],[5.81,3.2,0.19,0.04],[6.19,3.2,0.15,0.04],[6.53,3.2,0.19,0.04],[6.91,3.2,0.15,0.04],[7.25,3.2,4.0,0.04],[5.81,3.24,1.29,0.04],[7.25,3.24,3.96,0.04],[4.89,3.16,0.11,0.15],[5.81,3.27,5.41,0.04],[-6.54,3.2,0.23,0.15],[5.81,3.31,5.45,0.04],[5.81,3.35,0.65,0.04],[6.64,3.35,0.46,0.04],[7.14,3.35,2.78,0.04],[10.07,3.35,0.19,0.04],[10.42,3.35,0.19,0.04],[10.8,3.35,0.19,0.04],[11.14,3.35,0.11,0.04],[-6.5,3.35,0.19,0.08],[4.85,3.31,0.15,0.15],[-0.02,3.2,0.19,0.3],[-6.5,3.43,0.23,0.19],[4.89,3.46,0.11,0.15],[-6.46,3.62,0.19,0.04],[0.01,3.5,0.15,0.19],[0.01,3.69,0.27,0.04],[0.43,3.69,0.11,0.04],[0.66,3.69,0.11,0.04],[0.93,3.69,0.11,0.04],[1.16,3.69,2.44,0.04],[3.83,3.69,0.08,0.04],[3.98,3.69,0.08,0.04],[0.01,3.73,1.03,0.04],[1.16,3.73,2.52,0.04],[0.01,3.77,3.7,0.04],[3.79,3.73,0.27,0.08],[-6.46,3.65,0.23,0.19],[0.01,3.81,4.04,0.04],[0.01,3.85,3.01,0.04],[3.18,3.85,0.11,0.04],[3.4,3.85,0.15,0.04],[3.71,3.85,0.08,0.04],[3.98,3.85,0.08,0.04],[-6.42,3.85,0.19,0.08],[0.01,3.88,0.15,0.08],[-6.42,3.92,0.23,0.15],[-0.02,3.96,0.19,0.15],[-6.39,4.07,0.19,0.08],[0.01,4.11,0.15,0.15],[-6.39,4.15,0.23,0.19],[-6.35,4.34,0.19,0.04],[6.0,4.34,0.3,0.04],[6.42,4.34,0.08,0.04],[6.64,4.34,0.11,0.04],[6.87,4.34,0.49,0.04],[7.41,4.34,2.02,0.04],[9.5,4.34,0.04,0.04],[11.14,4.34,0.08,0.04],[-0.02,4.26,0.19,0.15],[6.0,4.38,0.76,0.04],[6.83,4.38,2.74,0.04],[11.1,4.38,0.15,0.04],[11.06,4.42,0.19,0.04],[6.0,4.42,3.58,0.08],[11.06,4.46,0.15,0.04],[0.05,4.42,0.11,0.11],[6.0,4.49,2.59,0.04],[8.7,4.49,0.11,0.04],[8.93,4.49,0.11,0.04],[9.16,4.49,0.11,0.04],[9.35,4.49,0.23,0.04],[11.06,4.49,0.11,0.04],[-6.35,4.38,0.23,0.19],[0.01,4.53,0.15,0.04],[9.43,4.53,0.15,0.04],[11.06,4.53,0.19,0.08],[-6.31,4.57,0.19,0.08],[9.46,4.57,0.11,0.11],[11.1,4.61,0.15,0.08],[11.06,4.68,0.19,0.08],[-6.31,4.64,0.23,0.15],[11.1,4.76,0.15,0.08],[6.0,4.53,0.15,0.38],[11.06,4.84,0.19,0.08],[-6.27,4.8,0.19,0.15],[9.43,4.68,0.15,0.27],[11.1,4.91,0.15,0.04],[-6.27,4.95,0.11,0.04],[-6.12,4.95,0.04,0.04],[-6.27,4.99,0.08,0.04],[-6.16,4.99,0.11,0.04],[9.43,4.95,0.11,0.08],[6.03,4.91,0.11,0.15],[11.06,4.95,0.19,0.11],[11.1,5.06,0.15,0.04],[-6.24,5.03,0.19,0.11],[9.43,5.03,0.15,0.11],[6.0,5.06,0.15,0.15],[-6.24,5.14,0.23,0.15],[-6.2,5.29,0.19,0.08],[6.03,5.22,0.11,0.15],[-6.2,5.37,0.23,0.15],[6.0,5.37,0.15,0.15],[-6.16,5.52,0.19,0.08],[6.03,5.52,0.11,0.15],[-6.16,5.6,0.23,0.19],[-6.12,5.79,0.19,0.08],[4.85,3.62,0.15,2.36],[9.43,5.94,0.11,0.04],[9.65,5.94,0.65,0.04],[-6.12,5.87,0.23,0.15],[9.43,5.98,0.88,0.08],[-6.08,6.02,0.19,0.08],[9.43,6.05,0.65,0.04],[10.15,6.05,0.15,0.04],[4.85,5.98,0.11,0.15],[9.43,6.09,0.19,0.04],[11.06,5.1,0.19,1.1],[-6.08,6.09,0.23,0.15],[11.06,6.21,0.15,0.04],[11.06,6.25,0.11,0.04],[-6.04,6.25,0.19,0.08],[4.85,6.13,0.15,0.19],[11.06,6.28,0.19,0.08],[9.43,6.13,0.15,0.27],[4.85,6.32,0.11,0.11],[11.06,6.36,0.15,0.08],[9.46,6.4,0.11,0.08],[-6.04,6.32,0.23,0.19],[11.06,6.44,0.19,0.08],[-6.01,6.51,0.19,0.08],[9.43,6.47,0.15,0.11],[11.06,6.51,0.15,0.08],[9.46,6.59,0.11,0.08],[11.06,6.59,0.19,0.08],[-6.01,6.59,0.23,0.15],[9.43,6.67,0.15,0.08],[11.06,6.67,0.15,0.08],[-5.97,6.74,0.19,0.08],[-0.02,4.57,0.19,2.29],[9.46,6.74,0.11,0.11],[11.06,6.74,0.19,0.11],[11.06,6.86,0.11,0.04],[11.29,6.86,1.1,0.04],[12.51,6.86,0.15,0.04],[12.82,6.86,0.11,0.04],[13.04,6.86,0.15,0.04],[13.31,6.86,3.09,0.04],[16.44,6.86,0.72,0.04],[17.35,6.86,0.53,0.04],[18.07,6.86,0.08,0.04],[17.27,6.89,0.88,0.04],[18.19,6.89,0.08,0.04],[18.42,6.86,0.65,0.08],[-5.97,6.82,0.23,0.15],[-0.02,6.86,0.15,0.11],[11.06,6.89,6.13,0.08],[17.27,6.93,0.99,0.04],[18.49,6.93,0.08,0.04],[11.06,6.97,6.1,0.04],[17.2,6.97,1.07,0.04],[18.65,6.93,0.42,0.08],[-5.93,6.97,0.19,0.08],[11.06,7.01,6.06,0.04],[17.16,7.01,1.29,0.04],[18.57,7.01,0.49,0.04],[11.06,7.05,0.88,0.04],[11.98,7.05,4.76,0.04],[16.86,7.05,0.15,0.04],[17.16,7.05,0.11,0.04],[17.39,7.05,1.07,0.04],[18.53,7.05,0.27,0.04],[18.95,7.05,0.11,0.04],[-0.02,6.97,0.19,0.15],[17.62,7.08,0.34,0.04],[4.85,6.44,0.15,0.76],[-5.93,7.05,0.23,0.19],[-0.02,7.12,0.15,0.15],[-5.89,7.24,0.19,0.08],[11.98,7.08,0.15,0.27],[17.66,7.12,0.3,0.23],[-0.02,7.27,0.19,0.15],[12.02,7.35,0.11,0.08],[-5.89,7.31,0.23,0.15],[11.98,7.43,0.15,0.08],[-5.85,7.46,0.19,0.08],[-0.02,7.43,0.15,0.15],[12.02,7.5,0.11,0.08],[-5.85,7.54,0.15,0.08],[11.98,7.58,0.15,0.08],[-5.85,7.62,0.19,0.08],[12.02,7.66,0.11,0.08],[-0.02,7.58,0.19,0.19],[-0.02,7.77,0.15,0.04],[-5.82,7.69,0.15,0.15],[0.01,7.81,0.11,0.08],[-5.82,7.85,0.19,0.11],[-5.78,7.96,0.15,0.08],[0.01,7.88,0.15,0.15],[6.0,5.67,0.15,2.36],[9.43,6.86,0.15,1.22],[9.43,8.07,0.08,0.04],[9.54,8.07,0.04,0.04],[-0.02,8.04,0.19,0.11],[-5.78,8.04,0.19,0.15],[0.01,8.15,0.65,0.04],[1.42,8.15,0.11,0.04],[6.0,8.04,0.11,0.15],[17.62,7.35,0.34,0.84],[1.42,8.19,0.15,0.04],[9.43,8.11,0.15,0.11],[17.66,8.19,0.3,0.04],[-5.74,8.19,0.15,0.08],[1.39,8.23,0.19,0.08],[9.43,8.23,0.11,0.08],[-0.02,8.19,0.69,0.15],[4.85,8.15,0.15,0.19],[-0.02,8.34,0.57,0.04],[0.59,8.34,0.08,0.04],[1.39,8.3,0.15,0.08],[6.0,8.19,0.15,0.19],[-5.74,8.27,0.19,0.15],[1.39,8.38,0.19,0.04],[9.43,8.3,0.15,0.11],[-5.7,8.42,0.15,0.04],[6.0,8.38,0.11,0.11],[9.43,8.42,0.11,0.08],[4.89,8.34,0.11,0.19],[6.0,8.49,0.15,0.15],[-5.7,8.46,0.19,0.23],[1.42,8.42,0.15,0.27],[6.03,8.65,0.11,0.04],[17.62,8.23,0.34,0.53],[6.0,8.8,0.04,0.04],[11.98,7.73,0.15,1.14],[-5.66,8.68,0.19,0.23],[11.98,8.88,0.11,0.04],[17.62,8.76,0.3,0.15],[6.0,8.84,0.15,0.11],[9.43,8.49,0.15,0.49],[17.62,8.91,0.34,0.08],[4.85,8.53,0.15,0.49],[11.98,8.91,0.15,0.11],[4.85,9.03,0.11,0.04],[6.03,8.95,0.11,0.11],[11.98,9.03,0.11,0.04],[-5.62,8.91,0.19,0.19],[4.85,9.06,0.08,0.04],[4.97,9.06,0.04,0.04],[11.98,9.06,0.15,0.04],[-5.62,9.1,0.23,0.04],[4.85,9.1,0.15,0.04],[12.05,9.1,0.08,0.04],[11.98,9.18,0.08,0.04],[1.39,8.68,0.19,0.57],[4.85,9.14,0.11,0.11],[9.46,9.22,0.15,0.04],[1.39,9.26,0.11,0.04],[9.43,9.26,0.19,0.04],[-5.59,9.14,0.19,0.19],[-5.59,9.33,0.23,0.08],[1.39,9.29,0.15,0.11],[4.85,9.26,0.15,0.15],[6.0,9.06,0.15,0.34],[9.43,9.29,0.15,0.11],[11.98,9.22,0.15,0.19],[1.39,9.41,0.38,0.04],[1.84,9.41,0.11,0.04],[2.07,9.41,0.11,0.04],[2.3,9.41,0.11,0.04],[2.53,9.41,2.36,0.04],[6.0,9.41,0.38,0.04],[6.53,9.41,0.23,0.04],[6.95,9.41,0.19,0.04],[7.44,9.41,0.08,0.04],[7.75,9.41,4.38,0.04],[-5.55,9.41,0.19,0.08],[4.93,9.41,0.08,0.08],[1.39,9.45,3.5,0.08],[4.97,9.48,0.04,0.04],[6.0,9.45,6.13,0.08],[-5.55,9.48,0.23,0.08],[1.39,9.52,2.82,0.04],[4.28,9.52,0.61,0.04],[6.0,9.52,4.69,0.04],[10.84,9.52,1.29,0.04],[1.39,9.56,2.78,0.04],[4.74,9.56,0.08,0.04],[4.93,9.52,0.08,0.08],[6.0,9.56,4.65,0.04],[10.87,9.56,0.19,0.04],[11.25,9.56,0.19,0.04],[11.98,9.56,0.15,0.04],[1.42,9.6,0.15,0.04],[-5.51,9.56,0.3,0.19],[1.39,9.64,0.19,0.11],[-5.51,9.75,0.23,0.04],[1.39,9.75,0.15,0.11],[-5.51,10.97,0.3,0.04],[-5.59,11.01,0.38,0.04],[-5.62,11.05,0.42,0.04],[-5.66,11.09,0.46,0.04],[1.39,11.05,0.19,0.08],[-5.7,11.12,0.42,0.04],[-5.24,11.12,0.04,0.04],[-5.74,11.16,0.34,0.04],[1.42,11.12,0.15,0.08],[-5.74,11.2,0.27,0.04],[-5.74,11.24,0.23,0.04],[1.42,11.2,0.11,0.08],[-5.74,11.28,0.19,0.04],[1.42,11.28,0.15,0.04],[-5.82,11.31,0.23,0.04],[40.97,11.24,0.04,0.11],[-5.85,11.35,0.23,0.04],[1.39,11.31,0.19,0.08],[-5.89,11.39,0.23,0.04],[1.42,11.39,0.15,0.04],[40.94,11.35,0.08,0.08],[-5.93,11.43,0.23,0.04],[-6.04,11.47,0.3,0.04],[40.9,11.43,0.11,0.08],[-6.08,11.5,0.3,0.04],[-6.12,11.54,0.34,0.04],[40.86,11.5,0.15,0.08],[-6.16,11.58,0.34,0.04],[-6.2,11.62,0.34,0.04],[40.82,11.58,0.19,0.08],[-6.24,11.66,0.34,0.04],[-6.27,11.69,0.34,0.04],[-6.27,11.73,0.3,0.04],[40.78,11.66,0.19,0.11],[-6.31,11.77,0.3,0.04],[-6.31,11.81,0.27,0.04],[40.75,11.77,0.19,0.08],[-6.39,11.85,0.3,0.04],[-6.46,11.88,0.34,0.04],[40.71,11.85,0.19,0.08],[-6.5,11.92,0.34,0.04],[-6.54,11.96,0.34,0.04],[40.67,11.92,0.19,0.08],[-6.58,12.0,0.19,0.04],[-6.35,12.0,0.11,0.04],[-6.62,12.04,0.34,0.04],[-6.65,12.07,0.23,0.04],[-6.35,12.07,0.04,0.04],[1.39,11.43,0.19,0.69],[40.63,12.0,0.19,0.11],[-6.69,12.11,0.27,0.04],[-6.73,12.15,0.27,0.04],[1.39,12.11,0.15,0.08],[40.59,12.11,0.19,0.08],[-6.77,12.19,0.27,0.04],[1.39,12.19,0.19,0.04],[-6.81,12.23,0.27,0.04],[1.39,12.23,0.15,0.04],[40.55,12.19,0.19,0.08],[-6.84,12.27,0.3,0.04],[1.39,12.27,0.19,0.04],[-6.88,12.3,0.3,0.04],[40.52,12.27,0.19,0.08],[-6.92,12.34,0.3,0.04],[1.39,12.3,0.15,0.08],[1.39,12.38,0.19,0.04],[-6.96,12.38,0.3,0.08],[1.39,12.42,0.15,0.04],[40.48,12.34,0.19,0.11],[1.39,12.46,0.19,0.04],[-7.0,12.46,0.04,0.08],[-6.81,12.46,0.08,0.08],[-6.62,12.49,1.6,0.04],[0.01,12.49,0.11,0.04],[0.51,12.49,0.11,0.04],[0.74,12.49,0.11,0.04],[0.97,12.49,0.65,0.04],[1.65,12.49,0.04,0.04],[40.44,12.46,0.19,0.08],[-7.0,12.53,0.34,0.04],[-6.62,12.53,1.64,0.04],[-0.02,12.53,0.38,0.04],[0.4,12.53,0.46,0.04],[0.97,12.53,0.72,0.04],[1.73,12.49,2.02,0.08],[1.69,12.57,2.06,0.04],[40.4,12.53,0.19,0.08],[-0.02,12.57,1.64,0.08],[1.73,12.61,2.02,0.04],[-7.0,12.57,2.02,0.11],[-0.02,12.65,0.46,0.04],[0.47,12.65,1.1,0.04],[1.77,12.65,0.99,0.04],[2.87,12.65,0.15,0.04],[3.14,12.65,0.11,0.04],[3.37,12.65,0.15,0.04],[3.6,12.65,0.11,0.04],[40.37,12.61,0.19,0.08],[-7.0,12.69,1.56,0.04],[-5.17,12.69,0.19,0.04],[3.63,12.69,0.04,0.04],[-0.02,12.69,0.23,0.08],[3.6,12.76,0.08,0.04],[40.33,12.69,0.19,0.11],[3.6,12.8,0.11,0.08],[40.29,12.8,0.19,0.08],[40.25,12.88,0.19,0.08],[0.01,12.76,0.19,0.27],[40.21,12.95,0.19,0.08],[0.05,13.03,0.15,0.04],[40.17,13.03,0.19,0.08],[0.01,13.07,0.19,0.08],[40.17,13.1,0.15,0.04],[0.05,13.14,0.15,0.04],[40.14,13.14,0.19,0.04],[0.01,13.18,0.19,0.04],[40.14,13.18,0.15,0.04],[0.01,13.22,0.08,0.04],[0.13,13.22,0.08,0.04],[40.1,13.22,0.19,0.08],[0.01,13.26,0.19,0.08],[40.06,13.29,0.19,0.08],[40.02,13.37,0.19,0.08],[39.98,13.45,0.19,0.08],[39.98,13.52,0.15,0.04],[39.95,13.56,0.19,0.08],[3.14,13.68,0.27,0.04],[3.52,13.68,0.91,0.04],[5.2,13.68,1.33,0.04],[6.72,13.68,0.23,0.04],[7.18,13.68,4.95,0.04],[39.91,13.64,0.19,0.08],[3.14,13.71,1.29,0.08],[5.2,13.71,6.93,0.08],[39.87,13.71,0.19,0.08],[3.14,13.79,0.99,0.04],[4.32,13.79,0.11,0.04],[5.2,13.79,5.3,0.04],[10.68,13.79,0.23,0.04],[11.14,13.79,0.23,0.04],[11.56,13.79,0.57,0.04],[39.83,13.79,0.19,0.08],[39.83,13.87,0.15,0.04],[11.18,13.83,0.15,0.11],[3.6,13.83,0.15,0.15],[11.22,13.94,0.11,0.04],[39.79,13.9,0.19,0.08],[3.63,13.98,0.11,0.04],[39.76,13.98,0.19,0.08],[3.6,14.02,0.15,0.08],[39.72,14.06,0.19,0.08],[3.63,14.1,0.11,0.08],[5.23,13.83,0.15,0.38],[39.68,14.13,0.19,0.08],[3.6,14.17,0.15,0.08],[5.27,14.21,0.11,0.04],[39.68,14.21,0.11,0.04],[3.63,14.25,0.11,0.04],[39.64,14.25,0.19,0.04],[5.23,14.25,0.15,0.08],[39.64,14.29,0.15,0.04],[-0.02,13.33,0.23,1.03],[5.27,14.32,0.11,0.04],[39.6,14.32,0.19,0.04],[11.18,13.98,0.15,0.42],[39.6,14.36,0.11,0.04],[11.18,14.4,0.11,0.08],[39.56,14.4,0.15,0.08],[-0.02,14.36,0.19,0.15],[39.53,14.48,0.19,0.04],[7.37,13.83,0.15,0.72],[7.14,14.55,0.38,0.04],[11.18,14.48,0.15,0.11],[11.41,14.55,0.72,0.04],[39.53,14.51,0.11,0.08],[40.25,14.51,0.08,0.08],[39.49,14.59,0.19,0.04],[11.18,14.59,0.95,0.08],[39.49,14.63,0.11,0.04],[-0.02,14.51,0.23,0.19],[7.1,14.59,0.42,0.11],[11.18,14.67,0.61,0.04],[11.9,14.67,0.23,0.04],[39.45,14.67,0.15,0.04],[0.01,14.7,0.19,0.04],[7.1,14.7,0.11,0.04],[7.25,14.7,0.27,0.04],[11.18,14.7,0.34,0.04],[12.09,14.7,0.04,0.04],[39.45,14.7,0.11,0.04],[7.1,14.74,0.42,0.04],[39.41,14.74,0.15,0.04],[7.22,14.78,0.3,0.04],[39.41,14.78,0.11,0.04],[39.37,14.82,0.15,0.04],[39.37,14.86,0.11,0.04],[7.18,14.82,0.34,0.11],[39.34,14.89,0.15,0.04],[7.41,14.93,0.11,0.04],[39.34,14.93,0.11,0.08],[5.23,14.36,0.15,0.69],[39.3,15.01,0.15,0.04],[3.6,14.29,0.15,0.8],[5.23,15.05,0.04,0.04],[5.35,15.05,0.04,0.04],[39.3,15.05,0.11,0.04],[3.63,15.09,0.11,0.04],[39.26,15.09,0.15,0.04],[39.26,15.12,0.11,0.04],[39.22,15.16,0.15,0.04],[3.6,15.12,0.15,0.15],[39.22,15.2,0.11,0.08],[3.6,15.28,0.11,0.04],[5.23,15.09,0.15,0.27],[3.6,15.31,0.15,0.08],[5.23,15.35,0.11,0.04],[39.18,15.28,0.11,0.11],[3.6,15.39,0.11,0.04],[39.15,15.39,0.11,0.04],[5.23,15.39,0.15,0.08],[39.11,15.43,0.15,0.04],[39.11,15.47,0.11,0.04],[5.23,15.47,0.11,0.08],[39.07,15.51,0.15,0.04],[39.07,15.54,0.11,0.04],[5.23,15.54,0.15,0.08],[5.23,15.62,0.11,0.04],[39.03,15.58,0.15,0.08],[39.03,15.66,0.11,0.04],[38.99,15.7,0.15,0.04],[38.99,15.73,0.11,0.04],[3.6,15.43,0.15,0.38],[5.23,15.66,0.15,0.15],[7.37,14.97,0.15,0.84],[38.95,15.77,0.15,0.04],[-0.02,15.81,0.3,0.04],[0.4,15.81,0.11,0.04],[0.85,15.81,3.01,0.04],[4.01,15.81,0.84,0.04],[38.95,15.81,0.11,0.04],[0.81,15.85,4.04,0.04],[38.92,15.85,0.15,0.04],[-0.02,15.85,0.69,0.08],[0.81,15.89,2.86,0.04],[3.71,15.89,1.14,0.04],[6.22,15.85,0.11,0.08],[38.92,15.89,0.11,0.04],[-0.02,15.92,0.72,0.04],[0.81,15.92,2.02,0.04],[2.91,15.92,1.68,0.04],[4.62,15.92,0.23,0.04],[5.23,15.81,0.61,0.15],[6.22,15.92,0.15,0.04],[7.33,15.81,0.19,0.15],[0.01,15.96,0.69,0.04],[0.81,15.96,1.98,0.04],[2.95,15.96,0.08,0.04],[3.18,15.96,0.08,0.04],[3.4,15.96,1.18,0.04],[4.74,15.96,0.08,0.04],[5.23,15.96,0.46,0.04],[5.81,15.96,0.04,0.04],[6.22,15.96,0.11,0.04],[38.88,15.92,0.15,0.08],[38.88,16.0,0.11,0.04],[3.67,16.0,0.08,0.08],[7.25,15.96,0.27,0.11],[38.84,16.04,0.15,0.04],[3.63,16.08,0.11,0.04],[38.84,16.08,0.11,0.04],[2.38,16.0,0.19,0.15],[38.8,16.11,0.15,0.04],[3.67,16.11,0.08,0.08],[38.8,16.15,0.11,0.04],[3.71,16.19,0.04,0.04],[2.42,16.15,0.15,0.11],[38.76,16.19,0.15,0.08],[3.63,16.23,0.11,0.08],[2.38,16.27,0.19,0.08],[38.73,16.27,0.15,0.08],[3.63,16.3,0.08,0.08],[38.73,16.34,0.11,0.04],[2.42,16.34,0.15,0.08],[38.69,16.38,0.15,0.04],[38.69,16.42,0.11,0.04],[2.38,16.42,0.19,0.08],[38.65,16.46,0.15,0.04],[38.65,16.5,0.11,0.04],[2.45,16.5,0.11,0.08],[3.63,16.38,0.11,0.19],[3.63,16.57,0.23,0.04],[3.94,16.57,0.42,0.04],[38.61,16.53,0.15,0.08],[3.63,16.61,0.72,0.04],[3.63,16.65,0.49,0.04],[38.57,16.61,0.15,0.08],[3.67,16.69,0.08,0.04],[3.63,16.72,0.11,0.04],[7.37,16.08,0.15,0.69],[38.54,16.69,0.15,0.08],[38.54,16.76,0.11,0.04],[3.67,16.76,0.08,0.08],[4.21,16.65,0.15,0.19],[7.37,16.8,0.04,0.04],[8.13,16.8,0.08,0.04],[38.5,16.8,0.15,0.04],[8.02,16.8,0.08,0.08],[8.13,16.84,0.04,0.04],[38.5,16.84,0.11,0.04],[3.63,16.84,0.11,0.08],[3.63,16.91,0.08,0.04],[38.46,16.88,0.15,0.08],[4.24,16.84,0.11,0.15],[7.37,16.88,0.11,0.15],[38.42,16.95,0.15,0.08],[3.63,16.95,0.11,0.11],[38.38,17.03,0.15,0.08],[4.21,16.99,0.15,0.15],[7.37,17.03,0.15,0.11],[38.38,17.11,0.11,0.04],[4.17,17.14,0.19,0.08],[38.34,17.14,0.15,0.08],[7.37,17.14,0.11,0.15],[38.31,17.22,0.15,0.08],[17.62,17.3,0.3,0.04],[17.62,17.33,0.34,0.04],[38.27,17.3,0.15,0.08],[7.37,17.3,0.15,0.15],[38.23,17.37,0.15,0.08],[38.23,17.45,0.11,0.04],[7.37,17.45,0.11,0.08],[38.19,17.49,0.15,0.08],[4.21,17.22,0.15,0.38],[17.66,17.37,0.3,0.23],[4.21,17.6,0.11,0.04],[17.62,17.6,0.3,0.04],[38.16,17.56,0.15,0.08],[4.17,17.64,0.15,0.04],[17.62,17.64,0.27,0.04],[17.62,17.68,0.04,0.04],[38.12,17.64,0.15,0.08],[17.62,17.71,0.27,0.04],[2.38,16.57,0.19,1.22],[4.21,17.68,0.11,0.11],[38.08,17.71,0.15,0.08],[17.62,17.75,0.3,0.08],[38.08,17.79,0.11,0.04],[2.38,17.79,0.15,0.08],[7.37,17.52,0.15,0.34],[38.04,17.83,0.15,0.08],[2.38,17.87,0.19,0.11],[4.21,17.79,0.15,0.19],[17.62,17.83,0.34,0.15],[38.0,17.91,0.15,0.08],[17.66,17.98,0.3,0.04],[2.38,17.98,0.15,0.08],[37.96,17.98,0.15,0.08],[2.38,18.06,0.19,0.08],[37.93,18.06,0.15,0.08],[37.89,18.13,0.19,0.04],[2.38,18.13,0.15,0.08],[37.89,18.17,0.15,0.08],[2.38,18.21,0.19,0.08],[37.85,18.25,0.15,0.08],[2.38,18.29,0.15,0.08],[3.25,18.36,0.11,0.04],[3.52,18.36,0.19,0.04],[37.81,18.32,0.15,0.08],[2.42,18.36,0.15,0.08],[3.25,18.4,0.46,0.04],[3.75,18.36,0.61,0.08],[3.71,18.44,0.65,0.04],[37.77,18.4,0.15,0.08],[2.38,18.44,0.19,0.08],[3.25,18.44,0.42,0.08],[3.71,18.48,0.34,0.04],[4.13,18.48,0.23,0.04],[37.74,18.48,0.19,0.04],[37.74,18.52,0.15,0.08],[37.7,18.59,0.15,0.08],[11.18,18.67,0.15,0.08],[37.66,18.67,0.15,0.08],[37.62,18.74,0.19,0.04],[7.37,18.67,0.15,0.15],[11.22,18.74,0.11,0.08],[37.62,18.78,0.15,0.04],[37.58,18.82,0.19,0.04],[37.58,18.86,0.15,0.08],[17.62,18.02,0.34,0.99],[37.55,18.93,0.15,0.08],[37.51,19.01,0.15,0.08],[7.33,18.82,0.19,0.3],[11.18,18.82,0.15,0.3],[37.47,19.09,0.19,0.04],[9.65,18.74,0.08,0.42],[37.47,19.12,0.15,0.04],[11.18,19.12,0.11,0.08],[37.43,19.16,0.19,0.04],[17.62,19.01,0.3,0.23],[7.33,19.12,0.15,0.15],[11.18,19.2,0.15,0.08],[17.62,19.24,0.34,0.04],[37.43,19.2,0.15,0.08],[38.08,19.24,0.08,0.04],[7.33,19.28,0.23,0.04],[7.67,19.28,1.18,0.04],[10.57,19.28,1.07,0.04],[11.75,19.28,0.19,0.04],[12.13,19.28,5.87,0.04],[18.07,19.28,0.99,0.04],[1.5,19.32,0.3,0.04],[1.88,19.32,0.08,0.04],[2.07,19.32,0.08,0.04],[2.22,19.32,1.41,0.04],[3.67,19.32,0.49,0.04],[4.24,19.32,0.11,0.04],[37.39,19.28,0.15,0.08],[1.5,19.35,2.86,0.04],[1.5,19.39,2.29,0.04],[3.83,19.39,0.23,0.04],[4.09,19.39,0.27,0.04],[7.33,19.32,1.52,0.11],[10.57,19.32,8.5,0.11],[37.35,19.35,0.15,0.08],[1.5,19.43,2.1,0.04],[3.71,19.43,0.08,0.04],[4.05,19.43,0.3,0.04],[7.33,19.43,1.22,0.04],[8.66,19.43,0.19,0.04],[10.57,19.43,8.23,0.04],[18.88,19.43,0.19,0.04],[37.32,19.43,0.19,0.04],[37.32,19.47,0.15,0.04],[37.28,19.5,0.19,0.04],[38.38,19.5,0.04,0.08],[37.28,19.54,0.15,0.08],[37.24,19.62,0.15,0.08],[37.2,19.7,0.19,0.04],[37.2,19.73,0.15,0.04],[37.16,19.77,0.19,0.04],[37.16,19.81,0.15,0.08],[37.13,19.89,0.15,0.08],[37.13,19.96,0.11,0.04],[37.09,20.0,0.15,0.04],[37.05,20.04,0.19,0.04],[37.05,20.08,0.15,0.04],[37.01,20.11,0.19,0.04],[37.01,20.15,0.15,0.04],[-7.0,20.19,0.04,0.04],[-6.81,20.19,0.8,0.04],[36.97,20.19,0.19,0.04],[36.97,20.23,0.15,0.04],[36.94,20.27,0.19,0.04],[-7.0,20.23,0.99,0.15],[36.94,20.3,0.15,0.08],[-7.0,20.38,0.84,0.04],[-6.12,20.38,0.11,0.04],[36.9,20.38,0.19,0.04],[-7.0,20.42,0.23,0.04],[36.9,20.42,0.15,0.04],[36.86,20.46,0.19,0.04],[-7.0,20.46,0.19,0.08],[36.86,20.5,0.15,0.04],[-6.96,20.53,0.15,0.04],[36.82,20.53,0.19,0.08],[36.78,20.61,0.19,0.08],[36.78,20.69,0.15,0.04],[36.74,20.73,0.19,0.08],[36.71,20.8,0.19,0.08],[36.67,20.88,0.19,0.08],[36.63,20.95,0.19,0.08],[36.63,21.03,0.15,0.04],[-7.0,20.57,0.19,0.53],[-7.0,21.11,0.15,0.04],[36.59,21.07,0.19,0.08],[36.55,21.14,0.19,0.08],[-7.0,21.14,0.19,0.11],[36.55,21.22,0.15,0.04],[-7.0,21.26,1.83,0.04],[-4.14,21.26,0.99,0.04],[-2.12,21.26,0.99,0.04],[-0.1,21.26,0.57,0.04],[0.7,21.26,0.19,0.04],[1.92,21.26,0.99,0.04],[3.94,21.26,2.67,0.04],[6.91,21.26,18.36,0.04],[25.54,21.26,0.11,0.04],[25.89,21.26,0.15,0.04],[26.42,21.26,0.42,0.04],[27.22,21.26,0.38,0.04],[27.98,21.26,8.69,0.04],[-7.0,21.3,6.33,0.04],[-0.59,21.3,1.07,0.04],[0.7,21.3,2.21,0.04],[3.9,21.3,32.77,0.04],[0.7,21.33,0.08,0.04],[0.81,21.33,35.85,0.04],[-7.0,21.33,7.47,0.08],[0.7,21.37,0.04,0.04],[0.81,21.37,14.17,0.04],[16.02,21.37,1.03,0.04],[18.0,21.37,15.09,0.04],[33.35,21.37,0.38,0.04],[34.12,21.37,2.52,0.04],[-7.0,21.41,1.03,0.04],[-5.89,21.41,0.11,0.04],[-5.7,21.41,0.11,0.04],[-5.51,21.41,0.11,0.04],[-5.32,21.41,0.11,0.04],[-5.13,21.41,0.11,0.04],[-4.94,21.41,0.11,0.04],[-4.75,21.41,0.11,0.04],[-4.56,21.41,0.11,0.04],[-4.37,21.41,0.11,0.04],[-4.18,21.41,0.11,0.04],[-3.99,21.41,0.11,0.04],[-3.8,21.41,0.11,0.04],[-3.6,21.41,0.11,0.04],[-3.42,21.41,0.11,0.04],[-3.22,21.41,0.11,0.04],[-3.03,21.41,0.11,0.04],[-2.84,21.41,0.11,0.04],[-2.65,21.41,0.11,0.04],[-2.46,21.41,0.11,0.04],[-2.27,21.41,0.11,0.04],[-2.08,21.41,0.11,0.04],[-1.89,21.41,0.11,0.04],[-1.7,21.41,0.11,0.04],[-1.51,21.41,0.11,0.04],[-1.32,21.41,0.11,0.04],[-1.13,21.41,0.11,0.04],[-0.94,21.41,0.11,0.04],[-0.75,21.41,0.11,0.04],[-0.56,21.41,0.11,0.04],[-0.37,21.41,0.11,0.04],[-0.18,21.41,0.11,0.04],[-0.02,21.41,0.15,0.04],[0.2,21.41,0.11,0.04],[0.4,21.41,0.04,0.04],[0.81,21.41,0.08,0.04],[0.97,21.41,0.11,0.04],[1.16,21.41,0.11,0.04],[1.35,21.41,0.11,0.04],[1.54,21.41,0.11,0.04],[1.73,21.41,0.11,0.04],[1.92,21.41,0.11,0.04],[2.11,21.41,0.11,0.04],[2.3,21.41,0.11,0.04],[2.45,21.41,0.15,0.04],[2.68,21.41,0.11,0.04],[2.87,21.41,0.11,0.04],[3.06,21.41,0.11,0.04],[3.25,21.41,0.11,0.04],[3.44,21.41,0.11,0.04],[3.63,21.41,0.11,0.04],[3.83,21.41,0.11,0.04],[4.01,21.41,0.11,0.04],[4.21,21.41,0.11,0.04],[4.4,21.41,0.11,0.04],[4.59,21.41,0.11,0.04],[4.78,21.41,0.11,0.04],[4.97,21.41,0.11,0.04],[5.16,21.41,0.11,0.04],[5.35,21.41,0.11,0.04],[5.54,21.41,0.11,0.04],[5.73,21.41,0.11,0.04],[5.92,21.41,0.11,0.04],[6.11,21.41,0.11,0.04],[6.3,21.41,0.11,0.04],[6.49,21.41,0.11,0.04],[6.68,21.41,0.11,0.04],[6.87,21.41,0.11,0.04],[7.06,21.41,0.11,0.04],[7.25,21.41,0.11,0.04],[7.44,21.41,0.11,0.04],[7.63,21.41,0.11,0.04],[7.83,21.41,0.11,0.04],[8.02,21.41,0.11,0.04],[8.21,21.41,0.11,0.04],[8.4,21.41,0.11,0.04],[8.59,21.41,0.11,0.04],[8.78,21.41,0.11,0.04],[8.97,21.41,0.11,0.04],[9.16,21.41,0.11,0.04],[9.35,21.41,0.11,0.04],[9.54,21.41,0.11,0.04],[9.73,21.41,0.11,0.04],[9.92,21.41,0.11,0.04],[10.11,21.41,0.11,0.04],[10.3,21.41,0.11,0.04],[10.49,21.41,0.11,0.04],[10.68,21.41,0.11,0.04],[10.87,21.41,0.11,0.04],[11.06,21.41,0.11,0.04],[11.25,21.41,0.11,0.04],[11.45,21.41,0.11,0.04],[11.64,21.41,0.11,0.04],[11.83,21.41,0.11,0.04],[12.02,21.41,0.11,0.04],[12.21,21.41,0.11,0.04],[12.4,21.41,0.11,0.04],[12.59,21.41,0.11,0.04],[12.78,21.41,0.11,0.04],[12.97,21.41,0.11,0.04],[13.16,21.41,0.11,0.04],[13.35,21.41,0.11,0.04],[13.54,21.41,0.11,0.04],[13.73,21.41,0.11,0.04],[13.92,21.41,0.11,0.04],[14.11,21.41,0.11,0.04],[14.3,21.41,0.11,0.04],[14.49,21.41,0.11,0.04],[14.68,21.41,0.11,0.04],[14.87,21.41,0.11,0.04],[15.06,21.37,0.11,0.08],[15.26,21.37,0.11,0.08],[15.45,21.37,0.11,0.08],[15.64,21.37,0.11,0.08],[15.83,21.37,0.11,0.08],[16.02,21.41,0.11,0.04],[16.21,21.41,0.11,0.04],[16.4,21.41,0.11,0.04],[16.59,21.41,0.11,0.04],[16.78,21.41,0.11,0.04],[16.97,21.41,0.04,0.04],[18.11,21.41,0.11,0.04],[18.3,21.41,0.11,0.04],[18.49,21.41,0.11,0.04],[18.68,21.41,0.11,0.04],[18.88,21.41,0.11,0.04],[20.06,21.41,0.08,0.04],[20.21,21.41,0.11,0.04],[20.4,21.41,0.11,0.04],[20.59,21.41,0.11,0.04],[20.78,21.41,0.11,0.04],[20.97,21.41,0.08,0.04],[22.11,21.41,0.11,0.04],[22.3,21.41,0.11,0.04],[22.5,21.41,0.11,0.04],[22.68,21.41,0.11,0.04],[22.88,21.41,0.11,0.04],[23.07,21.41,0.11,0.04],[23.26,21.41,0.11,0.04],[23.45,21.41,0.11,0.04],[23.64,21.41,0.11,0.04],[23.83,21.41,0.11,0.04],[24.02,21.41,0.11,0.04],[24.21,21.41,0.11,0.04],[24.4,21.41,0.11,0.04],[24.59,21.41,0.11,0.04],[24.78,21.41,0.11,0.04],[24.97,21.41,0.11,0.04],[25.16,21.41,0.11,0.04],[25.35,21.41,0.11,0.04],[25.54,21.41,0.11,0.04],[25.73,21.41,0.11,0.04],[25.92,21.41,0.11,0.04],[26.11,21.41,0.11,0.04],[26.3,21.41,0.11,0.04],[26.5,21.41,0.11,0.04],[26.69,21.41,0.11,0.04],[26.88,21.41,0.11,0.04],[27.07,21.41,0.11,0.04],[27.26,21.41,0.11,0.04],[27.45,21.41,0.11,0.04],[27.64,21.41,0.11,0.04],[27.83,21.41,0.11,0.04],[28.02,21.41,0.11,0.04],[28.21,21.41,0.11,0.04],[28.4,21.41,0.11,0.04],[28.59,21.41,0.11,0.04],[28.78,21.41,0.11,0.04],[28.97,21.41,0.11,0.04],[29.16,21.41,0.11,0.04],[29.35,21.41,0.11,0.04],[29.54,21.41,0.11,0.04],[29.73,21.41,0.11,0.04],[29.93,21.41,0.11,0.04],[30.11,21.41,0.11,0.04],[30.31,21.41,0.11,0.04],[30.5,21.41,0.11,0.04],[30.69,21.41,0.11,0.04],[30.88,21.41,0.11,0.04],[31.07,21.41,0.11,0.04],[31.26,21.41,0.11,0.04],[31.45,21.41,0.11,0.04],[31.64,21.41,0.11,0.04],[31.83,21.41,0.11,0.04],[32.02,21.41,0.11,0.04],[32.21,21.41,0.11,0.04],[32.4,21.41,0.11,0.04],[32.59,21.41,0.11,0.04],[32.78,21.41,0.11,0.04],[32.97,21.41,0.11,0.04],[33.16,21.37,0.11,0.08],[33.35,21.41,0.11,0.04],[33.54,21.41,0.11,0.04],[34.12,21.41,0.11,0.04],[34.31,21.41,0.11,0.04],[34.92,21.41,0.08,0.04],[35.07,21.41,0.11,0.04],[35.68,21.41,0.08,0.04],[35.83,21.41,0.11,0.04],[36.02,21.41,0.11,0.04],[36.21,21.41,0.11,0.04],[36.4,21.41,0.11,0.04],[36.59,21.41,0.04,0.04]],"sot":[[-0.0,12.5,0.11,0.04],[0.27,12.5,0.08,0.04],[0.49,12.5,0.11,0.04],[0.72,12.5,0.11,0.04],[0.99,12.5,2.78,0.04],[-0.04,12.54,0.91,0.04],[0.95,12.54,4.92,0.04],[6.13,12.54,0.3,0.04],[6.74,12.54,6.21,0.04],[-0.04,12.57,12.99,0.04],[-0.04,12.61,9.68,0.04],[9.68,12.61,3.28,0.04],[-0.04,12.65,2.82,0.04],[2.9,12.65,0.11,0.04],[3.12,12.65,0.11,0.04],[3.35,12.65,0.15,0.04],[3.58,12.65,6.06,0.04],[9.71,12.65,0.84,0.04],[10.86,12.65,0.27,0.04],[11.43,12.65,0.3,0.04],[12.0,12.65,0.3,0.04],[12.61,12.65,0.34,0.04],[-0.04,12.69,0.23,0.08],[7.35,12.69,0.15,0.11],[-0.0,12.77,0.19,0.08],[-0.04,12.84,0.23,0.04],[7.39,12.8,0.11,0.11],[12.72,12.69,0.23,0.27],[-0.0,12.88,0.19,0.11],[-0.04,12.99,0.23,0.04],[12.76,12.96,0.19,0.15],[-0.0,13.03,0.19,0.11],[-0.04,13.15,0.23,0.04],[-0.0,13.18,0.19,0.04],[0.04,13.22,0.15,0.04],[12.72,13.11,0.23,0.15],[7.35,12.92,0.15,0.46],[12.76,13.26,0.19,0.19],[9.71,13.38,0.11,0.11],[7.35,13.38,0.11,0.19],[9.68,13.49,0.15,0.08],[12.72,13.45,0.23,0.11],[7.35,13.57,0.15,0.08],[7.32,13.64,0.19,0.04],[9.68,13.57,0.11,0.11],[12.76,13.57,0.19,0.11],[7.05,13.68,0.08,0.04],[7.16,13.68,0.34,0.04],[7.58,13.68,0.42,0.04],[8.04,13.68,0.11,0.04],[8.19,13.68,0.84,0.04],[11.35,13.68,0.04,0.04],[11.43,13.68,0.72,0.04],[12.19,13.68,0.76,0.04],[7.58,13.72,1.45,0.04],[9.07,13.68,1.41,0.08],[11.31,13.72,1.64,0.08],[7.05,13.72,0.46,0.11],[9.11,13.76,1.37,0.08],[11.28,13.79,1.68,0.04],[7.58,13.76,1.49,0.11],[9.11,13.83,0.8,0.04],[9.98,13.83,0.08,0.04],[10.1,13.83,0.38,0.04],[11.28,13.83,0.61,0.04],[11.96,13.83,0.65,0.04],[12.65,13.83,0.3,0.04],[12.72,13.87,0.23,0.04],[8.88,13.98,0.11,0.04],[9.33,13.98,0.08,0.04],[8.23,13.98,0.08,0.08],[8.46,13.98,0.08,0.08],[8.65,13.98,0.15,0.08],[8.84,14.02,0.19,0.04],[9.07,14.02,0.08,0.04],[9.3,14.02,0.15,0.04],[9.53,13.98,0.15,0.08],[9.75,13.98,0.15,0.08],[12.8,13.91,0.15,0.15],[8.23,14.33,0.08,0.04],[8.46,14.33,0.08,0.04],[8.65,14.33,0.15,0.04],[8.84,14.33,0.15,0.04],[9.14,14.33,0.08,0.04],[9.3,14.33,0.15,0.04],[9.53,14.33,0.15,0.04],[9.75,14.33,0.15,0.04],[7.35,13.83,0.15,0.69],[7.39,14.52,0.11,0.04],[7.12,14.56,0.38,0.04],[11.47,14.56,0.65,0.04],[11.16,14.59,0.95,0.08],[11.89,14.67,0.23,0.04],[7.09,14.59,0.42,0.15],[11.16,14.67,0.69,0.08],[12.08,14.71,0.04,0.04],[7.09,14.75,0.19,0.04],[7.35,14.75,0.15,0.04],[7.09,14.79,0.42,0.04],[7.16,14.82,0.34,0.04],[7.09,14.86,0.42,0.08],[7.39,14.94,0.11,0.04],[-0.04,13.26,0.23,1.98],[-0.04,15.24,0.19,0.08],[-0.04,15.32,0.23,0.08],[-0.04,15.39,0.19,0.04],[-0.04,15.43,0.23,0.38],[0.04,15.81,0.15,0.04],[-0.04,15.85,0.23,0.19],[8.53,16.04,0.08,0.08],[-0.0,16.04,0.19,0.11],[-0.04,16.16,0.23,0.04],[-0.0,16.2,0.19,0.11],[-0.04,16.31,0.23,0.08],[-0.0,16.39,0.19,0.08],[-0.04,16.46,0.23,0.08],[0.04,16.54,0.15,0.08],[8.69,17.0,0.11,0.04],[8.69,17.03,0.23,0.04],[8.69,17.07,0.11,0.04],[7.35,14.97,0.15,2.29],[7.35,17.26,0.11,0.15],[7.35,17.41,0.15,0.15],[7.35,17.57,0.11,0.15],[-1.75,17.68,0.08,0.15],[-1.6,17.68,0.08,0.15],[7.35,17.72,0.15,0.15],[12.72,14.06,0.23,3.92],[7.35,17.87,0.11,0.15],[12.72,17.98,0.19,0.15],[12.72,18.14,0.23,0.19],[12.72,18.33,0.19,0.15],[7.35,18.02,0.15,0.57],[7.05,18.59,0.08,0.04],[7.16,18.59,0.34,0.04],[7.7,18.59,0.11,0.04],[12.72,18.48,0.23,0.15],[-0.04,16.61,0.23,2.1],[7.05,18.63,0.46,0.08],[7.66,18.63,0.15,0.08],[7.05,18.71,0.3,0.04],[7.43,18.71,0.08,0.04],[7.66,18.71,0.11,0.04],[-0.04,18.71,0.19,0.08],[12.72,18.63,0.19,0.15],[7.35,18.75,0.15,0.08],[-0.0,18.79,0.19,0.08],[-0.0,18.86,0.15,0.04],[-0.0,18.9,0.19,0.04],[7.39,18.82,0.11,0.11],[7.43,18.94,0.08,0.04],[11.51,17.98,0.08,1.1],[-0.04,18.94,0.23,0.27],[7.35,18.98,0.15,0.27],[7.32,19.24,0.19,0.04],[12.72,18.79,0.23,0.49],[0.04,19.2,0.15,0.11],[2.4,19.28,0.15,0.04],[2.67,19.28,1.22,0.04],[3.96,19.28,1.03,0.04],[5.11,19.28,1.07,0.04],[11.16,19.28,0.11,0.04],[11.31,19.28,0.65,0.04],[12.15,19.28,0.95,0.04],[13.26,19.28,4.57,0.04],[0.07,19.36,0.11,0.04],[2.4,19.32,3.77,0.11],[7.05,19.28,0.46,0.15],[11.16,19.32,0.8,0.11],[12.15,19.32,5.68,0.11],[2.4,19.43,1.07,0.04],[3.54,19.43,1.07,0.04],[4.69,19.43,1.14,0.04],[5.98,19.43,0.19,0.04],[7.05,19.43,0.34,0.04],[7.43,19.43,0.08,0.04],[7.66,19.28,0.53,0.19],[11.16,19.43,0.65,0.04],[11.85,19.43,0.11,0.04],[12.15,19.43,4.46,0.04],[16.76,19.43,0.15,0.04],[17.03,19.43,0.8,0.04],[-0.04,19.39,0.23,0.11],[17.6,19.47,0.23,0.08],[17.64,19.55,0.19,0.08],[-0.0,19.51,0.19,0.15],[9.18,20.08,0.04,0.04],[9.14,20.12,0.08,0.04],[-0.04,19.66,0.23,0.53],[17.6,19.62,0.23,0.61],[-0.04,20.2,0.19,0.08],[9.18,20.27,0.04,0.04],[17.6,20.23,0.19,0.08],[-0.04,20.27,0.23,0.08],[9.14,20.31,0.08,0.04],[17.6,20.31,0.23,0.04],[-0.04,20.35,0.46,0.04],[0.61,20.35,0.15,0.04],[0.95,20.35,0.15,0.04],[1.29,20.35,0.15,0.04],[1.64,20.35,2.29,0.04],[4.15,20.35,2.59,0.04],[6.97,20.35,0.38,0.04],[7.62,20.35,0.42,0.04],[8.27,20.35,0.19,0.04],[9.98,20.35,0.34,0.04],[10.52,20.35,0.11,0.04],[10.82,20.35,0.15,0.04],[11.16,20.35,0.19,0.04],[11.54,20.35,0.91,0.04],[12.69,20.35,5.14,0.04],[-0.04,20.39,1.18,0.04],[1.29,20.39,0.19,0.04],[1.64,20.39,5.87,0.04],[7.58,20.39,0.91,0.04],[9.94,20.39,1.41,0.04],[11.51,20.39,6.33,0.04],[-0.04,20.42,8.54,0.04],[-0.04,20.46,8.5,0.08],[9.94,20.42,7.89,0.11],[-0.04,20.54,6.06,0.04],[6.21,20.54,0.19,0.04],[6.55,20.54,1.91,0.04],[9.94,20.54,6.52,0.04],[16.65,20.54,0.19,0.04],[16.99,20.54,0.84,0.04],[-0.0,20.58,0.23,0.04],[17.6,20.58,0.23,0.04],[8.27,20.58,0.19,0.11],[17.64,20.61,0.19,0.08],[-0.0,20.61,0.19,0.11],[8.27,20.69,0.23,0.08],[8.27,20.77,0.19,0.04],[-1.3,21.03,0.19,0.04],[-3.85,21.03,0.15,0.08],[8.27,20.8,0.23,0.3],[9.94,20.58,0.23,0.53],[-0.04,20.73,0.23,0.42],[17.6,20.69,0.23,0.46],[-0.04,21.15,0.19,0.04],[9.94,21.11,0.19,0.08],[-3.89,21.11,0.19,0.11],[-1.33,21.07,0.23,0.15],[17.6,21.15,0.19,0.08],[-1.33,21.22,0.19,0.04],[-0.04,21.19,0.23,0.08],[8.27,21.11,0.19,0.15],[9.94,21.19,0.23,0.08],[17.6,21.22,0.23,0.04],[-3.89,21.22,0.15,0.08],[-3.7,21.26,0.11,0.04],[-3.51,21.26,0.11,0.04],[-3.32,21.26,0.08,0.04],[-3.16,21.26,2.1,0.04],[-0.84,21.26,1.49,0.04],[1.22,21.26,0.57,0.04],[2.36,21.26,0.57,0.04],[3.5,21.26,0.57,0.04],[4.65,21.26,13.18,0.04],[-3.89,21.3,21.72,0.08],[-3.89,21.38,2.06,0.04],[-1.75,21.38,1.45,0.04],[-0.27,21.38,13.45,0.04],[13.72,21.38,4.12,0.04],[-3.85,21.41,2.02,0.04],[-1.75,21.41,0.08,0.04],[-1.56,21.41,0.08,0.04],[-1.37,21.41,0.08,0.04],[-1.22,21.41,0.91,0.04],[-0.04,21.41,13.22,0.04],[13.75,21.41,0.53,0.04],[14.9,21.41,0.53,0.04],[16.04,21.41,0.53,0.04],[17.18,21.41,0.65,0.04]],"p2":[[0.04,2.06,0.11,0.04],[0.61,2.06,0.34,0.04],[1.06,2.06,0.19,0.04],[1.37,2.06,0.15,0.04],[1.64,2.06,3.39,0.04],[5.79,2.06,1.22,0.04],[7.47,2.06,0.49,0.04],[8.46,2.06,0.46,0.04],[9.41,2.06,1.87,0.04],[11.43,2.06,0.08,0.04],[11.62,2.06,9.22,0.04],[5.79,2.1,3.12,0.04],[8.95,2.1,0.11,0.04],[9.41,2.1,0.49,0.04],[9.94,2.1,1.33,0.04],[11.31,2.1,0.11,0.04],[11.47,2.1,0.04,0.04],[-0.0,2.1,0.15,0.08],[0.61,2.1,4.42,0.08],[5.79,2.13,3.28,0.04],[9.29,2.13,0.04,0.04],[9.94,2.13,1.26,0.04],[11.24,2.13,0.27,0.04],[11.58,2.1,9.26,0.08],[-0.0,2.17,0.11,0.04],[0.61,2.17,3.16,0.04],[3.92,2.17,0.15,0.04],[4.19,2.17,0.84,0.04],[5.79,2.17,2.17,0.04],[8.0,2.17,0.84,0.04],[8.88,2.17,0.19,0.04],[9.29,2.17,0.08,0.04],[9.94,2.17,1.56,0.04],[11.58,2.17,5.03,0.04],[17.07,2.17,0.49,0.04],[18.02,2.17,2.82,0.04],[4.84,2.21,0.19,0.08],[11.96,2.21,0.19,0.11],[12.0,2.33,0.15,0.08],[11.96,2.4,0.19,0.08],[4.88,2.29,0.15,0.23],[4.91,2.52,0.11,0.04],[12.0,2.48,0.15,0.08],[4.88,2.55,0.15,0.04],[11.96,2.55,0.19,0.04],[12.0,2.59,0.15,0.08],[4.84,2.59,0.19,0.15],[11.96,2.67,0.19,0.08],[4.91,2.74,0.08,0.04],[12.04,2.74,0.11,0.04],[4.84,2.78,0.08,0.04],[4.95,2.78,0.04,0.04],[12.0,2.78,0.15,0.04],[4.84,2.82,0.15,0.11],[4.84,2.94,0.19,0.23],[4.84,3.16,0.15,0.19],[4.88,3.35,0.15,0.04],[4.84,3.39,0.19,0.08],[-0.0,2.21,0.15,1.52],[11.96,2.82,0.19,0.99],[11.96,3.81,0.15,0.08],[11.96,3.89,0.19,0.08],[11.96,3.96,0.15,0.04],[11.96,4.0,0.19,0.08],[0.04,3.73,0.11,0.38],[11.96,4.08,0.15,0.08],[11.96,4.15,0.19,0.08],[11.96,4.23,0.15,0.11],[4.88,4.34,0.27,0.04],[5.37,4.34,0.23,0.04],[5.83,4.34,0.23,0.04],[6.29,4.34,0.23,0.04],[6.55,4.34,0.08,0.04],[6.78,4.34,0.11,0.04],[7.12,4.34,2.78,0.04],[10.13,4.34,0.3,0.04],[10.55,4.34,1.56,0.04],[6.55,4.38,0.04,0.04],[6.74,4.38,0.23,0.04],[7.12,4.38,5.03,0.04],[4.84,4.38,1.68,0.08],[6.59,4.42,0.38,0.04],[7.05,4.42,4.08,0.04],[11.16,4.42,0.99,0.04],[4.84,4.46,1.64,0.04],[6.59,4.46,4.34,0.04],[11.01,4.46,0.57,0.04],[11.62,4.46,0.53,0.04],[-0.0,4.12,0.15,0.42],[4.88,4.5,1.56,0.04],[6.59,4.5,3.66,0.04],[10.48,4.5,0.23,0.04],[10.97,4.5,0.19,0.04],[11.39,4.5,0.19,0.04],[11.85,4.5,0.3,0.04],[0.04,4.54,0.11,0.38],[-0.0,4.92,0.15,0.38],[1.14,5.41,0.3,0.04],[1.52,5.41,0.11,0.04],[1.71,5.41,0.11,0.04],[1.9,5.41,0.69,0.04],[4.84,5.41,0.49,0.04],[5.45,5.41,0.19,0.04],[5.75,5.41,0.15,0.04],[6.06,5.41,3.54,0.04],[11.09,5.41,0.11,0.04],[11.35,5.41,0.8,0.04],[1.14,5.45,1.45,0.08],[2.63,5.41,1.45,0.11],[4.84,5.45,4.76,0.08],[11.09,5.45,1.07,0.08],[1.14,5.53,2.13,0.04],[3.35,5.53,0.11,0.04],[3.5,5.53,0.57,0.04],[4.84,5.53,3.43,0.04],[8.42,5.53,0.15,0.04],[8.72,5.53,0.88,0.04],[11.09,5.53,0.76,0.04],[11.92,5.53,0.23,0.04],[4.84,5.56,0.19,0.08],[0.04,5.3,0.11,0.42],[2.28,5.56,0.19,0.23],[4.88,5.64,0.15,0.15],[11.96,5.56,0.19,0.23],[4.84,5.79,0.19,0.04],[2.32,5.79,0.15,0.11],[12.0,5.79,0.15,0.11],[4.88,5.83,0.15,0.11],[4.91,5.95,0.11,0.04],[2.28,5.91,0.19,0.11],[11.96,5.91,0.19,0.11],[2.32,6.02,0.15,0.11],[12.0,6.02,0.15,0.15],[2.28,6.14,0.19,0.11],[11.96,6.17,0.19,0.08],[2.32,6.25,0.15,0.15],[12.0,6.25,0.15,0.15],[2.28,6.4,0.19,0.08],[2.32,6.48,0.15,0.04],[11.96,6.4,0.19,0.11],[2.36,6.52,0.11,0.08],[2.32,6.59,0.15,0.04],[12.04,6.52,0.11,0.11],[4.84,5.98,0.19,0.69],[4.84,6.67,0.15,0.04],[4.84,6.71,0.19,0.08],[11.96,6.63,0.19,0.23],[4.84,6.78,0.15,0.11],[11.96,6.86,0.53,0.04],[12.61,6.86,0.15,0.04],[12.91,6.86,0.15,0.04],[13.18,6.86,4.65,0.04],[11.96,6.9,5.87,0.11],[11.96,7.01,4.72,0.04],[16.8,7.01,1.03,0.04],[11.96,7.05,2.9,0.04],[14.9,7.05,1.79,0.04],[16.84,7.05,0.11,0.04],[17.11,7.05,0.15,0.04],[17.41,7.05,0.11,0.04],[4.84,6.9,0.19,0.27],[17.64,7.05,0.23,0.15],[4.88,7.16,0.15,0.08],[4.84,7.24,0.19,0.08],[17.64,7.2,0.19,0.11],[4.88,7.32,0.15,0.08],[4.84,7.39,0.19,0.08],[4.88,7.47,0.15,0.08],[17.64,7.32,0.23,0.27],[4.84,7.54,0.19,0.08],[4.91,7.62,0.11,0.08],[17.64,7.58,0.19,0.11],[17.64,7.7,0.23,0.08],[17.64,7.77,0.19,0.23],[17.68,8.0,0.15,0.08],[17.68,8.08,0.19,0.08],[17.64,8.15,0.23,0.15],[17.64,8.31,0.19,0.04],[2.28,6.63,0.19,1.79],[17.68,8.35,0.15,0.08],[11.96,7.09,0.19,1.37],[2.28,8.42,0.15,0.11],[17.68,8.42,0.19,0.11],[11.96,8.46,0.15,0.11],[2.28,8.54,0.19,0.11],[11.96,8.57,0.19,0.11],[17.64,8.54,0.23,0.15],[2.28,8.65,0.15,0.11],[9.45,8.77,0.19,0.04],[9.75,8.77,0.3,0.04],[10.1,8.77,0.11,0.04],[11.96,8.69,0.15,0.11],[17.64,8.69,0.19,0.11],[4.84,7.7,0.19,1.14],[9.45,8.8,0.76,0.04],[2.28,8.77,0.19,0.11],[9.41,8.84,0.46,0.04],[9.98,8.84,0.19,0.04],[4.84,8.84,0.15,0.08],[9.41,8.88,0.19,0.04],[10.02,8.88,0.19,0.04],[11.96,8.8,0.19,0.11],[2.28,8.88,0.15,0.11],[4.84,8.92,0.19,0.08],[10.06,8.92,0.15,0.08],[11.96,8.92,0.15,0.11],[4.84,8.99,0.15,0.08],[9.45,8.92,0.15,0.15],[11.96,9.03,0.08,0.04],[17.64,8.8,0.23,0.27],[2.28,8.99,0.19,0.11],[9.48,9.07,0.11,0.04],[12.0,9.07,0.04,0.04],[4.84,9.07,0.19,0.08],[9.45,9.11,0.04,0.04],[11.96,9.11,0.11,0.04],[17.64,9.07,0.19,0.11],[2.28,9.11,0.15,0.11],[4.84,9.15,0.15,0.08],[10.02,8.99,0.19,0.23],[11.96,9.15,0.15,0.11],[9.41,9.15,0.15,0.19],[2.28,9.22,0.19,0.15],[4.84,9.22,0.19,0.15],[9.41,9.34,0.19,0.04],[10.02,9.22,0.15,0.15],[1.03,9.37,0.8,0.04],[1.94,9.37,0.15,0.04],[2.25,9.37,4.92,0.04],[9.45,9.37,0.15,0.04],[10.02,9.37,0.19,0.04],[11.96,9.26,0.19,0.15],[1.03,9.41,6.02,0.04],[7.08,9.41,5.07,0.04],[17.64,9.18,0.23,0.27],[1.03,9.45,5.94,0.08],[7.05,9.45,5.11,0.08],[1.03,9.53,5.98,0.04],[7.08,9.53,3.01,0.04],[10.32,9.53,0.23,0.04],[10.78,9.53,1.37,0.04],[17.64,9.45,0.19,0.11],[3.58,9.56,0.19,0.19],[3.62,9.76,0.15,0.08],[17.64,9.56,0.23,0.27],[3.58,9.83,0.19,0.08],[17.64,9.83,0.19,0.11],[3.62,9.91,0.15,0.11],[3.58,10.02,0.19,0.08],[3.62,10.1,0.15,0.11],[17.64,9.95,0.23,0.27],[3.58,10.21,0.19,0.08],[3.62,10.29,0.15,0.04],[17.64,10.21,0.19,0.11],[3.66,10.33,0.11,0.08],[17.64,10.33,0.23,0.27],[17.64,10.59,0.19,0.11],[17.64,10.71,0.23,0.08],[-0.0,5.72,0.15,5.11],[3.58,10.4,0.19,0.53],[3.62,10.94,0.11,0.04],[17.64,10.78,0.19,0.27],[-0.0,10.82,0.11,0.38],[17.64,11.05,0.23,0.27],[17.64,11.32,0.19,0.11],[-0.0,11.2,0.15,0.42],[3.58,10.97,0.19,0.65],[3.58,11.62,0.11,0.08],[17.64,11.43,0.23,0.27],[3.58,11.7,0.15,0.04],[3.58,11.74,0.19,0.08],[17.64,11.7,0.19,0.11],[3.58,11.81,0.15,0.08],[3.62,11.89,0.11,0.04],[-0.0,11.62,0.11,0.38],[3.62,11.93,0.15,0.08],[17.64,11.81,0.23,0.27],[3.62,12.0,0.11,0.11],[3.62,12.12,0.15,0.08],[17.64,12.08,0.19,0.11],[3.62,12.19,0.11,0.11],[3.62,12.31,0.15,0.08],[-0.0,12.0,0.15,0.42],[3.62,12.38,0.11,0.08],[17.64,12.19,0.23,0.27],[3.62,12.46,0.15,0.08],[5.71,12.5,6.4,0.04],[17.64,12.46,0.19,0.11],[3.88,12.54,8.27,0.08],[3.62,12.54,0.19,0.11],[3.88,12.61,5.79,0.04],[9.94,12.61,2.21,0.04],[3.62,12.65,0.11,0.04],[3.96,12.65,1.22,0.04],[5.26,12.65,4.42,0.04],[9.98,12.65,0.23,0.04],[10.51,12.65,0.27,0.04],[11.09,12.65,0.23,0.04],[11.96,12.65,0.19,0.11],[-0.0,12.42,0.11,0.38],[17.64,12.57,0.23,0.27],[12.0,12.77,0.15,0.15],[17.64,12.84,0.19,0.11],[17.64,12.96,0.23,0.23],[17.64,13.18,0.19,0.19],[11.96,12.92,0.19,0.53],[17.64,13.38,0.15,0.15],[11.96,13.45,0.15,0.15],[11.96,13.6,0.19,0.08],[17.64,13.53,0.19,0.76],[17.64,14.29,0.23,0.04],[-0.0,12.8,0.15,1.75],[17.64,14.33,0.19,0.23],[-0.0,14.56,0.3,0.04],[0.49,14.56,0.27,0.04],[0.99,14.56,0.27,0.04],[1.48,14.56,0.23,0.04],[1.94,14.56,0.27,0.04],[10.36,14.56,0.27,0.04],[10.86,14.56,0.23,0.04],[11.35,14.56,0.23,0.04],[11.81,14.56,0.23,0.04],[12.27,14.56,5.56,0.04],[-0.0,14.59,2.21,0.04],[2.28,14.56,5.26,0.08],[-0.0,14.63,7.54,0.04],[10.36,14.59,7.47,0.08],[-0.0,14.67,5.56,0.04],[5.79,14.67,1.75,0.04],[10.36,14.67,5.45,0.04],[16.0,14.67,1.83,0.04],[-0.0,14.71,2.06,0.04],[2.17,14.71,3.39,0.04],[5.79,14.71,0.23,0.04],[6.29,14.71,0.23,0.04],[6.78,14.71,0.23,0.04],[7.24,14.71,0.3,0.04],[10.36,14.71,5.41,0.04],[16.04,14.71,0.23,0.04],[16.5,14.71,0.23,0.04],[16.99,14.71,0.19,0.04],[17.45,14.71,0.38,0.04],[7.39,14.75,0.15,0.04],[7.35,14.79,0.19,0.08],[10.36,14.75,0.15,0.11],[7.35,14.86,0.15,0.08],[10.36,14.86,0.11,0.08],[6.25,15.81,0.08,0.04],[6.47,15.81,0.49,0.04],[7.05,15.81,0.23,0.04],[7.39,15.81,0.76,0.04],[8.27,15.81,0.11,0.04],[8.49,15.81,2.48,0.04],[11.09,15.81,0.19,0.04],[11.39,15.81,0.08,0.04],[11.54,15.81,0.57,0.04],[12.27,15.81,0.72,0.04],[6.21,15.85,4.84,0.04],[11.09,15.85,0.27,0.04],[11.51,15.85,1.49,0.04],[6.21,15.89,0.65,0.04],[6.93,15.89,6.06,0.04],[6.21,15.93,0.53,0.04],[6.82,15.93,0.11,0.04],[7.01,15.93,3.24,0.04],[10.36,15.93,0.11,0.04],[10.59,15.93,1.22,0.04],[11.89,15.93,0.88,0.04],[7.85,15.97,0.19,0.04],[6.21,15.97,0.19,0.08],[6.25,16.04,0.15,0.04],[11.16,15.97,0.19,0.11],[6.29,16.08,0.11,0.04],[11.2,16.08,0.15,0.04],[6.25,16.12,0.15,0.04],[11.16,16.12,0.19,0.08],[6.21,16.16,0.19,0.08],[9.52,15.97,0.19,0.27],[11.2,16.2,0.15,0.04],[11.16,16.23,0.19,0.04],[6.25,16.23,0.15,0.08],[7.88,16.0,0.15,0.3],[9.56,16.23,0.15,0.08],[11.2,16.27,0.15,0.08],[6.21,16.31,0.19,0.08],[7.92,16.31,0.11,0.08],[11.16,16.35,0.19,0.04],[12.84,15.93,0.15,0.46],[11.2,16.39,0.15,0.04],[6.25,16.39,0.15,0.08],[7.88,16.39,0.15,0.08],[9.52,16.31,0.19,0.15],[12.88,16.39,0.11,0.08],[6.21,16.46,0.19,0.08],[7.92,16.5,0.11,0.04],[9.56,16.46,0.15,0.08],[12.84,16.46,0.15,0.08],[6.25,16.54,0.15,0.04],[6.29,16.58,0.11,0.04],[12.88,16.54,0.11,0.08],[6.25,16.61,0.15,0.04],[9.52,16.54,0.19,0.11],[9.56,16.65,0.15,0.11],[9.52,16.77,0.19,0.04],[9.52,16.8,0.08,0.04],[9.64,16.8,0.04,0.04],[9.64,16.92,0.08,0.04],[11.16,16.46,0.19,0.84],[11.16,17.3,0.15,0.04],[11.16,17.34,0.19,0.08],[11.16,17.41,0.15,0.04],[11.16,17.45,0.19,0.08],[11.16,17.53,0.15,0.04],[6.21,16.65,0.19,1.03],[7.88,16.54,0.15,1.14],[6.21,17.68,0.15,0.04],[11.16,17.57,0.19,0.15],[6.21,17.72,0.11,0.04],[7.88,17.68,0.11,0.08],[6.21,17.76,0.19,0.04],[7.88,17.76,0.15,0.08],[6.25,17.8,0.15,0.08],[11.2,17.72,0.15,0.15],[12.84,16.61,0.15,1.26],[7.88,17.83,0.11,0.08],[11.24,17.87,0.11,0.04],[6.21,17.87,0.15,0.08],[12.84,17.87,0.11,0.08],[6.21,17.95,0.19,0.08],[7.88,17.91,0.15,0.11],[12.84,17.95,0.15,0.08],[7.88,18.02,0.11,0.04],[6.21,18.02,0.15,0.08],[12.84,18.02,0.11,0.08],[6.21,18.1,0.19,0.08],[12.84,18.1,0.15,0.08],[11.16,17.91,0.19,0.3],[12.84,18.18,0.11,0.08],[11.16,18.21,0.15,0.11],[7.88,18.06,0.15,0.3],[11.16,18.33,0.19,0.04],[6.21,18.18,0.15,0.23],[7.2,18.37,0.08,0.04],[7.39,18.37,0.65,0.04],[11.2,18.37,0.08,0.04],[11.39,18.37,0.65,0.04],[7.16,18.41,0.88,0.08],[11.16,18.41,0.88,0.08],[6.21,18.41,0.19,0.11],[7.16,18.48,0.65,0.04],[7.88,18.48,0.15,0.04],[9.52,16.96,0.19,1.56],[11.16,18.48,0.65,0.04],[11.89,18.48,0.15,0.04],[12.84,18.25,0.15,0.27],[9.52,18.52,0.15,0.04],[9.52,18.56,0.11,0.08],[9.52,18.63,0.19,0.11],[9.52,18.75,0.15,0.11],[9.52,18.86,0.19,0.08],[9.52,18.94,0.15,0.11],[15.73,19.24,0.27,0.04],[16.15,19.24,0.11,0.04],[16.38,19.24,0.11,0.04],[16.65,19.24,0.84,0.04],[17.71,19.24,1.41,0.04],[19.39,19.24,1.45,0.04],[9.52,19.05,0.19,0.27],[15.7,19.28,0.84,0.04],[16.61,19.28,4.23,0.04],[-0.0,19.32,0.91,0.04],[1.1,19.32,0.23,0.04],[1.56,19.32,0.23,0.04],[2.09,19.32,0.19,0.04],[2.32,19.32,2.52,0.04],[5.37,19.32,2.9,0.04],[8.49,19.32,0.3,0.04],[9.07,19.32,0.27,0.04],[9.52,19.32,11.32,0.04],[-0.0,19.36,5.03,0.08],[5.14,19.36,15.7,0.08],[-0.0,19.43,5.49,0.04],[5.71,19.43,0.23,0.04],[6.17,19.43,7.51,0.04],[13.94,19.43,0.3,0.04],[14.48,19.43,5.45,0.04],[20.04,19.43,0.15,0.04],[20.27,19.43,0.57,0.04],[0.11,19.47,0.08,0.04],[17.52,19.47,0.08,0.04]],"az":[[4.84,2.06,0.61,0.04],[5.68,2.06,0.23,0.04],[6.14,2.06,0.23,0.04],[6.6,2.06,2.25,0.04],[11.62,2.06,0.53,0.04],[4.84,2.1,4.0,0.04],[8.88,2.06,0.23,0.08],[9.34,2.1,0.08,0.04],[9.68,2.1,0.11,0.04],[9.99,2.06,1.52,0.08],[11.74,2.1,0.42,0.04],[8.81,2.13,0.38,0.04],[9.34,2.13,0.11,0.04],[9.49,2.13,0.08,0.04],[9.61,2.13,1.91,0.04],[11.62,2.13,0.15,0.04],[11.82,2.13,0.34,0.04],[4.84,2.13,3.92,0.08],[8.81,2.17,1.29,0.04],[10.33,2.17,0.23,0.04],[10.79,2.17,0.72,0.04],[11.59,2.17,0.57,0.04],[12.16,2.25,0.11,0.04],[4.84,2.21,0.19,0.11],[4.88,2.33,0.15,0.08],[4.84,2.4,0.19,0.08],[4.88,2.48,0.15,0.08],[4.84,2.55,0.19,0.04],[4.88,2.59,0.15,0.08],[4.84,2.67,0.19,0.08],[4.92,2.74,0.11,0.08],[4.84,2.82,0.19,0.46],[11.97,3.2,0.19,0.08],[12.01,3.28,0.15,0.04],[12.01,3.32,0.11,0.04],[4.88,3.28,0.15,0.15],[4.88,3.43,0.08,0.04],[5.0,3.43,0.04,0.04],[4.84,3.47,0.11,0.04],[4.84,3.51,0.15,0.04],[12.01,3.35,0.15,0.19],[4.84,3.54,0.11,0.08],[4.84,3.62,0.19,0.04],[4.96,3.66,0.08,0.04],[4.88,3.7,0.15,0.04],[4.84,3.73,0.19,0.08],[4.84,3.81,0.15,0.08],[4.84,3.89,0.19,0.08],[4.84,3.96,0.15,0.04],[4.84,4.0,0.19,0.08],[11.97,3.54,0.19,0.53],[4.84,4.08,0.15,0.08],[4.84,4.15,0.19,0.08],[4.84,4.23,0.15,0.04],[11.97,4.08,0.15,0.23],[4.84,4.27,0.19,0.08],[11.97,4.31,0.19,0.04],[4.84,4.34,0.3,0.04],[5.38,4.34,0.23,0.04],[5.83,4.34,0.23,0.04],[6.29,4.34,0.34,0.04],[6.79,4.34,5.37,0.04],[4.84,4.38,1.79,0.04],[6.75,4.38,5.41,0.04],[4.84,4.42,7.32,0.08],[4.84,4.5,5.87,0.04],[10.94,4.5,0.23,0.04],[11.4,4.5,0.27,0.04],[11.85,4.5,0.3,0.04],[1.22,19.43,14.17,0.04]]},"grid":{"res":0.1,"x0":-8.0,"z0":-1.0,"w":560,"h":240},"lv":{"sot":{"ids":["banoS0","bomba","cine","gym","jard","pasS","sauna"],"rle":[0,76828,3,1,0,1,3,1,0,1,3,2,0,1,3,1,0,60,7,1,0,9,4,3,0,2,4,3,0,3,4,3,0,3,4,3,0,436,3,72,0,1,7,30,4,22,0,435,3,72,0,1,7,30,4,22,0,435,3,72,0,1,7,30,4,23,0,434,3,72,0,1,7,30,4,22,0,435,3,72,0,1,7,30,4,22,0,435,3,72,0,1,7,29,4,24,0,434,3,72,0,1,7,22,0,1,7,5,4,25,0,434,3,72,0,1,7,22,0,1,7,4,4,25,0,435,3,71,0,2,7,22,0,1,7,3,4,27,0,434,3,68,0,5,7,1,0,14,7,1,0,14,4,8,0,449,3,72,0,1,7,1,0,29,4,8,0,449,3,72,0,1,7,1,4,51,0,435,3,72,0,1,4,7,0,1,4,2,0,5,4,1,0,1,4,1,0,1,4,1,0,2,4,1,0,1,4,29,0,434,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,7,0,1,4,2,0,5,4,1,0,1,4,1,0,1,4,1,0,2,4,1,0,1,4,28,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,69,0,4,4,37,0,9,4,6,0,435,3,69,0,4,4,37,0,6,4,1,0,3,4,5,0,435,3,69,0,4,4,52,0,435,3,69,0,4,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,10,0,1,4,41,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,12,0,2,4,38,0,435,3,72,0,1,4,12,0,1,4,39,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,52,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,68,0,5,4,2,0,1,4,37,0,1,4,11,0,435,3,68,0,5,4,2,0,1,4,37,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,40,0,1,4,11,0,435,3,72,0,1,4,52,0,435,3,71,0,2,4,52,0,433,3,24,0,38,3,8,0,5,4,2,0,5,4,30,0,8,4,2,0,440,3,22,0,22,6,1,0,11,3,2,0,2,3,8,0,5,4,2,0,5,4,30,0,8,6,2,0,44,2,2,0,1,2,1,0,392,3,30,5,8,6,13,3,21,4,42,6,8,2,52,0,386,3,30,5,8,6,14,3,19,4,43,6,8,2,52,0,386,3,30,5,8,6,15,3,17,4,44,6,8,2,52,0,386,3,30,5,8,6,16,3,15,4,45,6,8,2,52,0,386,3,29,5,9,6,17,3,13,4,46,6,7,2,53,0,386,3,29,5,9,6,17,3,13,4,46,6,7,2,53,0,386,3,29,5,9,6,17,3,13,4,21,0,2,4,23,6,7,2,53,0,386,3,29,5,9,6,17,3,13,4,46,6,7,2,53,0,388,3,2,0,2,3,2,0,1,3,2,0,1,3,2,0,23,5,1,6,2,0,25,3,3,0,4,4,2,0,4,4,3,0,2,4,4,1,2,0,2,1,2,4,5,0,3,4,2,0,1,4,2,0,2,4,2,0,2,4,1,0,10,2,2,0,518,4,3,1,8,4,3,0,546,4,1,1,12,4,1,0,546,1,14,0,546,1,14,0,546,1,14,0,546,1,14,0,546,1,14,0,546,1,14,0,546,1,14,0,9901],"floors":{"banoS0":[[8.9,20.3,0.2,0.1],[9.3,20.3,0.2,0.1],[8.8,20.4,0.8,0.1],[8.6,20.5,1.2,0.1],[8.5,20.6,1.4,0.7]],"bomba":[[16.6,19.4,0.2,0.1],[16.9,19.4,0.1,0.1],[12.4,19.5,5.2,0.4],[12.3,19.9,5.3,0.4],[12.5,20.3,0.2,0.1]],"cine":[[2.8,12.7,0.1,0.1],[3.0,12.7,0.1,0.1],[3.2,12.7,0.2,0.1],[3.5,12.7,0.1,0.1],[0.2,12.8,7.2,0.8],[0.2,13.6,7.1,0.1],[0.2,13.7,6.8,0.1],[0.2,13.8,7.2,0.8],[0.2,14.6,6.9,0.4],[0.2,15.0,7.2,3.6],[0.2,18.6,6.8,0.2],[0.2,18.8,7.2,0.4],[0.2,19.2,7.1,0.1],[0.0,19.3,2.4,0.1],[0.2,19.4,2.2,0.1],[5.8,19.4,0.2,0.1],[6.2,19.3,0.8,0.2],[5.3,19.5,2.1,0.1],[5.4,19.6,1.9,0.1],[5.5,19.7,1.7,0.1],[0.2,19.5,3.0,0.4],[5.6,19.8,1.5,0.1],[0.2,19.9,2.9,0.4],[5.7,19.9,1.3,0.4],[0.4,20.3,0.2,0.1],[0.8,20.3,0.2,0.1],[1.1,20.3,0.2,0.1],[1.4,20.3,0.2,0.1],[6.7,20.3,0.3,0.1]],"gym":[[10.6,12.7,0.3,0.1],[11.1,12.7,0.3,0.1],[11.7,12.7,0.3,0.1],[12.3,12.7,0.3,0.1],[10.5,12.8,2.2,0.2],[10.5,13.0,2.3,0.1],[10.5,13.1,2.2,0.2],[10.4,13.3,2.4,0.1],[10.3,13.4,2.5,0.1],[10.2,13.5,2.5,0.1],[10.1,13.6,2.7,0.1],[10.5,13.7,0.8,0.2],[7.6,13.9,5.1,0.1],[7.5,14.0,0.7,0.1],[8.3,14.0,0.2,0.1],[9.0,14.0,0.1,0.1],[9.2,14.0,0.1,0.1],[9.4,14.0,0.1,0.1],[9.7,14.0,0.1,0.1],[9.9,14.0,2.9,0.1],[7.5,14.1,5.2,0.2],[7.5,14.3,0.7,0.1],[8.3,14.3,0.2,0.1],[9.0,14.3,0.1,0.1],[9.2,14.3,0.1,0.1],[9.4,14.3,0.1,0.1],[9.7,14.3,0.1,0.1],[9.9,14.3,2.8,0.1],[7.5,14.4,5.2,0.2],[12.1,14.6,0.6,0.1],[7.5,14.6,3.7,0.2],[11.8,14.7,0.1,0.1],[12.2,14.7,0.5,0.1],[7.5,14.8,5.2,1.2],[7.5,16.0,1.0,0.1],[8.6,16.0,4.1,0.1],[7.5,16.1,5.2,0.9],[8.9,17.0,3.8,0.1],[7.5,17.0,1.2,0.2],[8.8,17.1,3.9,0.1],[7.5,17.2,5.2,0.8],[7.5,18.0,4.0,0.6],[7.5,18.6,0.2,0.2],[7.8,18.6,3.7,0.2],[7.5,18.8,4.0,0.3],[11.6,18.0,1.1,1.1],[7.5,19.1,5.2,0.2],[12.0,19.3,0.2,0.1],[7.5,19.3,0.2,0.2],[8.2,19.3,3.0,0.2],[7.4,19.5,4.2,0.1],[7.3,19.6,4.3,0.1],[7.2,19.7,4.4,0.1],[7.1,19.8,4.5,0.1],[7.0,19.9,4.6,0.2],[7.0,20.1,2.1,0.1],[9.3,20.1,2.3,0.1],[7.0,20.2,4.6,0.1],[7.4,20.3,0.2,0.1],[8.0,20.3,0.3,0.1],[8.5,20.3,0.4,0.1],[9.5,20.3,0.5,0.1],[10.3,20.3,0.2,0.1],[10.6,20.3,0.2,0.1],[11.0,20.3,0.2,0.1],[11.4,20.3,0.1,0.1],[8.5,20.4,0.3,0.1],[9.6,20.4,0.3,0.1],[8.5,20.5,0.1,0.1],[9.8,20.5,0.1,0.1]],"jard":[[3.2,19.5,0.8,0.4],[3.1,19.9,0.9,0.4],[3.9,20.3,0.1,0.1]],"pasS":[[4.6,19.4,0.1,0.1],[12.0,19.4,0.2,0.1],[4.0,19.5,1.3,0.1],[4.0,19.6,1.4,0.1],[4.0,19.7,1.5,0.1],[4.0,19.8,1.6,0.1],[11.6,19.5,0.8,0.4],[4.0,19.9,1.7,0.4],[11.6,19.9,0.7,0.4],[4.0,20.3,0.2,0.1]],"sauna":[[9.6,12.7,0.1,0.1],[7.5,12.8,3.0,0.5],[7.5,13.3,2.9,0.1],[9.8,13.4,0.5,0.1],[9.8,13.5,0.4,0.1],[7.5,13.4,2.2,0.3],[9.8,13.6,0.3,0.1],[9.0,13.7,0.1,0.1],[7.5,13.7,0.1,0.3]]}},"p1":{"ids":["atrio","bano1","banoP","banoS","cocina","comedor","dorm1","dormP","dormS","esc1","estudio","hall","lav","pasadizo","sala","vest","visita"],"rle":[0,16880,16,180,0,430,16,8,0,540,2,1,0,11,16,8,0,99,8,4,0,399,2,49,0,1,16,61,0,2,8,67,0,382,2,47,0,1,16,61,0,2,8,67,0,382,2,47,0,1,16,61,0,2,8,67,0,382,2,47,0,1,16,61,0,2,8,67,0,382,2,47,0,1,16,61,0,2,8,67,0,382,2,47,0,1,16,61,0,1,8,68,0,382,2,47,0,1,16,61,0,1,8,68,0,381,2,48,0,1,16,61,0,1,8,68,0,381,2,48,0,1,16,61,0,1,8,68,0,382,2,47,0,1,16,8,0,13,16,2,0,40,8,67,0,382,2,47,0,1,14,8,0,55,8,67,0,382,2,47,0,1,14,45,8,85,0,382,2,47,0,1,14,45,8,85,0,382,2,47,0,1,14,45,8,85,0,390,2,2,0,25,2,1,0,3,2,8,0,1,14,45,8,85,0,421,7,8,0,1,14,45,8,85,0,382,7,47,0,1,14,45,8,85,0,382,7,47,0,1,14,45,8,85,0,382,7,47,0,1,14,45,8,85,0,382,7,47,0,1,14,45,8,85,0,382,7,47,0,1,14,10,0,3,14,1,0,1,14,1,0,2,14,1,0,25,14,1,0,1,8,15,0,1,8,68,0,382,7,47,0,1,14,10,0,36,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,26,3,1,0,1,3,1,0,1,3,2,0,4,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,0,1,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,8,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,8,16,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,1,8,2,0,6,8,8,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,9,8,8,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,9,3,8,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,3,15,0,1,8,68,0,382,7,47,0,1,14,10,0,1,3,33,0,2,3,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,0,1,3,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,3,15,0,1,8,68,0,382,7,47,0,1,14,10,0,1,3,34,0,1,3,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,33,0,2,3,15,0,2,8,67,0,382,7,47,0,1,14,10,0,1,3,34,0,1,3,15,0,2,8,67,0,381,7,48,0,1,14,10,0,1,3,33,0,2,3,15,0,61,8,1,0,389,7,47,0,1,14,10,0,1,3,33,0,2,3,15,0,450,7,48,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,55,0,385,7,47,14,12,0,1,3,33,0,2,3,24,0,1,15,56,0,385,7,42,14,16,0,1,3,33,0,2,3,24,0,1,15,56,0,384,7,42,14,17,0,1,3,33,0,2,3,24,0,1,15,55,0,385,7,41,14,18,0,1,3,33,0,2,3,24,0,1,15,55,0,386,7,39,14,19,0,1,3,33,0,2,3,24,0,1,15,55,0,386,7,39,14,19,0,1,3,33,0,2,3,24,0,1,15,55,0,385,7,40,14,19,0,1,3,33,0,2,3,24,0,1,15,55,0,386,7,39,14,19,0,1,3,33,0,2,3,24,0,1,15,55,0,386,7,39,14,19,0,1,3,33,0,2,3,24,0,1,15,55,0,386,7,39,14,19,0,1,3,33,0,2,3,24,0,1,15,55,0,391,7,7,0,2,7,25,14,8,0,1,14,10,0,1,3,33,0,1,3,25,0,1,15,55,0,389,1,1,0,1,1,2,7,5,0,1,7,26,14,8,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,55,0,384,1,10,7,4,0,2,7,25,14,8,0,1,14,10,0,1,3,33,0,1,3,25,0,1,15,55,0,384,1,14,0,2,7,25,14,8,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,55,0,384,1,14,0,2,7,25,14,8,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,55,0,384,1,14,0,2,7,25,14,8,0,1,14,11,3,33,0,2,3,24,0,1,15,55,0,384,1,14,0,2,7,25,14,8,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,55,0,384,1,14,0,2,7,25,14,8,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,55,0,384,1,14,0,2,7,25,14,8,0,1,14,10,0,1,3,59,0,1,15,59,0,380,1,14,0,2,7,25,14,8,0,2,14,9,0,1,3,59,0,2,15,58,0,380,1,14,0,2,7,25,14,8,0,1,14,10,0,1,3,34,0,1,3,24,0,1,15,59,0,380,1,14,0,1,7,26,14,8,0,1,14,10,0,1,3,33,0,2,3,24,0,1,15,59,0,380,1,14,0,36,14,10,0,61,15,59,0,380,1,14,0,28,1,1,0,8,14,9,0,47,12,1,0,13,15,59,0,380,1,14,0,28,1,3,12,2,0,1,12,4,14,8,0,46,12,3,0,2,12,2,0,1,12,4,15,2,0,1,15,59,0,380,1,14,0,2,1,29,12,7,14,7,12,59,15,62,0,380,1,14,0,1,1,30,12,8,14,3,12,62,15,62,0,380,1,45,12,73,15,62,0,380,1,45,12,73,15,62,0,380,1,45,12,73,15,62,0,380,1,45,12,74,15,61,0,380,1,45,12,75,15,60,0,380,1,45,12,76,15,59,0,380,1,45,12,77,15,58,0,380,1,44,12,79,15,57,0,380,1,43,12,81,15,56,0,380,1,42,12,83,15,55,0,380,1,42,12,83,15,55,0,380,1,14,0,2,1,26,12,83,15,55,0,380,1,14,0,2,1,26,12,83,15,55,0,380,1,14,0,1,1,27,12,83,15,55,0,380,1,14,0,2,1,26,12,82,15,56,0,380,1,14,0,2,1,26,12,81,15,57,0,380,1,14,0,2,1,26,12,80,15,58,0,380,1,14,0,2,1,26,12,45,10,34,15,59,0,380,1,14,0,2,1,26,12,44,10,35,15,59,0,380,1,14,0,2,1,26,12,43,10,36,15,59,0,380,1,14,0,2,1,26,12,42,10,37,15,59,0,380,1,14,0,2,1,26,12,41,10,38,15,59,0,380,1,14,0,1,1,27,12,40,10,39,15,59,0,380,1,14,0,2,1,26,12,39,10,40,15,59,0,380,1,14,0,2,1,26,12,38,10,41,15,59,0,380,1,14,0,2,1,25,10,80,15,59,0,389,1,1,0,27,1,1,10,83,15,59,0,396,11,1,0,20,10,84,15,59,0,382,11,34,0,1,10,84,15,59,0,382,11,34,0,1,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,35,10,84,15,59,0,382,11,29,0,13,10,8,0,69,15,59,0,382,11,29,0,10,17,2,0,1,17,4,10,4,0,53,5,2,0,2,5,2,0,3,15,2,0,5,15,59,0,382,11,34,0,1,17,15,0,2,17,20,0,1,5,37,0,1,15,67,0,382,11,34,0,1,17,15,0,2,17,20,0,1,5,37,0,1,15,67,0,382,11,34,0,1,17,15,0,2,17,20,0,1,5,37,0,1,15,67,0,382,11,34,0,1,17,15,0,2,17,20,0,1,5,37,0,1,15,67,0,382,11,34,0,1,17,16,0,1,17,20,0,1,5,37,0,1,15,11,6,19,15,37,0,382,11,34,0,1,17,15,0,2,17,20,0,1,5,37,0,1,15,11,6,20,15,36,0,382,11,34,0,1,17,15,0,2,17,20,0,1,5,37,0,1,15,10,6,22,15,35,0,382,11,34,0,1,17,15,0,2,17,17,0,4,5,37,0,9,15,2,6,23,15,34,0,382,11,34,0,1,17,15,0,2,17,17,0,4,5,37,0,6,5,1,0,3,6,25,15,33,0,380,11,36,0,1,17,15,0,2,17,18,0,3,5,48,6,25,15,32,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,26,15,31,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,27,15,30,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,28,15,29,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,29,15,28,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,30,15,27,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,31,15,26,0,380,11,36,0,1,17,15,0,2,17,20,0,1,5,48,6,57,0,380,11,36,0,1,17,15,0,1,17,21,0,1,5,48,6,57,0,380,11,36,0,1,17,14,13,1,0,2,17,20,0,1,5,48,6,57,0,387,11,1,0,41,13,3,0,6,17,4,0,1,17,10,0,2,5,48,6,57,0,387,11,1,0,41,13,3,0,6,17,4,0,2,17,9,0,2,5,48,6,57,0,387,9,1,0,20,4,1,0,1,4,2,0,1,4,1,0,12,13,1,0,1,13,4,0,5,13,1,0,1,13,3,0,1,13,1,17,9,0,2,5,48,6,57,0,380,9,24,0,2,4,10,0,2,13,26,17,10,0,1,5,48,6,57,0,380,9,24,0,2,4,10,0,2,13,27,17,9,0,1,5,48,6,57,0,380,9,24,0,2,4,10,0,1,13,28,17,9,0,1,5,48,6,57,0,380,9,24,0,2,4,10,0,1,13,29,17,8,0,1,5,48,6,57,0,380,9,25,0,1,4,10,0,1,13,30,17,7,0,1,5,47,6,58,0,380,9,24,0,2,4,10,0,8,13,24,17,6,0,1,5,47,6,58,0,380,9,24,0,2,4,10,0,2,4,4,0,2,13,30,0,1,5,47,6,58,0,380,9,24,0,2,4,10,0,2,4,4,0,2,13,30,0,1,5,5,0,2,5,40,6,58,0,380,9,24,0,2,4,10,0,1,4,5,0,2,13,30,0,1,5,47,6,58,0,380,9,24,0,2,4,10,0,1,4,5,0,2,13,30,0,1,5,47,6,58,0,380,9,24,0,2,4,16,0,2,13,30,0,1,5,47,6,58,0,380,9,24,0,2,4,16,0,2,13,30,0,1,5,47,6,58,0,380,9,24,0,2,4,16,0,2,13,30,0,1,5,47,6,54,0,384,9,24,0,2,4,16,0,2,13,30,0,1,5,47,6,55,0,383,9,24,0,2,4,16,0,2,13,30,0,1,5,47,6,55,0,383,9,24,0,2,4,16,0,1,13,31,0,1,5,47,6,54,0,384,9,24,0,2,4,16,0,1,13,31,0,1,5,47,6,54,0,384,9,24,0,1,4,17,0,2,13,30,0,1,5,47,6,54,0,384,9,24,0,2,4,16,0,2,13,31,5,47,6,54,0,384,9,24,0,1,4,18,13,32,5,47,6,54,0,384,9,24,0,2,4,16,13,33,5,47,6,54,0,384,9,24,0,2,4,15,13,34,5,47,6,54,0,384,9,24,0,1,4,16,13,34,5,47,6,54,0,384,9,24,0,2,9,1,4,6,0,11,13,31,5,47,6,54,0,384,9,28,4,9,0,7,13,31,5,47,6,54,0,384,9,29,4,8,13,38,5,47,6,54,0,384,9,30,4,6,13,38,0,1,5,22,0,1,5,14,0,1,5,9,6,54,0,384,9,31,4,4,13,38,0,2,5,22,0,1,5,14,0,1,5,9,6,54,0,384,9,31,4,3,13,39,0,2,5,22,0,1,5,14,0,1,5,9,6,54,0,384,9,31,4,3,13,39,0,2,5,22,0,1,5,14,0,1,5,9,6,54,0,384,9,31,4,3,13,39,0,2,5,22,0,1,5,14,0,1,5,9,6,54,0,384,9,31,4,3,13,39,0,2,5,37,0,1,5,9,6,54,0,384,9,15,0,3,9,1,0,1,9,1,0,15,13,1,0,7,13,29,0,16,5,17,0,454,9,15,0,29,13,29,0,16,5,17,0,19974],"floors":{"atrio":[[0.5,8.3,0.1,0.1],[0.7,8.3,0.2,0.1],[0.0,8.4,1.0,0.1],[4.2,9.5,0.1,0.1],[4.2,9.6,0.3,0.1],[1.6,9.7,2.9,0.1],[0.0,8.5,1.4,1.4],[1.5,9.8,3.0,0.1],[0.0,9.9,4.5,0.7],[0.0,10.6,4.4,0.1],[0.0,10.7,4.3,0.1],[0.0,10.8,4.2,0.2],[1.6,11.0,2.6,0.2],[1.5,11.2,2.7,0.1],[1.6,11.3,2.6,0.8],[1.5,12.1,2.7,0.1],[1.6,12.2,2.6,0.2],[0.0,11.0,1.4,1.5],[1.6,12.4,2.5,0.1],[0.9,12.5,0.1,0.1],[3.7,12.5,0.1,0.1]],"bano1":[[3.8,2.2,0.1,0.1],[0.0,2.3,4.9,0.1],[0.2,2.4,4.7,0.6],[0.1,3.0,4.8,0.2],[0.2,3.2,4.7,0.5],[1.0,3.7,0.2,0.1],[3.7,3.7,0.1,0.1],[4.1,3.7,0.8,0.1]],"banoP":[[8.6,4.5,0.1,0.1],[8.8,4.5,0.1,0.1],[9.0,4.5,0.2,0.1],[6.1,4.6,3.4,0.1],[6.1,4.7,3.3,0.4],[6.1,5.1,3.4,0.8],[10.3,6.1,0.8,0.1],[6.1,5.9,3.3,0.5],[6.1,6.4,3.4,0.1],[6.1,6.5,3.3,0.1],[6.1,6.6,3.4,0.1],[6.1,6.7,3.3,0.1],[6.1,6.8,3.4,0.1],[9.6,6.2,1.5,0.9],[9.6,7.1,2.4,1.1],[9.5,8.2,2.5,0.1],[9.6,8.3,2.4,0.1],[9.5,8.4,2.5,0.1],[6.1,6.9,3.3,2.1],[9.6,8.5,2.4,0.5],[6.1,9.0,5.9,0.2],[6.1,9.2,3.4,0.1],[6.1,9.3,3.3,0.1],[9.6,9.2,2.4,0.2]],"banoS":[[2.8,16.0,0.1,0.1],[3.0,16.0,0.2,0.1],[3.3,16.0,0.1,0.1],[3.8,16.7,0.4,0.2],[2.6,16.1,1.0,1.0],[3.7,16.9,0.5,0.2],[2.6,17.1,1.6,0.7],[2.5,17.8,1.7,0.1],[2.6,17.9,1.6,0.1],[2.5,18.0,1.8,0.1],[2.6,18.1,1.6,0.1],[2.6,18.2,1.5,0.1],[2.5,18.3,1.6,0.1],[2.7,18.4,0.6,0.1],[2.8,18.5,0.9,0.1],[2.9,18.6,0.8,0.1],[3.0,18.7,0.6,0.1],[3.1,18.8,0.4,0.1],[3.1,18.9,0.3,0.4]],"cocina":[[10.5,13.8,0.2,0.1],[10.9,13.8,0.2,0.1],[7.5,13.9,3.7,0.9],[11.8,14.7,0.1,0.1],[7.5,14.8,4.8,1.7],[7.5,16.5,4.7,0.3],[7.5,16.8,0.5,0.1],[8.2,16.8,4.0,0.1],[7.5,16.9,4.7,1.8],[7.5,18.7,2.2,0.5],[9.8,18.7,1.4,0.5],[7.5,19.2,3.7,0.1],[11.3,18.7,0.9,0.6],[8.9,19.3,1.7,0.2]],"comedor":[[12.4,14.3,1.9,0.1],[12.4,14.4,2.0,0.1],[12.3,14.5,2.2,0.1],[12.3,14.6,2.3,0.1],[12.2,14.7,2.5,0.1],[12.3,14.8,2.5,0.1],[12.3,14.9,2.6,0.1],[12.3,15.0,2.7,0.1],[12.3,15.1,2.8,0.1],[12.3,15.2,2.9,0.1],[12.3,15.3,3.0,0.1],[12.3,15.4,3.1,0.1],[12.3,15.5,5.7,1.0],[12.2,16.5,5.8,0.8],[12.2,17.3,5.4,0.1],[12.2,17.4,5.5,0.2],[12.2,17.6,5.4,1.7]],"dorm1":[[4.1,3.8,0.8,0.1],[0.2,3.9,4.7,3.0],[0.1,6.9,4.8,0.1],[0.2,7.0,4.7,0.1],[0.1,7.1,4.8,0.1],[0.1,7.2,4.7,0.1],[0.2,7.3,4.2,0.1],[0.1,7.4,4.2,0.1],[0.1,7.5,4.1,0.1],[0.2,7.6,3.9,0.2],[0.1,7.8,4.0,0.1],[0.2,7.9,3.9,0.3],[0.7,8.2,0.7,0.1],[1.6,8.2,2.5,0.1],[0.9,8.3,0.5,0.1],[1.5,8.3,2.6,0.1],[1.0,8.4,0.4,0.1],[1.6,8.4,2.5,0.9],[1.5,9.3,2.6,0.1]],"dormP":[[15.7,2.2,0.4,0.1],[11.3,2.3,6.7,0.5],[11.2,2.8,6.8,0.4],[11.3,3.2,6.7,0.2],[9.5,3.4,8.5,0.9],[11.2,4.3,6.8,0.1],[9.6,4.3,1.5,0.8],[9.5,5.1,1.6,0.8],[9.5,5.9,0.2,0.1],[10.3,5.9,0.8,0.2],[11.3,4.4,6.7,1.8],[11.2,6.2,6.8,0.1],[11.3,6.3,6.7,0.2],[11.2,6.5,6.8,0.1],[11.3,6.6,6.7,0.3],[17.2,6.9,0.1,0.1]],"dormS":[[0.7,16.0,0.1,0.1],[0.0,16.1,2.4,0.4],[0.0,16.5,2.5,0.1],[0.0,16.6,2.4,1.9],[2.6,18.4,0.1,0.1],[0.0,18.5,2.8,0.1],[0.0,18.6,2.9,0.1],[0.0,18.7,3.0,0.1],[0.0,18.8,3.1,0.5],[1.8,19.3,0.1,0.1],[2.0,19.3,0.1,0.1],[0.0,19.3,1.5,0.2]],"esc1":[[8.7,11.6,3.4,0.1],[8.6,11.7,3.5,0.1],[8.5,11.8,3.6,0.1],[8.4,11.9,3.7,0.1],[8.3,12.0,3.8,0.1],[8.2,12.1,3.9,0.1],[8.1,12.2,4.0,0.1],[8.0,12.3,4.1,0.1],[4.1,12.4,8.0,0.1],[3.8,12.5,8.3,0.1],[3.7,12.6,8.4,1.1],[4.4,13.7,0.8,0.1],[4.8,13.8,0.4,0.1]],"estudio":[[1.6,12.6,0.1,0.1],[0.2,12.7,3.4,0.2],[0.2,12.9,3.5,0.8],[0.2,13.7,2.9,0.2],[0.2,13.9,3.4,0.9],[0.0,14.8,3.6,1.0],[0.7,15.8,0.1,0.2]],"hall":[[10.7,9.5,0.1,0.1],[4.5,9.6,0.2,0.1],[4.8,9.6,0.4,0.1],[10.6,9.6,0.3,0.1],[11.1,9.6,0.2,0.1],[11.4,9.6,0.4,0.1],[4.5,9.7,0.7,0.1],[5.9,9.7,5.9,0.1],[4.5,9.8,0.8,0.1],[5.6,9.8,6.2,0.1],[4.5,9.9,7.3,0.3],[4.5,10.2,7.4,0.1],[4.5,10.3,7.5,0.1],[4.5,10.4,7.6,0.1],[4.5,10.5,7.7,0.1],[4.4,10.6,7.9,0.1],[4.3,10.7,8.1,0.1],[4.2,10.8,8.3,0.5],[4.2,11.3,8.2,0.1],[4.2,11.4,8.1,0.1],[4.2,11.5,8.0,0.1],[4.2,11.6,4.5,0.1],[4.2,11.7,4.4,0.1],[4.2,11.8,4.3,0.1],[4.2,11.9,4.2,0.1],[4.2,12.0,4.1,0.1],[4.2,12.1,4.0,0.1],[4.2,12.2,3.9,0.1],[4.2,12.3,3.8,0.1]],"lav":[[5.1,15.7,0.1,0.1],[4.9,15.8,0.3,0.2],[4.6,16.0,0.1,0.1],[4.8,16.0,0.4,0.1],[5.7,16.0,0.1,0.1],[5.9,16.0,0.3,0.1],[6.3,16.0,0.1,0.1],[3.8,16.1,2.6,0.1],[3.8,16.2,2.7,0.1],[3.7,16.3,2.8,0.1],[3.7,16.4,2.9,0.1],[3.7,16.5,3.0,0.1],[4.4,16.6,2.4,0.1],[4.4,16.7,3.0,0.9],[4.3,17.6,3.1,0.2],[4.4,17.8,3.0,0.1],[4.4,17.9,3.1,0.1],[4.3,18.0,3.2,0.1],[4.2,18.1,3.3,0.1],[4.1,18.2,3.4,0.2],[4.4,18.4,3.1,0.2],[3.7,18.6,3.8,0.1],[3.6,18.7,3.8,0.1],[3.5,18.8,3.8,0.1],[3.4,18.9,3.9,0.4],[3.6,19.3,0.1,0.1],[4.4,19.3,2.9,0.2]],"pasadizo":[[5.0,3.3,0.8,0.1],[5.0,3.4,4.5,0.9],[6.3,4.3,0.1,0.1],[6.5,4.3,0.1,0.1],[6.8,4.3,0.1,0.1],[9.4,4.3,0.1,0.1],[5.0,4.3,1.0,2.9],[4.8,7.2,1.2,0.1],[4.4,7.3,1.6,0.1],[4.3,7.4,1.7,0.1],[4.2,7.5,1.8,0.1],[4.1,7.6,1.9,0.6],[5.0,8.2,1.0,0.5],[5.0,8.7,1.1,0.1],[5.0,8.8,1.0,0.3],[5.1,9.1,0.9,0.1],[4.1,8.2,0.8,1.2],[5.0,9.2,1.0,0.3],[5.1,9.5,0.9,0.1],[5.2,9.6,0.8,0.1],[5.2,9.7,0.7,0.1],[5.3,9.8,0.3,0.1]],"sala":[[12.1,7.1,5.5,0.1],[12.1,7.2,5.6,0.2],[12.1,7.4,5.5,1.6],[12.1,9.0,5.9,0.1],[12.2,9.1,5.8,0.1],[11.8,9.6,0.2,0.1],[12.1,9.2,5.9,0.5],[11.8,9.7,6.2,0.5],[11.9,10.2,6.1,0.1],[12.0,10.3,6.0,0.1],[12.1,10.4,5.9,0.1],[12.2,10.5,5.8,0.1],[12.3,10.6,5.7,0.1],[12.4,10.7,5.6,0.1],[12.5,10.8,5.5,0.5],[12.4,11.3,5.6,0.1],[12.3,11.4,5.7,0.1],[12.2,11.5,5.8,0.1],[11.4,13.8,0.2,0.1],[12.1,11.6,5.9,2.3],[11.3,13.9,6.7,0.4],[14.3,14.3,3.7,0.1],[11.3,14.3,1.1,0.2],[14.4,14.4,3.6,0.1],[11.3,14.5,1.0,0.1],[14.5,14.5,3.5,0.1],[12.1,14.6,0.2,0.1],[14.6,14.6,3.4,0.1],[14.7,14.7,3.3,0.1],[14.8,14.8,3.2,0.1],[14.9,14.9,3.1,0.1],[15.0,15.0,3.0,0.1],[15.1,15.1,2.9,0.1],[15.2,15.2,2.8,0.1],[15.3,15.3,2.7,0.1],[15.4,15.4,2.6,0.1]],"vest":[[0.0,2.0,18.0,0.1],[5.0,2.1,0.8,0.2],[5.0,2.3,6.1,0.9],[5.0,3.2,0.8,0.1],[7.1,3.2,0.2,0.1]],"visita":[[4.1,13.8,0.2,0.1],[4.4,13.8,0.4,0.1],[3.7,13.9,1.5,0.4],[3.7,14.3,1.6,0.1],[5.4,13.9,2.0,0.7],[5.4,14.6,1.7,0.2],[5.4,14.8,1.8,0.1],[5.4,14.9,2.0,0.7],[3.7,14.4,1.5,1.3],[5.3,15.6,2.1,0.1],[3.7,15.7,1.4,0.1],[5.4,15.7,2.0,0.1],[6.3,15.8,1.0,0.1],[5.8,15.8,0.4,0.2],[6.4,15.9,0.9,0.2],[6.4,16.1,1.0,0.1],[6.5,16.2,0.9,0.2],[6.6,16.4,0.8,0.1],[6.7,16.5,0.7,0.1],[6.8,16.6,0.6,0.1]]}},"p2":{"ids":["bano2","bano4","banoE","banoL","dorm2","dorm4","dormL","escAz","estar","estar2","kit","pasInf","pasSup","terr3","vacio"],"rle":[0,17442,9,4,0,44,8,8,0,33,8,2,0,469,9,4,0,32,9,1,0,2,9,1,0,8,8,8,0,30,8,1,0,2,8,2,0,1,8,5,0,16,8,1,0,50,5,5,0,5,5,2,0,384,9,47,0,1,8,70,0,2,5,56,0,384,9,47,0,1,8,70,0,2,5,56,0,384,9,47,0,1,8,70,0,2,5,56,0,384,9,46,0,2,8,70,0,2,5,56,0,384,9,47,0,1,8,70,0,2,5,56,0,384,9,46,0,3,8,69,0,2,5,56,0,384,9,46,0,2,8,70,0,2,5,56,0,384,9,46,0,2,13,31,8,39,0,2,5,56,0,384,9,46,0,2,13,32,8,38,0,2,5,56,0,384,9,46,0,2,13,33,8,37,0,2,5,56,0,384,9,46,0,2,13,34,8,36,0,2,5,56,0,384,9,46,0,2,13,35,8,35,0,2,5,56,0,384,9,47,13,37,8,34,0,2,5,56,0,384,9,47,13,71,0,2,5,56,0,384,9,47,13,71,0,2,5,56,0,384,9,47,13,71,0,1,5,57,0,384,9,48,13,70,0,2,5,56,0,384,9,48,13,70,0,2,5,56,0,384,9,48,13,70,0,1,5,57,0,384,9,48,13,70,0,2,5,56,0,384,9,47,0,2,13,3,0,2,13,2,0,3,13,2,0,2,13,1,0,1,13,1,0,1,13,2,0,28,13,2,0,3,13,2,0,15,5,57,0,384,9,46,0,17,13,1,0,56,5,56,0,384,9,46,0,17,13,1,0,43,1,1,0,12,5,56,0,384,9,56,13,22,1,36,5,62,0,384,9,57,13,20,1,37,5,62,0,384,9,58,13,18,1,38,5,62,0,384,11,5,9,54,13,16,1,39,5,62,0,384,11,6,9,54,13,14,1,41,5,61,0,384,11,6,9,54,13,14,1,41,5,61,0,384,11,7,9,53,13,14,1,41,5,61,0,384,11,7,9,53,13,14,1,41,5,61,0,384,11,8,9,1,0,30,9,7,0,48,1,15,0,11,5,56,0,384,11,9,0,22,3,1,0,7,3,2,9,5,0,35,1,1,0,2,1,1,0,9,1,15,0,7,1,1,0,3,5,56,0,384,11,21,0,2,3,19,9,4,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,24,0,1,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,24,0,1,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,2,5,56,0,384,11,21,0,2,3,23,0,2,1,70,0,442,11,21,0,2,3,23,0,2,1,70,0,47,15,1,0,394,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,24,0,1,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,24,0,1,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,55,0,385,11,21,0,2,3,23,0,2,1,70,0,2,15,55,0,385,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,2,3,23,0,2,1,70,0,2,15,54,0,386,11,21,0,1,3,24,0,2,1,70,0,2,15,55,0,385,11,21,0,2,3,23,0,2,1,70,0,1,15,55,0,386,11,21,0,1,3,24,0,2,1,70,0,2,15,54,0,386,11,21,0,1,3,24,0,2,1,70,0,1,15,55,0,386,11,21,0,2,3,23,0,2,1,44,0,8,1,18,0,2,15,54,0,386,11,21,0,1,3,24,0,2,1,44,0,8,1,18,0,1,15,55,0,386,11,21,0,2,3,23,0,2,1,44,0,8,1,18,0,1,15,55,0,386,11,21,0,1,3,24,0,2,1,44,0,8,1,18,0,1,15,55,0,386,11,21,0,2,3,23,0,2,1,44,0,8,1,18,0,1,15,55,0,386,11,21,0,2,3,23,0,2,1,44,0,8,1,18,0,2,15,54,0,386,11,8,0,112,15,54,0,386,10,8,0,60,15,1,0,30,15,2,0,3,15,2,0,14,15,54,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,385,10,35,0,2,15,138,0,385,10,35,0,1,15,139,0,385,10,35,0,2,15,138,0,385,10,35,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,386,10,34,0,2,15,138,0,385,10,35,0,1,15,139,0,385,10,35,0,2,15,138,0,385,10,35,0,1,15,139,0,385,10,35,0,2,15,138,0,386,10,34,0,1,15,139,0,386,10,34,0,2,15,138,0,386,10,34,0,1,15,139,0,386,10,34,0,2,15,138,0,385,10,35,0,1,10,2,15,137,0,385,10,35,0,2,10,1,0,83,15,54,0,385,10,35,0,2,10,1,0,58,12,2,0,23,15,54,0,385,10,35,0,1,10,3,0,12,12,1,0,44,12,3,0,2,12,3,0,3,12,3,0,2,12,7,0,2,15,54,0,386,10,46,12,72,0,2,15,54,0,386,10,46,12,72,0,2,15,54,0,386,10,46,12,72,0,2,15,54,0,386,10,46,12,72,0,2,15,54,0,386,10,46,12,72,0,2,15,54,0,386,10,45,12,73,0,2,15,54,0,386,10,44,12,74,0,2,15,54,0,386,10,43,12,75,0,1,12,6,15,49,0,386,10,42,12,76,0,2,12,6,15,48,0,386,10,41,12,86,15,47,0,386,10,40,12,88,15,46,0,386,10,39,12,90,15,45,0,386,10,38,12,92,15,44,0,386,10,38,12,93,15,43,0,386,10,38,12,93,15,43,0,386,10,38,12,93,15,43,0,386,10,38,12,93,15,43,0,386,10,38,12,93,15,43,0,459,12,29,0,512,7,2,0,17,12,29,0,54,6,2,0,400,14,26,7,48,0,1,12,29,0,1,6,73,0,382,14,26,7,48,0,1,12,29,0,1,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,49,12,30,6,73,0,382,14,26,7,36,0,1,7,2,0,8,7,1,0,8,12,1,0,1,12,1,0,25,6,1,0,2,6,1,0,7,6,2,0,7,6,48,0,382,14,26,7,36,0,68,6,48,0,382,14,26,7,36,0,2,4,14,0,2,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,26,7,36,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,26,7,36,0,2,4,15,0,1,4,16,0,1,2,15,0,2,2,14,0,2,6,48,0,382,14,27,7,35,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,28,7,34,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,15,0,1,6,48,0,382,14,29,7,33,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,30,7,32,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,31,7,31,0,2,4,15,0,1,4,16,0,1,2,15,0,2,2,14,0,2,6,48,0,382,14,32,7,30,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,33,7,29,0,2,4,15,0,1,4,16,0,1,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,1,2,15,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,1,2,15,0,2,6,48,0,382,14,34,7,28,0,2,4,15,0,1,4,15,0,2,2,15,0,2,2,14,0,2,6,48,0,382,14,34,7,28,0,2,4,8,0,8,4,15,0,2,2,15,0,8,2,8,0,2,6,48,0,382,14,34,7,31,4,7,0,6,4,1,0,1,4,15,0,2,2,15,0,6,2,1,0,1,2,7,6,51,0,382,14,34,7,32,4,29,0,2,2,29,6,52,0,382,14,34,7,33,4,28,0,2,2,28,6,53,0,382,14,34,7,34,4,27,0,2,2,27,6,54,0,382,14,34,7,34,4,27,0,2,2,27,6,54,0,382,14,34,7,34,4,27,0,2,2,27,6,54,0,382,14,34,7,34,4,27,0,2,2,27,6,54,0,382,14,34,7,34,4,27,0,2,2,27,6,33,0,3,6,2,0,1,6,1,0,1,6,1,0,9,6,2,0,392,14,2,0,2,14,3,0,2,14,3,0,27,7,6,0,29,4,2,0,3,4,3,0,2,4,2,0,20545],"floors":{"bano2":[[10.9,4.5,0.1,0.1],[8.0,4.6,3.6,0.1],[7.9,4.7,3.7,0.1],[7.8,4.8,3.8,0.1],[7.7,4.9,3.9,0.1],[7.6,5.0,4.1,0.4],[8.3,5.5,0.1,0.1],[8.6,5.5,0.1,0.1],[9.6,5.4,1.5,0.2],[11.8,5.5,0.1,0.1],[5.0,5.6,7.0,3.2],[5.0,8.8,4.4,0.6],[10.2,8.8,1.8,0.6]],"bano4":[[11.4,16.0,1.4,0.4],[11.4,16.4,1.5,0.1],[11.4,16.5,1.4,0.9],[11.3,17.4,1.5,0.1],[11.4,17.5,1.4,0.7],[11.3,18.2,1.5,0.1],[11.4,18.3,1.4,0.1],[12.0,18.4,0.8,0.1],[9.7,16.0,1.5,2.6],[11.8,18.5,0.1,0.1],[12.0,18.5,0.7,0.1],[9.7,18.6,2.9,0.1],[9.7,18.7,2.8,0.1],[9.7,18.8,2.7,0.5]],"banoE":[[3.3,5.5,0.1,0.1],[4.1,5.5,0.2,0.1],[2.5,5.6,1.9,0.1],[2.5,5.7,2.4,0.1],[2.5,5.8,2.3,0.1],[2.5,5.9,2.4,0.1],[2.5,6.0,2.3,1.3],[2.5,7.3,2.4,0.1],[2.5,7.4,2.3,0.2],[2.5,7.6,2.4,0.1],[2.5,7.7,2.3,0.7],[2.4,8.4,2.4,0.1],[2.5,8.5,2.3,0.1],[2.4,8.6,2.4,0.2],[2.5,8.8,2.3,0.1],[2.4,8.9,2.4,0.1],[2.5,9.0,2.3,0.1],[2.4,9.1,2.4,0.1],[2.5,9.2,2.3,0.2]],"banoL":[[6.4,16.0,1.4,0.1],[8.0,16.0,1.5,0.2],[8.0,16.2,1.6,0.1],[8.0,16.3,1.5,0.4],[8.0,16.7,1.6,0.1],[8.0,16.8,1.5,0.1],[8.0,16.9,1.6,0.1],[6.4,16.1,1.5,2.3],[6.4,18.4,0.8,0.1],[6.5,18.5,0.7,0.1],[7.8,18.5,0.1,0.1],[8.0,17.0,1.5,1.6],[6.6,18.6,2.9,0.1],[6.7,18.7,2.8,0.1],[6.8,18.8,2.7,0.5],[8.3,19.3,0.2,0.1],[8.8,19.3,0.3,0.1],[9.3,19.3,0.2,0.1]],"dorm2":[[16.6,2.2,0.5,0.1],[17.6,2.2,0.2,0.1],[12.2,2.3,5.6,1.5],[12.1,3.8,5.7,0.1],[12.2,3.9,5.6,0.2],[12.1,4.1,5.7,0.1],[12.2,4.2,5.6,0.1],[12.1,4.3,5.7,0.1],[12.2,4.4,5.6,0.2],[11.6,4.6,6.2,0.4],[11.7,5.0,6.1,0.4],[12.2,5.4,5.6,1.5]],"dorm4":[[15.8,14.7,0.2,0.1],[10.5,14.8,7.3,1.0],[11.0,15.8,0.1,0.1],[11.3,15.8,0.1,0.1],[12.1,15.8,0.2,0.1],[13.0,15.8,4.8,2.7],[12.7,18.5,5.1,0.1],[12.6,18.6,5.2,0.1],[12.5,18.7,5.3,0.1],[12.4,18.8,5.4,0.4],[12.4,19.2,3.3,0.1],[16.0,19.2,0.2,0.1],[16.3,19.2,0.1,0.1],[16.5,19.2,0.1,0.1],[17.5,19.2,0.2,0.1]],"dormL":[[5.6,14.7,0.2,0.1],[2.6,14.8,4.8,0.2],[2.6,15.0,4.9,0.8],[6.3,15.8,0.2,0.1],[7.3,15.8,0.1,0.1],[2.6,15.8,3.6,0.5],[2.7,16.3,3.5,0.1],[2.8,16.4,3.4,0.1],[2.9,16.5,3.3,0.1],[3.0,16.6,3.2,0.1],[3.1,16.7,3.1,0.1],[3.2,16.8,3.0,0.1],[3.3,16.9,2.9,0.1],[3.4,17.0,2.8,1.5],[3.4,18.5,3.1,0.1],[3.4,18.6,3.2,0.1],[3.4,18.7,3.3,0.1],[3.4,18.8,3.4,0.5],[4.8,19.3,0.6,0.1]],"escAz":[[5.0,2.1,0.8,0.2],[8.8,2.2,0.1,0.1],[9.1,2.1,0.2,0.2],[9.4,2.2,0.5,0.1],[11.5,2.2,0.1,0.1],[5.0,2.3,7.0,0.5],[5.1,2.8,6.9,0.1],[5.0,2.9,7.0,0.1],[8.1,3.0,3.9,0.1],[8.2,3.1,3.8,0.1],[8.3,3.2,3.7,0.1],[8.4,3.3,3.6,0.1],[8.5,3.4,3.5,0.1],[8.6,3.5,3.4,0.1]],"estar":[[0.2,2.1,0.4,0.2],[3.8,2.2,0.1,0.1],[4.1,2.2,0.1,0.1],[0.2,2.3,4.7,0.3],[0.2,2.6,4.6,0.1],[0.2,2.7,4.7,0.1],[0.2,2.8,4.6,0.7],[0.2,3.5,4.7,0.4],[0.2,3.9,4.8,0.4],[0.2,4.3,4.7,0.1],[0.2,4.4,4.6,0.2],[0.2,4.6,5.6,0.1],[0.2,4.7,5.7,0.1],[0.2,4.8,5.8,0.1],[0.7,4.9,5.4,0.1],[0.8,5.0,5.4,0.2],[0.9,5.2,5.3,0.2],[1.0,5.4,0.1,0.1],[4.1,5.4,0.7,0.1],[4.3,5.5,0.5,0.1],[4.4,5.6,0.4,0.1]],"estar2":[[0.2,9.5,0.8,0.1],[0.2,9.6,3.4,1.2],[0.1,10.8,3.5,0.4],[0.2,11.2,3.4,0.4],[0.1,11.6,3.5,0.4],[0.2,12.0,3.4,0.4],[3.7,12.4,0.2,0.1],[3.8,12.5,0.1,0.2],[0.1,12.4,3.5,0.4],[3.7,12.7,0.3,0.1],[0.2,12.8,4.6,0.5],[0.2,13.3,4.5,0.1],[0.2,13.4,4.4,0.1],[0.2,13.5,4.3,0.1],[0.2,13.6,4.2,0.1],[0.2,13.7,4.1,0.1],[0.2,13.8,4.0,0.1],[0.2,13.9,3.9,0.1],[0.2,14.0,3.8,0.6]],"kit":[[0.2,4.9,0.5,0.1],[0.2,5.0,0.6,0.2],[0.2,5.2,0.7,0.2],[0.2,5.4,0.8,0.1],[0.2,5.5,0.9,0.1],[0.2,5.6,2.1,3.8],[0.2,9.4,0.8,0.1]],"pasInf":[[9.7,12.6,0.2,0.1],[5.2,12.7,0.1,0.1],[9.7,12.7,0.3,0.1],[10.2,12.7,0.3,0.1],[10.8,12.7,0.3,0.1],[11.3,12.7,0.7,0.1],[4.8,12.8,7.2,0.5],[4.7,13.3,7.3,0.1],[4.6,13.4,7.4,0.1],[4.5,13.5,7.5,0.1],[12.1,13.5,0.6,0.1],[4.4,13.6,7.6,0.1],[12.2,13.6,0.6,0.1],[4.3,13.7,8.6,0.1],[4.2,13.8,8.8,0.1],[4.1,13.9,9.0,0.1],[4.0,14.0,9.2,0.1],[4.0,14.1,9.3,0.5],[7.5,14.6,2.9,0.4],[7.5,15.0,3.0,0.8],[8.2,15.8,0.1,0.1],[8.4,15.8,0.1,0.1]],"pasSup":[[5.0,3.0,3.1,0.1],[5.0,3.1,3.2,0.1],[5.0,3.2,3.3,0.1],[5.0,3.3,3.4,0.1],[5.0,3.4,3.5,0.1],[4.9,3.5,3.7,0.1],[4.9,3.6,7.1,0.3],[5.0,3.9,7.0,0.4],[5.1,4.3,0.3,0.1],[5.6,4.3,0.2,0.1],[6.1,4.3,0.2,0.1],[6.7,4.3,0.1,0.1],[6.9,4.3,0.2,0.1],[9.9,4.3,0.2,0.1],[10.4,4.3,0.2,0.1],[6.5,4.3,0.1,0.3],[5.8,4.6,2.2,0.1],[5.9,4.7,2.0,0.1],[6.0,4.8,1.8,0.1],[6.1,4.9,1.6,0.1],[6.2,5.0,1.4,0.4]],"terr3":[[0.0,14.8,2.6,1.5],[0.0,16.3,2.7,0.1],[0.0,16.4,2.8,0.1],[0.0,16.5,2.9,0.1],[0.0,16.6,3.0,0.1],[0.0,16.7,3.1,0.1],[0.0,16.8,3.2,0.1],[0.0,16.9,3.3,0.1],[0.0,17.0,3.4,2.3],[0.9,19.3,0.2,0.1],[1.3,19.3,0.3,0.1],[1.8,19.3,0.3,0.1]],"vacio":[[16.7,7.0,0.1,0.1],[12.2,7.1,5.4,0.9],[12.2,8.0,5.5,0.2],[12.2,8.2,5.4,0.2],[12.2,8.4,5.5,0.1],[12.1,8.5,5.5,0.1],[12.2,8.6,5.4,0.1],[12.1,8.7,5.5,0.1],[12.2,8.8,5.4,0.1],[12.1,8.9,5.5,0.4],[7.0,9.5,0.1,0.1],[10.1,9.5,0.2,0.1],[10.6,9.5,0.2,0.1],[12.2,9.3,5.4,0.3],[3.8,9.6,13.8,1.3],[3.7,10.9,13.9,0.1],[3.8,11.0,13.8,0.6],[3.7,11.6,13.9,0.1],[3.8,11.7,13.8,0.1],[3.7,11.8,13.9,0.1],[3.8,11.9,13.8,0.1],[3.7,12.0,13.9,0.1],[3.8,12.1,13.8,0.1],[3.7,12.2,13.9,0.1],[3.8,12.3,13.8,0.1],[3.9,12.4,13.7,0.1],[12.2,12.5,5.4,1.0],[12.7,13.5,4.9,0.1],[12.8,13.6,4.8,0.1],[12.9,13.7,4.7,0.1],[13.0,13.8,4.6,0.1],[13.1,13.9,4.5,0.1],[13.2,14.0,4.4,0.1],[13.3,14.1,4.3,0.5]]}}}}</script><script type="application/json" id="cfg">{}</script><script data-cdn src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script><script id="app-js">(function(){
+"use strict";
+var RESET=':root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}';
+var HEADTAGS=document.getElementById('headtags-src').textContent;
+var THREE=window.THREE;
+$('app').innerHTML=$('shell-src').textContent;$('app').classList.add('pre');
+if(!THREE){$('nogl').hidden=false;return}
+var GEO=JSON.parse(document.getElementById('geo').textContent);
+var CFG={};try{CFG=JSON.parse(document.getElementById('cfg').textContent||'{}')||{}}catch(e){CFG={}}
+CFG.items=CFG.items||{};CFG.igv=CFG.igv||'incluido';CFG.validez=CFG.validez||'15 días';CFG.contacto=CFG.contacto||{nombre:'DO SMART',telefono:'',email:''};CFG.nota=CFG.nota||'';
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function lerp(a,b,t){return a+(b-a)*t}
+
+/* ================= DATA ================= */
+var LV={
+ sot:{name:'Sótano',short:'SÓT',npt:'NPT −3.10',y:-3.10,top:-0.2,spawn:[8.6,19.9]},
+ p1:{name:'Primer piso',short:'1P',npt:'NPT +0.175',y:0.175,top:3.23,spawn:[7.9,11.0]},
+ p2:{name:'Segundo piso',short:'2P',npt:'NPT +3.43',y:3.43,top:6.48,spawn:[8.2,14.05]},
+ az:{name:'Azotea',short:'AZ',npt:'NPT +6.68',y:6.68,top:9.3,spawn:[9.5,12.0]}
+};
+var ORDER=['sot','p1','p2','az'];
+function R(l,id,name,o){o=o||{};o.lvl=l;o.id=id;o.name=name;o.c=o.c||[];o.b1=o.b1||0;o.b2=o.b2||0;return o}
+var ROOMS=[
+ R('sot','cine','Sala de cine',{b1:1,b2:1,c:['Butacas fila 1','Butacas fila 2','Pantalla'],ac:1,sonos:1,floor:'carpet'}),
+ R('sot','sauna','Sauna',{b1:2,c:['Sauna','Antesala'],floor:'wood'}),
+ R('sot','gym','Gimnasio',{b2:1,c:['General','Máquinas'],alexa:'dot',sonos:1,floor:'rubber'}),
+ R('sot','pasS','Pasillo',{b2:1,c:['Pasillo','Jardinera']}),
+ R('sot','banoS0','Baño',{b1:1,c:['Baño'],floor:'wet'}),
+ R('sot','bomba','Cto. bomba',{ctx:1}),R('sot','jard','Jardinera',{ctx:1}),
+
+ R('p1','bano1','Baño · Dorm. 1',{b2:1,c:['Espejo','General'],floor:'wet'}),
+ R('p1','dorm1','Dormitorio 1',{b1:1,b2:2,c:['General','Dicroicos','Lectura','Velador','Closet'],ac:1,alexa:'dot',curtain:1,floor:'wood'}),
+ R('p1','pasadizo','Pasadizo',{b1:4,conm:3,c:['Pasadizo','Escalera','Subida 2° piso']}),
+ R('p1','vest','Escalera de servicio',{b1:2,c:['Vestíbulo','Pasillo']}),
+ R('p1','banoP','Baño principal',{b2:2,c:['WC','Espejo','Ducha','Tina'],sonos:1,sensor:1,floor:'wet'}),
+ R('p1','dormP','Dormitorio principal',{b2:4,c:['General','Cabecera','Dicroicos','Lectura','Velador','Estar','Terraza','Jardín'],ac:1,alexa:'dot',sonos:1,curtain:1,film:1,floor:'wood'}),
+ R('p1','atrio','Atrio',{b2:2,c:['Atrio','Dicroicos','Muro','Exterior']}),
+ R('p1','hall','Hall · doble altura',{b1:1,b2:2,conm:1,c:['Colgante','Doble altura','Muro','Escalera'],dbl:1}),
+ R('p1','sala','Sala · doble altura',{b2:1,c:['Sala','Dicroicos'],ac:1,alexa:'show',curtain:1,dbl:1}),
+ R('p1','estudio','Estudio',{b1:1,c:['Estudio'],floor:'wood'}),
+ R('p1','visita','Baño de visita · alacena',{b1:2,c:['Baño de visita','Alacena'],floor:'wet'}),
+ R('p1','dormS','Dormitorio de servicio',{b1:1,c:['Dormitorio']}),
+ R('p1','banoS','Baño de servicio',{b1:1,c:['Baño'],floor:'wet'}),
+ R('p1','lav','Lavandería',{b1:4,c:['Lavandería','Tendal','Closet','Pasillo de servicio']}),
+ R('p1','cocina','Cocina',{b2:2,c:['Isla','General','Bajo muebles','Torre de hornos']}),
+ R('p1','comedor','Comedor',{b2:1,c:['Lámpara','Dicroicos']}),
+ R('p1','esc1','Escalera principal',{ctx:1,dbl:1}),
+ R('p1','ingreso','Ingreso',{b2:1,c:['Jardín de ingreso','Puerta principal'],ext:1,rect:[-6.4,3.5,6.2,8.6]}),
+ R('p1','cochera','Estacionamiento',{ctx:1,ext:1,rect:[-6.4,12.3,5.9,8.9]}),
+ R('p1','corrIzq','Corredor izquierdo',{b1:2,conm:2,c:['Corredor'],ext:1,rect:[0,0.35,17.95,1.65]}),
+ R('p1','corrDer','Corredor derecho',{b1:2,b2:2,conm:2,c:['Corredor','Rampa','Fachada','BBQ'],ext:1,rect:[0,19.5,20.5,1.85]}),
+ R('p1','terraza','Terraza',{ext:1,ctx:1,rect:[17.95,2.06,2.75,17.4]}),
+ R('p1','piscina','Piscina',{c:['Reflectores LED'],relay:1,ext:1,rect:[20.79,9.45,3.91,8.81]}),
+ R('p1','bbq','BBQ',{ext:1,ctx:1,rect:[20.8,18.4,4.6,2.9]}),
+ R('p1','jardin','Jardín posterior y cerco',{b1:2,c:['Cerco lateral','Cerco posterior'],ext:1,riego:1,rect:[25.2,0.4,13.5,20.8]}),
+
+ R('p2','estar','Estar Lesly',{b2:1,c:['Estar','Lectura'],sonos:1,floor:'wood'}),
+ R('p2','kit','Kitchenette',{b2:1,c:['Kitchenette','Barra']}),
+ R('p2','banoE','Baño del estar',{b2:1,c:['Espejo','General'],floor:'wet'}),
+ R('p2','estar2','Estar 2',{b1:1,c:['Estar'],floor:'wood'}),
+ R('p2','escAz','Escalera a azotea',{b1:2,conm:2,c:['Escalera','Descanso']}),
+ R('p2','pasSup','Pasillo norte',{b1:4,conm:4,c:['Pasillo norte','Pasillo sur']}),
+ R('p2','bano2','Baño central',{b2:1,c:['Espejo','General'],floor:'wet'}),
+ R('p2','dorm2','Dormitorio 2',{b2:1,c:['General','Dicroicos'],ac:1,alexa:'dot',curtain:1,film:1,floor:'wood'}),
+ R('p2','vacio','Vacío del hall',{ctx:1,void:1}),
+ R('p2','pasInf','Pasillo',{b1:4,b2:1,conm:1,c:['Pasillo','Pasillo 2','Closet 1','Closet 2','Escalera']}),
+ R('p2','terr3','Terraza Lesly',{b2:1,c:['Terraza','Jardinera'],floor:'deck'}),
+ R('p2','dormL','Dormitorio Lesly',{b1:1,c:['General'],ac:1,alexa:'dot',sonos:1,curtain:1,film:1,floor:'wood'}),
+ R('p2','banoL','Baño Lesly',{b1:1,b2:1,c:['WC','Espejo','Ducha'],sonos:1,sensor:1,floor:'wet'}),
+ R('p2','bano4','Baño · Dorm. 4',{b1:1,b2:1,c:['WC','Espejo','Ducha'],floor:'wet'}),
+ R('p2','dorm4','Dormitorio 4',{b1:2,c:['General','Velador'],ac:1,alexa:'dot',curtain:1,film:1,floor:'wood'}),
+ R('p2','terr2','Terraza · Dorm. 2',{b1:1,c:['Terraza'],ext:1,rect:[17.85,2.06,2.95,8.5]}),
+ R('p2','terr4','Terraza · Dorm. 4',{b1:1,c:['Terraza'],ext:1,rect:[17.85,14.0,2.95,5.47]}),
+
+ R('az','azotea','Azotea y biohuerto',{b1:2,b2:1,conm:1,c:['Escalera','Biohuerto','Terraza'],ext:1,riego:1,rect:[0.2,2.2,17.5,17.1]})
+];
+var RM={};ROOMS.forEach(function(r){RM[r.id]=r});
+var BEDS=['dormP','dorm1','dorm2','dormL','dorm4'];
+var LISTS=['Jazz para cenar','Lo-fi para estudiar','Clásicos en español','Lluvia para dormir','Banda sonora','Fiesta en la piscina','Radio de la mañana'];
+/* glass facades: [room, lvl, axis(x=const x), at, from, to] */
+var GLASS=[
+ ['dormP','p1','x',17.9,2.15,6.85],['sala','p1','x',17.9,7.0,14.5],['comedor','p1','x',17.9,14.65,19.35],
+ ['dorm1','p1','x',0.12,4.1,8.2],
+ ['dorm2','p2','x',17.8,2.15,6.85],['vacio','p2','x',17.8,7.0,14.5],['dorm4','p2','x',17.8,14.65,19.35],
+ ['dormL','p2','x',2.5,14.9,19.35]
+];
+var VOIDS=[[12.12,6.92,5.58,7.62],[3.74,9.63,8.38,2.91],[5.41,12.54,6.66,1.19],[5.9,2.06,5.46,1.29]];
+
+/* ================= STATE ================= */
+var S={time:20.5,lock:true,cascada:false,rooms:{},sel:'sala',level:'p1',mode:'orbit'};
+ROOMS.forEach(function(r){S.rooms[r.id]={on:r.c.map(function(){return false}),open:r.curtain?100:null,film:false,ac:{on:false,t:24,mode:'Frío'},mus:{on:false,vol:40,list:0}}});
+function st(id){return S.rooms[id]}
+function setOn(id,labels,v){var r=RM[id],s=st(id);r.c.forEach(function(c,i){if(!labels||labels.indexOf(c)>=0)s.on[i]=v})}
+function allOff(){ROOMS.forEach(function(r){setOn(r.id,null,false)})}
+function mus(id,on,list,vol){var m=st(id).mus;m.on=on;if(list!=null)m.list=list;if(vol!=null)m.vol=vol}
+function acs(id,on,t,mode){var a=st(id).ac;a.on=on;if(t!=null)a.t=t;if(mode)a.mode=mode}
+function hasAudio(r){return !!(r.sonos||r.alexa)}
+setOn('sala',null,true);setOn('cocina',['Isla','Bajo muebles'],true);setOn('comedor',['Lámpara'],true);setOn('hall',['Colgante','Doble altura'],true);setOn('dormP',['Velador','Lectura','Terraza'],true);setOn('piscina',null,true);setOn('corrDer',['Corredor','BBQ'],true);setOn('estar',null,true);setOn('dormL',null,true);setOn('jardin',null,true);setOn('ingreso',null,true);setOn('cine',['Pantalla'],true);setOn('pasInf',['Pasillo'],true);setOn('terr2',null,true);
+acs('sala',true,23,'Frío');acs('dormP',true,24,'Auto');mus('sala',true,0,35);mus('dormL',true,1,30);st('sala').open=70;
+
+/* ================= GRID ================= */
+var G=GEO.grid,GRID={};
+Object.keys(GEO.lv).forEach(function(k){var d=GEO.lv[k],a=new Int16Array(G.w*G.h),p=0;for(var i=0;i<d.rle.length;i+=2){a.fill(d.rle[i],p,p+d.rle[i+1]);p+=d.rle[i+1]}GRID[k]={a:a,ids:d.ids}});
+function cellOf(x,z){return [Math.round((x-G.x0)/G.res),Math.round((z-G.z0)/G.res)]}
+function roomAt(lv,x,z){
+ var g=GRID[lv];
+ if(g){var c=cellOf(x,z);if(c[0]>=0&&c[0]<G.w&&c[1]>=0&&c[1]<G.h){var v=g.a[c[1]*G.w+c[0]];if(v>0)return g.ids[v-1]}}
+ for(var i=0;i<ROOMS.length;i++){var r=ROOMS[i];if(r.lvl===lv&&r.rect){var q=r.rect;if(x>=q[0]&&x<=q[0]+q[2]&&z>=q[1]&&z<=q[1]+q[3])return r.id}}
+ return null;
+}
+/* room geometry info */
+ROOMS.forEach(function(r){
+ var rects=(GEO.lv[r.lvl]&&GEO.lv[r.lvl].floors[r.id])||(r.rect?[r.rect]:[]);
+ r.rects=rects;var ax=0,az=0,ar=0,x0=1e9,z0=1e9,x1=-1e9,z1=-1e9;
+ rects.forEach(function(q){var a=q[2]*q[3];ax+=(q[0]+q[2]/2)*a;az+=(q[1]+q[3]/2)*a;ar+=a;x0=Math.min(x0,q[0]);z0=Math.min(z0,q[1]);x1=Math.max(x1,q[0]+q[2]);z1=Math.max(z1,q[1]+q[3])});
+ r.area=ar;r.cx=ar?ax/ar:0;r.cz=ar?az/ar:0;r.bb=[x0,z0,x1,z1];r.rad=Math.max(1.5,Math.sqrt(ar)*.75);
+ r.y=LV[r.lvl].y;r.ceil=r.dbl?6.48:(r.ext?r.y+2.6:LV[r.lvl].top);
+});
+function inRoom(r,x,z){if(r.rect&&!GRID[r.lvl])return true;return roomAt(r.lvl,x,z)===r.id}
+
+/* ================= THREE SETUP ================= */
+var canvas=$('gl');
+var renderer=null;
+try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'})}catch(e){renderer=null}
+if(!renderer){$('nogl').hidden=false;return}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(48,1,0.05,600);
+scene.fog=new THREE.Fog(0x0b1220,60,220);
+
+/* materials */
+function std(c,o){o=o||{};var m=new THREE.MeshStandardMaterial({color:c,roughness:o.r!=null?o.r:.9,metalness:o.m||0});if(o.e)m.emissive=new THREE.Color(o.e);return m}
+var MAT={
+ wall:std(0xe4e0d8,{r:.95}),cerco:std(0xd9d4cb),slab:std(0xe9e6df,{r:.95}),
+ porc:std(0xd8d5cf,{r:.55}),wood:std(0xb58a5e,{r:.7}),wet:std(0xbfc4c6,{r:.4}),carpet:std(0x2a2f3a),rubber:std(0x2b2d31),deck:std(0x8f6a46,{r:.8}),
+ paving:std(0xbdb7ad),grass:std(0x2f4a2c,{r:1}),soil:std(0x4a3b2c),
+ furn:std(0xf7f5f0,{r:.85}),furnD:std(0x3a3f4a,{r:.6}),metal:std(0x9aa1ab,{r:.35,m:.6}),
+ water:null,coping:std(0xe6e2da)
+};
+var GLASSM=new THREE.MeshStandardMaterial({color:0x9fc6d8,roughness:.05,metalness:.1,transparent:true,opacity:.16,depthWrite:false,side:THREE.DoubleSide});
+var FILMM=new THREE.MeshStandardMaterial({color:0xf2f4f6,roughness:.9,transparent:true,opacity:.9,side:THREE.DoubleSide});
+var CURM=new THREE.MeshStandardMaterial({color:0xd8cbb8,roughness:1,side:THREE.DoubleSide});
+
+/* box merge */
+function boxGeo(rects,y0,y1,skipBottom){
+ var pos=[],nor=[],uv=[],idx=[],v=0;
+ function quad(a,b,c,d,n){pos.push.apply(pos,a.concat(b,c,d));for(var k=0;k<4;k++)nor.push(n[0],n[1],n[2]);uv.push(0,0,1,0,1,1,0,1);idx.push(v,v+1,v+2,v,v+2,v+3);v+=4}
+ rects.forEach(function(q){
+  var x=q[0],z=q[1],x1=q[0]+q[2],z1=q[1]+q[3],a=q.length>4?q[4]:y0,b=q.length>5?q[5]:y1;
+  quad([x,b,z1],[x1,b,z1],[x1,b,z],[x,b,z],[0,1,0]);
+  if(!skipBottom)quad([x,a,z],[x1,a,z],[x1,a,z1],[x,a,z1],[0,-1,0]);
+  quad([x,a,z1],[x1,a,z1],[x1,b,z1],[x,b,z1],[0,0,1]);
+  quad([x1,a,z],[x,a,z],[x,b,z],[x1,b,z],[0,0,-1]);
+  quad([x1,a,z1],[x1,a,z],[x1,b,z],[x1,b,z1],[1,0,0]);
+  quad([x,a,z],[x,a,z1],[x,b,z1],[x,b,z],[-1,0,0]);
+ });
+ var g=new THREE.BufferGeometry();
+ g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);
+ g.computeBoundingSphere();return g;
+}
+function mesh(geo,mat,cast,recv){var m=new THREE.Mesh(geo,mat);m.castShadow=!!cast;m.receiveShadow=recv!==false;return m}
+function subtract(rect,holes){
+ var xs=[rect[0],rect[0]+rect[2]],zs=[rect[1],rect[1]+rect[3]];
+ holes.forEach(function(h){[h[0],h[0]+h[2]].forEach(function(v){if(v>rect[0]&&v<rect[0]+rect[2])xs.push(v)});[h[1],h[1]+h[3]].forEach(function(v){if(v>rect[1]&&v<rect[1]+rect[3])zs.push(v)})});
+ xs.sort(function(a,b){return a-b});zs.sort(function(a,b){return a-b});
+ var out=[];
+ for(var j=0;j<zs.length-1;j++){var run=null;for(var i=0;i<xs.length-1;i++){var cx=(xs[i]+xs[i+1])/2,cz=(zs[j]+zs[j+1])/2;var inH=holes.some(function(h){return cx>h[0]&&cx<h[0]+h[2]&&cz>h[1]&&cz<h[1]+h[3]});
+  if(!inH){if(run)run[2]=xs[i+1]-run[0];else run=[xs[i],zs[j],xs[i+1]-xs[i],zs[j+1]-zs[j]]}else if(run){out.push(run);run=null}}if(run)out.push(run)}
+ return out;
+}
+
+var GROUP={};ORDER.forEach(function(k){GROUP[k]=new THREE.Group();scene.add(GROUP[k])});
+var SITE=new THREE.Group();scene.add(SITE);
+var PICK=[];var COLL={sot:[],p1:[],p2:[],az:[]};
+
+/* --- site --- */
+var LOT=[[-6.9,0.15],[45.9,0.15],[36.6,21.35],[-6.9,21.35]];
+(function(){
+ var sh=new THREE.Shape();LOT.forEach(function(p,i){if(i)sh.lineTo(p[0],p[1]);else sh.moveTo(p[0],p[1])});
+ var hole=new THREE.Path();hole.moveTo(0,12.5);hole.lineTo(17.83,12.5);hole.lineTo(17.83,21.35);hole.lineTo(0,21.35);hole.lineTo(0,12.5);sh.holes.push(hole);
+ var g=new THREE.ShapeGeometry(sh);g.rotateX(Math.PI/2);
+ var grass=mesh(g,MAT.grass);grass.position.y=-0.01;
+ /* ShapeGeometry rotated +90 flips normals downward; fix by double side */
+ grass.material=MAT.grass;MAT.grass.side=THREE.DoubleSide;SITE.add(grass);
+ var out=new THREE.Mesh(new THREE.CircleGeometry(260,48),std(0x0d1410,{r:1}));out.rotation.x=-Math.PI/2;out.position.y=-0.05;out.receiveShadow=true;SITE.add(out);
+ /* street */
+})();
+
+/* --- walls --- */
+var FOOT={sot:[0,12.5,17.83,21.45],p1:[0,2.05,17.95,19.47],p2:[0,2.06,17.85,19.47]};
+function within(q,f,m){return q[0]>=f[0]-m&&q[1]>=f[1]-m&&q[0]+q[2]<=f[2]+m&&q[1]+q[3]<=f[3]+m}
+(function(){
+ var w=GEO.walls;
+ var sot=w.sot.filter(function(q){return q[0]>-0.5});
+ GROUP.sot.add(mesh(boxGeo(sot,-3.10,-0.2),MAT.wall,true));COLL.sot=sot;
+ var house=[],cerco=[];w.p1.forEach(function(q){(within(q,FOOT.p1,.35)?house:cerco).push(q)});
+ GROUP.p1.add(mesh(boxGeo(house,0.175,3.23),MAT.wall,true));COLL.p1=house.concat(cerco);
+ SITE.add(mesh(boxGeo(cerco,0,2.6),MAT.cerco,true));
+ GROUP.p2.add(mesh(boxGeo(w.p2.filter(function(q){return within(q,[0,2,21,19.6],.3)}),3.43,6.48),MAT.wall,true));COLL.p2=w.p2;
+ GROUP.az.add(mesh(boxGeo(w.az,6.68,9.25),MAT.wall,true));COLL.az=w.az.slice();
+})();
+/* --- slabs --- */
+(function(){
+ GROUP.sot.add(mesh(boxGeo([[0,12.5,17.83,8.95]],-3.30,-3.10),MAT.slab));
+ GROUP.p1.add(mesh(boxGeo([[0,2.05,17.95,17.42]],-0.2,0.17),MAT.slab,true));
+ GROUP.p1.add(mesh(boxGeo([[17.95,2.06,2.75,17.41]],0,0.17),MAT.deck,false));
+ GROUP.p1.add(mesh(boxGeo([[0,0.35,17.95,1.7],[0,19.47,20.6,1.85]],0,0.08),MAT.paving,false));
+ GROUP.p1.add(mesh(boxGeo([[-6.4,3.5,6.2,8.6]],0,0.06),MAT.paving,false));
+ GROUP.p1.add(mesh(boxGeo([[-6.4,12.3,5.9,8.9]],0,0.05),std(0x9d978d),false));
+ GROUP.p1.add(mesh(boxGeo([[20.6,18.4,4.8,2.9],[20.35,9.0,4.8,0.45],[20.35,18.26,4.8,.25]],0,0.12),MAT.paving,false));
+ var p2=subtract([0,2.06,17.85,17.41],VOIDS);
+ GROUP.p2.add(mesh(boxGeo(p2,3.23,3.43),MAT.slab,true));
+ GROUP.p2.add(mesh(boxGeo([[17.85,2.06,2.95,8.5],[17.85,14.0,2.95,5.47]],3.23,3.43),MAT.slab,true));
+ GROUP.p2.add(mesh(boxGeo([[17.85,2.06,2.95,8.5],[17.85,14.0,2.95,5.47]],3.43,3.45),MAT.deck,false));
+ var roofHoles=[[6.03,2.15,5.24,1.2],[12.12,6.92,5.58,7.62]];
+ GROUP.az.add(mesh(boxGeo(subtract([0,2.06,17.85,17.41],roofHoles),6.48,6.68),MAT.slab,true));
+ var sky=new THREE.Mesh(new THREE.BoxGeometry(5.58,0.04,7.62),GLASSM);sky.position.set(12.12+2.79,6.6,6.92+3.81);GROUP.az.add(sky);
+ /* parapet + glass rail on roof */
+ var par=[[0,2.06,17.85,.18],[0,19.29,17.85,.18],[0,2.06,.18,17.41],[17.67,2.06,.18,17.41]];
+ GROUP.az.add(mesh(boxGeo(par,6.68,7.18),MAT.wall,true));COLL.az=COLL.az.concat(par);
+ var rail=new THREE.Mesh(boxGeo(par.map(function(q){return [q[0]+.05,q[1]+.05,Math.max(q[2]-.1,.03),Math.max(q[3]-.1,.03)]}),7.18,7.78),GLASSM);GROUP.az.add(rail);
+ /* biohuerto planters */
+ GROUP.az.add(mesh(boxGeo([[8.2,4.6,4.4,3.4,6.68,7.1]],0,0),MAT.furn,true));
+ GROUP.az.add(mesh(boxGeo([[8.35,4.75,4.1,3.1,7.1,7.14]],0,0),MAT.soil));
+ /* terrace parapets 2P */
+ var tp=[[20.65,2.06,.15,8.5],[20.65,14,.15,5.47],[17.85,10.41,2.95,.15],[17.85,14,2.95,.15]];
+ GROUP.p2.add(new THREE.Mesh(boxGeo(tp,3.45,4.45),GLASSM));COLL.p2=COLL.p2.concat(tp);
+})();
+/* --- room floors (per room material for glow) --- */
+var ROOMMAT={};
+ROOMS.forEach(function(r){
+ if(r.void)return;
+ var rects=r.rects;if(!rects.length)return;
+ var base=MAT[r.floor||'porc'];
+ if(r.ext&&!r.floor){base=r.id==='jardin'?null:(r.id==='azotea'?MAT.porc:MAT.paving)}
+ var y=r.y;
+ if(base){
+  var m=base.clone();m.emissive=new THREE.Color(0xffb560);m.emissiveIntensity=0;ROOMMAT[r.id]=m;
+  var top=r.ext?(r.id==='azotea'?y+0.02:y+0.13):y+0.01;
+  if(r.id==='piscina')top=0.12;
+  if(r.id!=='piscina'){var fm=mesh(boxGeo(rects,top-0.02,top,true),m);fm.userData.room=r.id;GROUP[r.lvl].add(fm);PICK.push(fm)}
+ }
+ if(r.id==='jardin'||r.id==='piscina'){var pk=new THREE.Mesh(boxGeo(rects,0,0.05,true),new THREE.MeshBasicMaterial({visible:false}));pk.userData.room=r.id;GROUP.p1.add(pk);PICK.push(pk)}
+});
+
+/* --- stairs --- */
+function stair(x0,z0,len,wid,y0,y1,n,dir,grp){
+ var rects=[];for(var i=0;i<n;i++){var t=i/n,x=dir>0?x0+len*t:x0+len-len*(t+1/n);rects.push([x,z0,len/n,wid,y0,y0+(y1-y0)*(i+1)/n])}
+ grp.add(mesh(boxGeo(rects,0,0),MAT.furn,true));
+}
+stair(5.45,12.6,6.6,1.1,0.175,3.43,18,-1,GROUP.p1);
+stair(5.95,2.12,5.4,1.15,0.175,3.43,16,1,GROUP.p1);
+stair(6.05,2.18,5.2,1.1,3.43,6.68,16,1,GROUP.p2);
+
+/* --- glass facades, curtains, film --- */
+var GL=[];
+GLASS.forEach(function(g){
+ var lv=LV[g[1]],y0=lv.y,y1=g[1]==='p1'?3.23:6.48,len=g[5]-g[4];
+ var pane=new THREE.Mesh(new THREE.PlaneGeometry(len,y1-y0),GLASSM.clone());pane.rotation.y=Math.PI/2;pane.position.set(g[3],(y0+y1)/2,(g[4]+g[5])/2);GROUP[g[1]].add(pane);
+ /* mullions */
+ var mul=[];for(var k=0;k<=Math.round(len/1.6);k++){var zz=g[4]+len*k/Math.round(len/1.6);mul.push([g[3]-.03,zz-.03,.06,.06])}
+ GROUP[g[1]].add(mesh(boxGeo(mul,y0,y1),MAT.furnD,true));
+ COLL[g[1]].push([g[3]-.05,g[4],.1,len]);
+ var r=RM[g[0]],o={g:g,pane:pane,len:len,y0:y0,y1:y1};
+ if(r.curtain){var side=g[3]<5?1:-1;var ch=new THREE.BoxGeometry(.06,y1-y0-.15,1);ch.translate(0,0,.5);
+  o.cl=new THREE.Mesh(ch,CURM);o.cr=new THREE.Mesh(ch,CURM);o.cl.position.set(g[3]+side*.18,(y0+y1)/2,g[4]);o.cr.position.set(g[3]+side*.18,(y0+y1)/2,g[5]);o.cr.rotation.y=Math.PI;
+  o.cl.castShadow=o.cr.castShadow=true;GROUP[g[1]].add(o.cl);GROUP[g[1]].add(o.cr)}
+ GL.push(o);
+});
+/* glass-block wall along south of kitchen/dining (from plan: estructura metálica para blocks de vidrio) */
+(function(){var b=new THREE.Mesh(boxGeo([[9.0,19.35,8.9,.12]],0.175,3.23),new THREE.MeshStandardMaterial({color:0xcfe3ea,roughness:.3,transparent:true,opacity:.45}));GROUP.p1.add(b)})();
+
+/* --- furniture (white study-model blocks, positions from the plans) --- */
+function F(lv,x,z,w,d,h,mat,y){var g=new THREE.BoxGeometry(w,h,d);var m=mesh(g,mat||MAT.furn,true);m.position.set(x,(y!=null?y:LV[lv].y)+h/2,z);GROUP[lv].add(m);COLL_F.push([lv,x-w/2,z-d/2,w,d]);return m}
+var COLL_F=[];
+function bed(lv,x,z,w,d,rot){var m=F(lv,x,z,w,d,.5);var hb=F(lv,x,z-d/2+.05,w+.2,.1,1.1,MAT.furnD);var p=F(lv,x,z-d/2+.35,w*.8,.35,.15,MAT.furn,LV[lv].y+.5)}
+bed('p1',14.25,3.6,2,2.1);bed('p1',1.5,5.0,1.0,1.9);bed('p1',3.4,5.0,1.35,1.9);
+bed('p2',14.95,3.5,2,2.1);bed('p2',4.3,18.1,2,2.1);bed('p2',15.0,18.0,2,2.1);
+F('p1',14.95,10.85,3,.95,.45);F('p1',14.95,10.5,3,.25,.8);F('p1',13.75,13.2,.85,2.1,.45);F('p1',15.3,12.0,1.2,1.2,.38,MAT.furnD);
+F('p1',14.2,16.6,2.6,1.1,.76,MAT.furnD);for(var ci=0;ci<4;ci++){F('p1',13.1+ci*.72,15.75,.45,.45,.45);F('p1',13.1+ci*.72,17.45,.45,.45,.45)}
+F('p1',10.13,16.45,2.4,1.0,.92);F('p1',10.6,14.75,3.4,.62,.92);F('p1',12.2,14.75,.8,.65,2.3);
+F('sot',1.15,16.0,.2,3.6,2.0,MAT.furnD,-2.6);
+for(var rr=0;rr<4;rr++){F('sot',4.0,14.2+rr*1.2,.95,.9,.55,MAT.furnD);F('sot',5.6,14.2+rr*1.2,.95,.9,.55,MAT.furnD)}
+F('sot',10.2,15.2,1.8,.8,1.2,MAT.metal);F('sot',13.6,17.4,.9,2.1,1.3,MAT.metal);F('sot',12.0,15.0,1.6,.7,1.0,MAT.metal);
+F('p2',2.27,2.75,2.5,.9,.45);F('p2',2.3,3.9,1.1,.7,.38,MAT.furnD);
+F('p1',2.2,14.2,1.4,.7,.75);F('p1',-3.75,14.0,4.5,1.85,1.35,std(0x7d838c,{r:.35,m:.4}));F('p1',-3.75,16.8,4.5,1.85,1.35,std(0xe8e6e1,{r:.3,m:.3}));F('p1',-3.75,19.6,4.5,1.85,1.35,std(0x2f343c,{r:.35,m:.4}));
+F('p1',22.9,19.9,2.6,.7,.9,MAT.furnD);
+/* study-model trees */
+(function(){
+ var tg=new THREE.SphereGeometry(1,14,10),tm=std(0xe9efe4,{r:1}),trunk=new THREE.CylinderGeometry(.06,.08,1,6);
+ var P=[[28,3,1.6],[31.5,6,1.9],[34,2.5,1.4],[29,15,1.8],[33,18,1.5],[36,9,1.7],[27,10.5,1.2],[-4.5,5.5,1.1],[-2,9.5,.9],[38,4,1.3],[31,11.5,1.0]];
+ P.forEach(function(p){var t=new THREE.Mesh(tg,tm);t.scale.set(p[2],p[2]*1.1,p[2]);t.position.set(p[0],p[2]*1.1+1.6,p[1]);t.castShadow=true;SITE.add(t);var k=new THREE.Mesh(trunk,MAT.furnD);k.scale.y=1.8;k.position.set(p[0],.9,p[1]);SITE.add(k)});
+})();
+
+/* --- pool --- */
+var water=new THREE.ShaderMaterial({transparent:true,uniforms:{t:{value:0},lit:{value:1},night:{value:1}},
+ vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+ fragmentShader:'varying vec2 vUv;uniform float t,lit,night;float h(vec2 p){return sin(p.x*9.+t*1.3)*.5+sin(p.y*13.-t*1.7)*.5+sin((p.x+p.y)*7.+t)*.5;}void main(){vec2 p=vUv*vec2(1.,2.2);float c=h(p)+h(p*1.7+3.);float caust=smoothstep(.9,1.6,c);vec3 day=vec3(.18,.55,.68);vec3 nig=vec3(.02,.07,.12);vec3 base=mix(day,nig,night);vec3 led=vec3(.1,.75,1.)*lit*(.55+.45*night);vec3 col=base+led*.55+caust*(.12+.35*lit)*vec3(.7,.95,1.);gl_FragColor=vec4(col,.92);}'});
+(function(){
+ var p=RM.piscina.rect;
+ var w=new THREE.Mesh(new THREE.PlaneGeometry(p[2]-.3,p[3]-.3),water);w.rotation.x=-Math.PI/2;w.position.set(p[0]+p[2]/2,-0.12,p[1]+p[3]/2);GROUP.p1.add(w);
+ var c=.25;GROUP.p1.add(mesh(boxGeo([[p[0]-c,p[1]-c,p[2]+2*c,c],[p[0]-c,p[1]+p[3],p[2]+2*c,c],[p[0]-c,p[1],c,p[3]],[p[0]+p[2],p[1],c,p[3]]],0,0.14),MAT.coping,true));
+ COLL.p1.push([p[0],p[1],p[2],p[3]]);
+})();
+var cascPts=(function(){var n=180,g=new THREE.BufferGeometry(),a=new Float32Array(n*3);g.setAttribute('position',new THREE.BufferAttribute(a,3));var m=new THREE.PointsMaterial({color:0x9fe6ff,size:.06,transparent:true,opacity:.9,depthWrite:false});var p=new THREE.Points(g,m);GROUP.p1.add(p);return {p:p,a:a,n:n,s:new Float32Array(n).map(function(){return Math.random()})}})();
+F('p1',22.75,18.05,2.4,.3,1.2,MAT.wall);
+
+/* --- fixtures: instanced discs + additive glow points --- */
+var FIX=[];/* {room,c,x,y,z} */
+ROOMS.forEach(function(r){
+ if(!r.c.length)return;var pts=[];
+ if(r.id==='piscina'){var q=r.rect;for(var k=0;k<3;k++){pts.push([q[0]+.25,-.45,q[1]+1.5+k*2.8]);pts.push([q[0]+q[2]-.25,-.45,q[1]+1.5+k*2.8])}}
+ else if(r.id==='jardin'){for(var k2=0;k2<9;k2++){pts.push([20+k2*2.8,1.4,.45]);pts.push([18.8+k2*2.0,1.4,21.05])}}
+ else if(r.ext){var q2=r.rect,lng=q2[2]>=q2[3],n=Math.max(2,Math.min(8,Math.round((lng?q2[2]:q2[3])/2.6)));for(var k3=0;k3<n;k3++){var t=(k3+.5)/n;pts.push(lng?[q2[0]+q2[2]*t,r.y+2.2,q2[1]+.25]:[q2[0]+.25,r.y+2.2,q2[1]+q2[3]*t])}}
+ else{
+  var step=r.area>30?1.9:r.area>12?1.5:1.1,b=r.bb;
+  for(var x=b[0]+step/2;x<b[2];x+=step)for(var z=b[1]+step/2;z<b[3];z+=step){if(inRoom(r,x,z)&&inRoom(r,x+.35,z)&&inRoom(r,x-.35,z)&&inRoom(r,x,z+.35)&&inRoom(r,x,z-.35))pts.push([x,r.ceil-.03,z])}
+  if(!pts.length)pts.push([r.cx,r.ceil-.03,r.cz]);
+  if(pts.length>12){pts=pts.filter(function(_,i){return i%Math.ceil(pts.length/12)===0})}
+ }
+ pts.forEach(function(p,i){FIX.push({room:r.id,c:i%r.c.length,x:p[0],y:p[1],z:p[2]})});
+});
+var glowTex=(function(){var c=document.createElement('canvas');c.width=c.height=64;var x=c.getContext('2d');var g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.25,'rgba(255,230,190,.5)');g.addColorStop(1,'rgba(255,200,120,0)');x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)})();
+var FIXL={};
+ORDER.forEach(function(lv){
+ var list=FIX.filter(function(f){return RM[f.room].lvl===lv});if(!list.length)return;
+ var im=new THREE.InstancedMesh(new THREE.CylinderGeometry(.09,.09,.03,12),new THREE.MeshBasicMaterial({color:0xffffff}),list.length);
+ var m4=new THREE.Matrix4();list.forEach(function(f,i){m4.makeTranslation(f.x,f.y,f.z);im.setMatrixAt(i,m4);im.setColorAt(i,new THREE.Color(0x555a63))});
+ var gg=new THREE.BufferGeometry(),pos=new Float32Array(list.length*3),col=new Float32Array(list.length*3);
+ list.forEach(function(f,i){pos[i*3]=f.x;pos[i*3+1]=f.y-.06;pos[i*3+2]=f.z});
+ gg.setAttribute('position',new THREE.BufferAttribute(pos,3));gg.setAttribute('color',new THREE.BufferAttribute(col,3));
+ var pts=new THREE.Points(gg,new THREE.PointsMaterial({size:1.3,map:glowTex,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true}));
+ GROUP[lv].add(im);GROUP[lv].add(pts);FIXL[lv]={list:list,im:im,gg:gg,col:col};
+});
+
+/* --- dynamic light pool --- */
+var POOL=[];for(var li=0;li<7;li++){var pl=new THREE.PointLight(0xffc27a,0,8,2);scene.add(pl);POOL.push(pl)}
+var poolLight=new THREE.PointLight(0x37c8ff,0,9,2);poolLight.position.set(22.75,0.4,13.85);scene.add(poolLight);
+
+/* --- devices: AC, speakers, alexa --- */
+var DEV={};
+ROOMS.forEach(function(r){
+ var d={};DEV[r.id]=d;var grp=GROUP[r.lvl];
+ if(r.ac){var x=r.cx,z=r.bb[1]+.18;for(var k=0;k<20&&!inRoom(r,x,z);k++)z+=.2;
+  var u=new THREE.Mesh(new THREE.BoxGeometry(.95,.3,.22),std(0xffffff,{r:.4}));u.position.set(x,Math.min(r.ceil,r.y+3.0)-.45,z+.11);u.castShadow=true;grp.add(u);
+  var vent=new THREE.Mesh(new THREE.BoxGeometry(.8,.03,.02),new THREE.MeshBasicMaterial({color:0x223}));vent.position.set(x,u.position.y-.13,z+.23);grp.add(vent);d.vent=vent;
+  var n=60,g=new THREE.BufferGeometry(),a=new Float32Array(n*3);g.setAttribute('position',new THREE.BufferAttribute(a,3));
+  var pm=new THREE.PointsMaterial({color:0x8fe3ff,size:.05,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});var pts=new THREE.Points(g,pm);grp.add(pts);
+  d.ac={pts:pts,a:a,n:n,o:[x,u.position.y-.15,z+.25],s:new Float32Array(n).map(function(){return Math.random()})};
+ }
+ if(hasAudio(r)&&r.rects.length){
+  var b=r.bb,cands=[[b[0]+.35,b[3]-.35],[b[2]-.35,b[3]-.35],[b[0]+.35,b[1]+.35],[b[2]-.35,b[1]+.35]],sp=[];
+  cands.forEach(function(c){if(sp.length<(r.sonos?2:1)&&inRoom(r,c[0],c[1]))sp.push(c)});if(!sp.length)sp.push([r.cx,r.cz]);
+  d.spk=sp.map(function(c){
+   var h=r.sonos?.3:.12,m=new THREE.Mesh(r.sonos?new THREE.BoxGeometry(.2,h,.18):new THREE.SphereGeometry(.09,16,12),std(r.sonos?0x15171b:0x2a2d33,{r:.5}));m.position.set(c[0],r.y+.75+h/2,c[1]);m.castShadow=true;grp.add(m);
+   F(r.lvl,c[0],c[1],.42,.42,.75,MAT.furn);
+   var rings=[0,1,2].map(function(i){var rg=new THREE.Mesh(new THREE.RingGeometry(.3,.33,40),new THREE.MeshBasicMaterial({color:0xc9b8ff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));rg.rotation.x=-Math.PI/2;rg.position.set(c[0],r.y+.95,c[1]);grp.add(rg);return rg});
+   var ring=null;if(r.alexa==='dot'){ring=new THREE.Mesh(new THREE.TorusGeometry(.085,.012,8,32),new THREE.MeshBasicMaterial({color:0x2b3a46}));ring.rotation.x=Math.PI/2;ring.position.set(c[0],r.y+.78,c[1]);grp.add(ring)}
+   return {m:m,rings:rings,ring:ring,x:c[0],y:r.y+.9,z:c[1]};
+  });
+ }
+});
+/* Echo Show 15 on the sala west wall with live canvas screen */
+var showCv=document.createElement('canvas');showCv.width=512;showCv.height=300;var showTex=new THREE.CanvasTexture(showCv);showTex.encoding=THREE.sRGBEncoding;
+(function(){var r=RM.sala,x=r.bb[0]+.04,z=r.cz;var s=new THREE.Mesh(new THREE.PlaneGeometry(.75,.44),new THREE.MeshBasicMaterial({map:showTex,toneMapped:false}));s.rotation.y=Math.PI/2;s.position.set(x+.02,1.55,z);GROUP.p1.add(s);var fr=new THREE.Mesh(new THREE.BoxGeometry(.03,.48,.8),MAT.furnD);fr.position.set(x,1.55,z);GROUP.p1.add(fr)})();
+function drawShow(){var c=showCv.getContext('2d');var g=c.createLinearGradient(0,0,512,300);g.addColorStop(0,'#1a2233');g.addColorStop(1,'#2c1f17');c.fillStyle=g;c.fillRect(0,0,512,300);c.fillStyle='#f2efe9';c.font='600 92px "Archivo",sans-serif';c.fillText(hhmm(S.time),32,130);c.font='22px "IBM Plex Mono",monospace';c.fillStyle='#ffbf69';c.fillText(greeting().toUpperCase()+' · FAM. GIBAJA',34,176);c.fillStyle='#9aa3b2';c.fillText(litCount()+' LUCES · '+zonesOn()+' ZONAS DE MÚSICA',34,214);c.fillText((S.lock?'PUERTA CERRADA':'PUERTA ABIERTA')+' · '+acOn()+' AIRES',34,246);showTex.needsUpdate=true}
+
+/* --- sky & lights --- */
+var skyU={top:{value:new THREE.Color()},bot:{value:new THREE.Color()}};
+var skyM=new THREE.Mesh(new THREE.SphereGeometry(400,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,depthWrite:false,uniforms:skyU,vertexShader:'varying vec3 vP;void main(){vP=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 vP;uniform vec3 top,bot;void main(){float h=clamp(vP.y*1.6+.15,0.,1.);gl_FragColor=vec4(mix(bot,top,h),1.);}'}));
+scene.add(skyM);
+var stars=(function(){var n=700,a=new Float32Array(n*3);for(var i=0;i<n;i++){var th=Math.random()*Math.PI*2,ph=Math.random()*1.3;a[i*3]=Math.cos(th)*Math.sin(ph)*380;a[i*3+1]=Math.cos(ph)*380;a[i*3+2]=Math.sin(th)*Math.sin(ph)*380}var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(a,3));var p=new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:1.4,sizeAttenuation:false,transparent:true,opacity:0,depthWrite:false}));scene.add(p);return p})();
+var hemi=new THREE.HemisphereLight(0xbfd6ff,0x2a2218,.6);scene.add(hemi);
+var sun=new THREE.DirectionalLight(0xffffff,1);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);var sc=sun.shadow.camera;sc.left=-30;sc.right=30;sc.top=30;sc.bottom=-30;sc.near=1;sc.far=160;sun.shadow.bias=-0.0006;scene.add(sun);scene.add(sun.target);sun.target.position.set(15,0,11);
+
+function nightF(h){if(h>=7.5&&h<=17)return 0;if(h>17&&h<19)return (h-17)/2;if(h>=19||h<5)return 1;if(h<7.5)return 1-(h-5)/2.5;return 0}
+function applyTime(){
+ var h=S.time,nf=nightF(h);
+ var day=new THREE.Color(0x8fb8dc),dusk=new THREE.Color(0x3a3f62),night=new THREE.Color(0x070b16);
+ var top=nf<.5?day.clone().lerp(dusk,nf*2):dusk.clone().lerp(night,(nf-.5)*2);
+ var b1=new THREE.Color(0xe8eef2),b2=new THREE.Color(0xff9a5c),b3=new THREE.Color(0x141a2a);
+ var bot=nf<.5?b1.clone().lerp(b2,nf*2):b2.clone().lerp(b3,(nf-.5)*2);
+ skyU.top.value.copy(top);skyU.bot.value.copy(bot);scene.fog.color.copy(bot).lerp(top,.4);
+ var ang=((h-6)/12)*Math.PI;var el=Math.sin(ang);
+ if(nf<1){sun.position.set(15+Math.cos(ang)*60,Math.max(8,el*70),11-30);sun.intensity=lerp(2.2,.25,nf);sun.color.set(nf>.3?0xffb27a:0xfff4e5)}
+ else{sun.position.set(-20,60,40);sun.intensity=.18;sun.color.set(0x8fa8ff)}
+ hemi.intensity=lerp(.7,.07,nf);hemi.color.set(nf>.6?0x5f78b8:0xbfd6ff);
+ stars.material.opacity=clamp((nf-.6)*2.5,0,1);
+ renderer.toneMappingExposure=lerp(.95,1.05,nf);
+ water.uniforms.night.value=nf;
+ updateLights();
+}
+
+/* ================= VISUAL STATE ================= */
+var COL_OFF=new THREE.Color(0x4a4f58),COL_ON=new THREE.Color(0xffe2b0);
+function litFrac(r){var s=st(r.id);if(!r.c.length)return 0;return s.on.filter(Boolean).length/r.c.length}
+function updateLights(){
+ var nf=nightF(S.time);
+ Object.keys(FIXL).forEach(function(lv){var L=FIXL[lv];L.list.forEach(function(f,i){var on=st(f.room).on[f.c];L.im.setColorAt(i,on?COL_ON:COL_OFF);var k=on?(.18+.6*nf):0;var c=f.room==='piscina'?[.3*k,.8*k,1*k]:[1*k,.78*k,.5*k];L.col[i*3]=c[0];L.col[i*3+1]=c[1];L.col[i*3+2]=c[2]});L.im.instanceColor.needsUpdate=true;L.gg.attributes.color.needsUpdate=true});
+ ROOMS.forEach(function(r){var m=ROOMMAT[r.id];if(m)m.emissiveIntensity=litFrac(r)*(.03+.22*nf)});
+ water.uniforms.lit.value=st('piscina').on[0]?1:0;
+ poolLight.intensity=st('piscina').on[0]?(1.2+2*nf):0;
+ GL.forEach(function(o){var s=st(o.g[0]);if(o.cl){var w=Math.max(.05,(1-s.open/100)*o.len/2);o.cl.scale.z=w;o.cr.scale.z=w}o.pane.material=s.film?FILMM:GLASSM});
+ drawShow();
+}
+function visibleLevels(){if(S.mode==='walk')return ORDER;var i=ORDER.indexOf(S.level);return ORDER.slice(0,i+1)}
+function assignPool(){
+ var vis=visibleLevels(),focus=S.mode==='walk'?camera.position:orb.target;
+ var cands=ROOMS.filter(function(r){return vis.indexOf(r.lvl)>=0&&litFrac(r)>0&&!r.ctx&&r.id!=='piscina'}).map(function(r){var dx=r.cx-focus.x,dz=r.cz-focus.z,dy=(r.y+1.5)-focus.y;return {r:r,d:Math.sqrt(dx*dx+dz*dz+dy*dy*2)}}).sort(function(a,b){return a.d-b.d});
+ var nf=nightF(S.time);
+ POOL.forEach(function(pl,i){var c=cands[i];if(!c){pl.intensity=0;return}var r=c.r;pl.position.set(r.cx,r.ceil-.5,r.cz);pl.distance=r.rad*2.6+(r.dbl?3:0);pl.intensity=litFrac(r)*(r.ext?.8:1.05)*(.25+.75*nf)*(r.dbl?1.5:1)});
+}
+
+/* ================= CAMERA CONTROL ================= */
+var orb={target:new THREE.Vector3(9,0,11),r:46,th:-0.75,ph:0.95,goal:null};
+var walk={x:7.9,z:11,yaw:-Math.PI/2,pitch:0,v:0,keys:{},to:null,joy:null};
+function placeOrbit(){var p=orb;camera.position.set(p.target.x+p.r*Math.sin(p.ph)*Math.sin(p.th),p.target.y+p.r*Math.cos(p.ph),p.target.z+p.r*Math.sin(p.ph)*Math.cos(p.th));camera.lookAt(p.target)}
+function flyTo(x,y,z,r,th,ph){orb.goal={from:{x:orb.target.x,y:orb.target.y,z:orb.target.z,r:orb.r,th:orb.th,ph:orb.ph},to:{x:x,y:y,z:z,r:r!=null?r:orb.r,th:th!=null?th:orb.th,ph:ph!=null?ph:orb.ph},t:0}}
+function eyeY(){return LV[S.level].y+1.6}
+function collide(x,z){
+ var rad=.24,list=COLL[S.level]||[];
+ for(var i=0;i<list.length;i++){var q=list[i];if(x+rad>q[0]&&x-rad<q[0]+q[2]&&z+rad>q[1]&&z-rad<q[1]+q[3])return true}
+ for(var j=0;j<COLL_F.length;j++){var f=COLL_F[j];if(f[0]!==S.level)continue;if(x+rad>f[1]&&x-rad<f[1]+f[3]&&z+rad>f[2]&&z-rad<f[2]+f[4])return true}
+ if(x<-6.7||x>45||z<.25||z>21.3)return true;
+ return false;
+}
+function stepWalk(dt){
+ var k=walk.keys,f=0,s=0;
+ if(k.KeyW||k.ArrowUp)f+=1;if(k.KeyS||k.ArrowDown)f-=1;if(k.KeyA)s-=1;if(k.KeyD)s+=1;
+ if(k.ArrowLeft)walk.yaw+=1.8*dt;if(k.ArrowRight)walk.yaw-=1.8*dt;
+ if(walk.joy){f+=-walk.joy.y;s+=walk.joy.x}
+ var sp=(k.ShiftLeft?3.2:1.7)*dt;
+ if(walk.to&&!f&&!s){var dx=walk.to[0]-walk.x,dz=walk.to[1]-walk.z,d=Math.hypot(dx,dz);if(d<.15)walk.to=null;else{var mx=dx/d*Math.min(d,sp*1.2),mz=dz/d*Math.min(d,sp*1.2);if(!collide(walk.x+mx,walk.z))walk.x+=mx;else walk.to=null;if(!collide(walk.x,walk.z+mz))walk.z+=mz;else walk.to=null;var ty=Math.atan2(-dx,-dz);var dyw=((ty-walk.yaw+Math.PI*3)%(Math.PI*2))-Math.PI;walk.yaw+=dyw*Math.min(1,dt*4)}}
+ if(f||s){walk.to=null;var fx=-Math.sin(walk.yaw),fz=-Math.cos(walk.yaw),rx=Math.cos(walk.yaw),rz=-Math.sin(walk.yaw);var nx=(fx*f+rx*s)*sp,nz=(fz*f+rz*s)*sp;if(!collide(walk.x+nx,walk.z))walk.x+=nx;if(!collide(walk.x,walk.z+nz))walk.z+=nz}
+ walk.bob=(walk.bob||0)+((f||s||walk.to)?dt*8:0);
+ camera.position.set(walk.x,eyeY()+Math.sin(walk.bob)*.025,walk.z);
+ var dir=new THREE.Vector3(-Math.sin(walk.yaw)*Math.cos(walk.pitch),Math.sin(walk.pitch),-Math.cos(walk.yaw)*Math.cos(walk.pitch));
+ camera.lookAt(camera.position.clone().add(dir));
+ var here=roomAt(S.level,walk.x,walk.z);
+ if(here&&here!==S.sel&&!RM[here].ctx){S.sel=here;renderPanel();updateSel()}
+}
+
+/* pointer input */
+var ptr={down:false,x:0,y:0,moved:0,btn:0,pts:{}};
+canvas.addEventListener('pointerdown',function(e){canvas.setPointerCapture(e.pointerId);ptr.pts[e.pointerId]={x:e.clientX,y:e.clientY};ptr.down=true;ptr.x=e.clientX;ptr.y=e.clientY;ptr.moved=0;ptr.btn=e.button;orb.goal=null;autoSpin=false});
+canvas.addEventListener('pointermove',function(e){
+ if(!ptr.pts[e.pointerId])return;var prev=ptr.pts[e.pointerId];var dx=e.clientX-prev.x,dy=e.clientY-prev.y;ptr.pts[e.pointerId]={x:e.clientX,y:e.clientY};ptr.moved+=Math.abs(dx)+Math.abs(dy);
+ var ids=Object.keys(ptr.pts);
+ if(ids.length===2){var a=ptr.pts[ids[0]],b=ptr.pts[ids[1]];var d=Math.hypot(a.x-b.x,a.y-b.y);if(ptr.pd){if(S.mode==='orbit')orb.r=clamp(orb.r*ptr.pd/d,4,110)}ptr.pd=d;return}
+ if(S.mode==='orbit'){
+  if(ptr.btn===2||e.shiftKey){var k=orb.r*.0016,s=Math.sin(orb.th),c=Math.cos(orb.th);orb.target.x-=(c*dx-s*dy*0)*k+s*dy*k;orb.target.z-=(-s*dx)*k+c*dy*k}
+  else{orb.th-=dx*.006;orb.ph=clamp(orb.ph-dy*.005,.18,1.45)}
+ }else{walk.yaw-=dx*.0042;walk.pitch=clamp(walk.pitch-dy*.0035,-1.2,1.1)}
+});
+function endPtr(e){var was=ptr.pts[e.pointerId];delete ptr.pts[e.pointerId];ptr.pd=null;if(Object.keys(ptr.pts).length===0){ptr.down=false;if(was&&ptr.moved<6)pick(e.clientX,e.clientY)}}
+canvas.addEventListener('pointerup',endPtr);canvas.addEventListener('pointercancel',endPtr);
+canvas.addEventListener('contextmenu',function(e){e.preventDefault()});
+canvas.addEventListener('wheel',function(e){e.preventDefault();if(S.mode==='orbit'){orb.r=clamp(orb.r*(1+e.deltaY*.0012),4,110);orb.goal=null}},{passive:false});
+window.addEventListener('keydown',function(e){if(e.target.closest&&e.target.closest('input,select,textarea'))return;walk.keys[e.code]=true;if(S.mode==='walk'&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].indexOf(e.code)>=0)e.preventDefault()});
+window.addEventListener('keyup',function(e){walk.keys[e.code]=false});
+var ray=new THREE.Raycaster();
+function pick(cx,cy){
+ var rc=canvas.getBoundingClientRect();var v=new THREE.Vector2((cx-rc.left)/rc.width*2-1,-(cy-rc.top)/rc.height*2+1);ray.setFromCamera(v,camera);
+ var vis=visibleLevels();var objs=PICK.filter(function(o){var r=RM[o.userData.room];return vis.indexOf(r.lvl)>=0&&(S.mode==='orbit'||r.lvl===S.level)});
+ var hit=ray.intersectObjects(objs,false)[0];if(!hit)return;var id=hit.object.userData.room;
+ if(S.mode==='walk'){walk.to=[hit.point.x,hit.point.z];return}
+ select(id,true);
+}
+/* joystick */
+(function(){var j=$('joy'),k=$('joyk'),id=null,c=null;
+ j.addEventListener('pointerdown',function(e){id=e.pointerId;j.setPointerCapture(id);var r=j.getBoundingClientRect();c=[r.left+r.width/2,r.top+r.height/2];mv(e)});
+ function mv(e){if(e.pointerId!==id)return;var dx=e.clientX-c[0],dy=e.clientY-c[1],d=Math.hypot(dx,dy),m=46;if(d>m){dx*=m/d;dy*=m/d}k.style.transform='translate('+dx+'px,'+dy+'px)';walk.joy={x:dx/m,y:dy/m}}
+ j.addEventListener('pointermove',mv);function up(e){if(e.pointerId!==id)return;id=null;walk.joy=null;k.style.transform=''}j.addEventListener('pointerup',up);j.addEventListener('pointercancel',up)})();
+
+/* ================= SELECTION OUTLINE ================= */
+var selLine=null;
+function updateSel(){
+ if(selLine){selLine.parent&&selLine.parent.remove(selLine);selLine.geometry.dispose();selLine=null}
+ var r=RM[S.sel];if(!r||!r.rects.length)return;var pts=[],y=(r.ext?(r.id==='azotea'?r.y+.03:r.y+.14):r.y+.02);
+ if(GRID[r.lvl]&&!r.rect){var g=GRID[r.lvl],idx=g.ids.indexOf(r.id)+1,res=G.res;
+  for(var j=0;j<G.h;j++)for(var i=0;i<G.w;i++){if(g.a[j*G.w+i]!==idx)continue;var x=G.x0+(i-.5)*res,z=G.z0+(j-.5)*res;
+   if(j===0||g.a[(j-1)*G.w+i]!==idx)pts.push(x,y,z,x+res,y,z);if(j===G.h-1||g.a[(j+1)*G.w+i]!==idx)pts.push(x,y,z+res,x+res,y,z+res);
+   if(i===0||g.a[j*G.w+i-1]!==idx)pts.push(x,y,z,x,y,z+res);if(i===G.w-1||g.a[j*G.w+i+1]!==idx)pts.push(x+res,y,z,x+res,y,z+res)}}
+ else{var q=r.rect;pts.push(q[0],y,q[1],q[0]+q[2],y,q[1],q[0]+q[2],y,q[1],q[0]+q[2],y,q[1]+q[3],q[0]+q[2],y,q[1]+q[3],q[0],y,q[1]+q[3],q[0],y,q[1]+q[3],q[0],y,q[1])}
+ var geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+ selLine=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:0xffbf69,transparent:true,opacity:.95,depthTest:false}));selLine.renderOrder=5;GROUP[r.lvl].add(selLine);
+}
+
+/* ================= AUDIO (spatial, generative) ================= */
+var AU={ctx:null,on:false,master:null,zones:{}};
+var PROG=[[[220,277,330],[196,247,294],[174,220,262],[196,247,294]],[[262,330,392],[220,262,330],[175,220,262],[196,247,294]],[[247,294,370],[220,277,330],[196,247,294],[220,277,330]],[[196,233,294],[175,208,262],[156,196,233],[175,220,262]],[[110,165,220],[98,147,196],[87,131,175],[98,147,196]],[[294,370,440],[247,330,392],[262,330,392],[294,370,440]],[[262,330,392],[294,349,440],[247,311,370],[262,330,392]]];
+var TEMPO=[78,70,96,56,64,124,100];
+function audioInit(){if(AU.ctx)return;try{AU.ctx=new (window.AudioContext||window.webkitAudioContext)();AU.master=AU.ctx.createGain();AU.master.gain.value=.7;AU.master.connect(AU.ctx.destination)}catch(e){AU.ctx=null}}
+function note(z,f,t,d,type,vol){var c=AU.ctx,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(z.gain);o.start(t);o.stop(t+d+.05)}
+function audioTick(){
+ if(!AU.ctx||!AU.on)return;var c=AU.ctx,now=c.currentTime;
+ ROOMS.forEach(function(r){if(!hasAudio(r))return;var m=st(r.id).mus,z=AU.zones[r.id];
+  if(m.on&&!z){z=AU.zones[r.id]={gain:c.createGain(),next:now+.05,step:0};z.gain.gain.value=0;z.pan=c.createStereoPanner?c.createStereoPanner():null;if(z.pan){z.gain.connect(z.pan);z.pan.connect(AU.master)}else z.gain.connect(AU.master)}
+  if(!z)return;
+  var target=0;if(m.on){var vol=m.vol/100;if(S.mode==='walk'){var d=Math.hypot(r.cx-camera.position.x,r.cz-camera.position.z)+Math.abs(r.y-LV[S.level].y)*3;target=vol*Math.pow(clamp(1-d/14,0,1),2)*(roomAt(S.level,camera.position.x,camera.position.z)===r.id?1.4:1);if(z.pan){var ang=Math.atan2(r.cx-camera.position.x,r.cz-camera.position.z)-Math.atan2(-Math.sin(walk.yaw),-Math.cos(walk.yaw));z.pan.pan.value=clamp(Math.sin(ang)*-1,-1,1)*.8}}else{target=vol*(r.id===S.sel?.9:.28);if(z.pan)z.pan.pan.value=0}}
+  z.gain.gain.setTargetAtTime(target,now,.15);
+  if(!m.on&&z.gain.gain.value<.002){try{z.gain.disconnect()}catch(e){}delete AU.zones[r.id];return}
+  if(m.on){var bpm=TEMPO[m.list],beat=60/bpm,pr=PROG[m.list];while(z.next<now+.3){var bar=Math.floor(z.step/8)%4,ch=pr[bar],s=z.step%8;
+   if(s===0){ch.forEach(function(f){note(z,f/2,z.next,beat*7.5,'sine',.06)})}
+   var arp=ch[(s*2+(s>3?1:0))%3]*(s%4===3?2:1);if(m.list!==3||s%2===0)note(z,arp,z.next,beat*1.6,m.list===5?'square':'triangle',m.list===5?.025:.05);
+   if((m.list===5||m.list===2||m.list===6)&&s%2===0)note(z,55,z.next,.12,'sine',.18);
+   z.next+=beat/2;z.step++}}
+ });
+}
+function chime(){if(!AU.ctx)audioInit();if(!AU.ctx)return;try{if(AU.ctx.state==='suspended')AU.ctx.resume();var t=AU.ctx.currentTime;[[660,0],[990,.12]].forEach(function(p){var o=AU.ctx.createOscillator(),g=AU.ctx.createGain();o.type='sine';o.frequency.value=p[0];g.gain.setValueAtTime(0,t+p[1]);g.gain.linearRampToValueAtTime(.12,t+p[1]+.02);g.gain.exponentialRampToValueAtTime(.0001,t+p[1]+.7);o.connect(g);g.connect(AU.ctx.destination);o.start(t+p[1]);o.stop(t+p[1]+.75)})}catch(e){}}
+
+/* ================= HUD ================= */
+var I={
+ bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg>',
+ spk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="3" width="12" height="18" rx="3"/><circle cx="12" cy="14" r="3"/></svg>',
+ snow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/></svg>',
+ cur:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3h18M5 3c0 7 2 12 5 18M19 3c0 7-2 12-5 18"/></svg>',
+ film:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="14" rx="1.5"/><path d="M3 8h18"/></svg>',
+ eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>',
+ pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+ pool:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 17c2 0 2-1.5 4-1.5s2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+function hhmm(t){var h=Math.floor(t)%24,m=Math.round((t-Math.floor(t))*60);if(m===60){m=0;h=(h+1)%24}return (h<10?'0':'')+h+':'+(m<10?'0':'')+m}
+function greeting(){return S.time<12?'Buenos días':S.time<19?'Buenas tardes':'Buenas noches'}
+function litCount(){var n=0;ROOMS.forEach(function(r){n+=st(r.id).on.filter(Boolean).length});return n}
+function zonesOn(){return ROOMS.filter(function(r){return hasAudio(r)&&st(r.id).mus.on}).length}
+function acOn(){return ROOMS.filter(function(r){return r.ac&&st(r.id).ac.on}).length}
+function renderLevels(){
+ $('section').innerHTML=ORDER.slice().reverse().map(function(k){var l=LV[k];return '<button class="lv" data-lv="'+k+'" aria-pressed="'+(S.level===k)+'"><span class="bar"></span><span class="ln">'+l.name+'</span><span class="np">'+l.npt+'</span></button>'}).join('');
+}
+function setLevel(k,keepCam){
+ S.level=k;renderLevels();applyVis();
+ if(S.mode==='walk'){walk.x=LV[k].spawn[0];walk.z=LV[k].spawn[1];walk.to=null}
+ else if(!keepCam){flyTo(orb.target.x,LV[k].y,orb.target.z,null,null,null)}
+ var r=RM[S.sel];if(r.lvl!==k){var f=ROOMS.find(function(x){return x.lvl===k&&!x.ctx&&x.c.length});if(f){S.sel=f.id;renderPanel();updateSel()}}
+}
+function applyVis(){var vis=visibleLevels();ORDER.forEach(function(k){GROUP[k].visible=vis.indexOf(k)>=0});SITE.visible=S.mode==='walk'||S.level!=='sot'}
+function select(id,fly){
+ S.sel=id;var r=RM[id];if(r.lvl!==S.level&&S.mode==='orbit'){S.level=r.lvl;renderLevels();applyVis()}
+ renderPanel();updateSel();$('panel').classList.add('open');
+ if(fly&&S.mode==='orbit'){flyTo(r.cx,r.y,r.cz,clamp(r.rad*4.2,9,30),null,Math.min(orb.ph,.9))}
+}
+function boxes(r){var a=[];if(r.b1)a.push(r.b1+' × 1 golpe');if(r.b2)a.push(r.b2+' × 2 golpes');return a}
+function renderPanel(){
+ var r=RM[S.sel],s=st(r.id),l=LV[r.lvl];
+ var h='<div class="ph"><div><div class="tag">'+l.name+' · '+l.npt+'</div><h3>'+esc(r.name)+'</h3></div><button class="ic close" id="pclose" aria-label="Cerrar panel">'+I.x+'</button></div><div class="chips">';
+ boxes(r).forEach(function(b){h+='<span class="chip">'+b+'</span>'});
+ if(r.conm)h+='<span class="chip">Conmutado</span>';if(r.alexa==='show')h+='<span class="chip">Echo Show 15</span>';if(r.alexa==='dot')h+='<span class="chip">Echo Dot Max</span>';if(r.sonos)h+='<span class="chip s">Sonos</span>';if(r.dbl)h+='<span class="chip">Techo a 6.48 m</span>';if(r.relay)h+='<span class="chip">Relé en TC-AP</span>';
+ h+='</div>';
+ if(r.c.length){h+='<div class="blk"><div class="bh"><span class="k l">'+I.bulb+'Luces</span><span><button class="mini" data-all="1">Todo</button><button class="mini" data-all="0">Apagar</button></span></div><div class="circs">';
+  r.c.forEach(function(c,i){h+='<button class="circ" data-c="'+i+'" aria-pressed="'+s.on[i]+'"><i></i>'+esc(c)+'</button>'});h+='</div></div>'}
+ if(hasAudio(r)){h+='<div class="blk"><div class="bh"><span class="k s">'+I.spk+(r.sonos?'Sonos':'Alexa')+'</span><span class="num" id="volv">'+s.mus.vol+'%</span></div><div class="row"><button class="play" id="play" aria-pressed="'+s.mus.on+'" aria-label="'+(s.mus.on?'Pausar':'Reproducir')+'">'+(s.mus.on?I.pause:I.play)+'</button><select id="list" aria-label="Lista">'+LISTS.map(function(x,i){return '<option value="'+i+'"'+(i===s.mus.list?' selected':'')+'>'+x+'</option>'}).join('')+'</select></div><input type="range" class="rs" id="vol" min="0" max="100" value="'+s.mus.vol+'" aria-label="Volumen">'+(AU.on?'':'<p class="hint">Activa el sonido abajo para escuchar la música por ambiente.</p>')+'</div>'}
+ if(r.ac){h+='<div class="blk"><div class="bh"><span class="k a">'+I.snow+'Aire acondicionado</span><button class="tog a" id="acon" aria-pressed="'+s.ac.on+'" aria-label="Encender aire"></button></div><div class="row"><button class="rd" data-t="-1" aria-label="Bajar">−</button><span class="deg">'+s.ac.t+'<small>°C</small></span><button class="rd" data-t="1" aria-label="Subir">+</button><span class="seg">'+['Frío','Auto','Ventilar'].map(function(m){return '<button data-mode="'+m+'" aria-pressed="'+(s.ac.mode===m)+'">'+m+'</button>'}).join('')+'</span></div></div>'}
+ if(r.curtain){h+='<div class="blk"><div class="bh"><span class="k">'+I.cur+'Cortinas <em>opcional</em></span><span class="num" id="curv">'+s.open+'%</span></div><input type="range" class="rc" id="cur" min="0" max="100" step="5" value="'+s.open+'" aria-label="Apertura de cortinas"></div>'}
+ if(r.film){h+='<div class="blk"><div class="bh"><span class="k">'+I.film+'Vidrio privado <em>opcional</em></span><button class="tog" id="film" aria-pressed="'+s.film+'" aria-label="Vidrio privado"></button></div></div>'}
+ if(r.sensor){h+='<div class="blk"><div class="bh"><span class="k">'+I.eye+'Sensor de presencia <em>opcional</em></span><button class="mini" id="pres">Simular entrada</button></div></div>'}
+ if(r.id==='piscina'){h+='<div class="blk"><div class="bh"><span class="k a">'+I.pool+'Catarata <em>opcional</em></span><button class="tog a" id="casc" aria-pressed="'+S.cascada+'" aria-label="Catarata"></button></div></div>'}
+ if(!r.c.length&&!r.ac&&!hasAudio(r))h+='<p class="hint">Sin puntos domóticos en este ambiente.</p>';
+ $('panel').innerHTML=h;
+}
+var presT=null;
+$('panel').addEventListener('click',function(e){
+ var r=RM[S.sel],s=st(r.id),b=e.target.closest('button');if(!b)return;
+ if(b.id==='pclose'){$('panel').classList.remove('open');return}
+ if(b.dataset.c!=null){var i=+b.dataset.c;s.on[i]=!s.on[i]}
+ else if(b.dataset.all!=null)setOn(r.id,null,b.dataset.all==='1');
+ else if(b.id==='play')s.mus.on=!s.mus.on;
+ else if(b.id==='acon')s.ac.on=!s.ac.on;
+ else if(b.dataset.t){s.ac.t=clamp(s.ac.t+ +b.dataset.t,16,30);s.ac.on=true}
+ else if(b.dataset.mode){s.ac.mode=b.dataset.mode;s.ac.on=true}
+ else if(b.id==='film')s.film=!s.film;
+ else if(b.id==='casc')S.cascada=!S.cascada;
+ else if(b.id==='pres'){clearTimeout(presT);setOn(r.id,null,true);var id=r.id;presT=setTimeout(function(){setOn(id,null,false);updateLights();renderEcho();if(S.sel===id)renderPanel()},5000)}
+ else return;
+ updateLights();renderEcho();renderPanel();
+});
+$('panel').addEventListener('input',function(e){var s=st(S.sel),t=e.target;
+ if(t.id==='vol'){s.mus.vol=+t.value;$('volv').textContent=t.value+'%'}
+ else if(t.id==='cur'){s.open=+t.value;$('curv').textContent=t.value+'%';updateLights()}
+ else if(t.id==='list'){s.mus.list=+t.value;s.mus.on=true;renderPanel();renderEcho()}});
+
+/* scenes */
+var SCENES=[
+ {id:'manana',name:'Buenos días',say:'Alexa, buenos días',time:7.25,lvl:'p1',focus:'dormP',steps:[
+  ['Abro las cortinas de los dormitorios',function(){BEDS.concat(['sala']).forEach(function(id){st(id).open=100});ROOMS.forEach(function(r){if(r.film)st(r.id).film=false})}],
+  ['Apago las luces de la noche',function(){allOff();S.cascada=false}],
+  ['Enciendo la cocina',function(){setOn('cocina',['General','Isla'],true)}],
+  ['Radio en el baño principal',function(){mus('banoP',true,6,40)}],
+  ['Apago los aires de los dormitorios',function(){BEDS.forEach(function(id){acs(id,false)})}]]},
+ {id:'llegada',name:'Llegué a casa',say:'Alexa, ya llegué',time:19.5,lvl:'p1',focus:'hall',steps:[
+  ['Abro la puerta principal',function(){S.lock=false}],
+  ['Enciendo ingreso, corredor y hall',function(){setOn('ingreso',null,true);setOn('hall',null,true);setOn('corrIzq',null,true)}],
+  ['Sala y cocina encendidas',function(){setOn('sala',null,true);setOn('cocina',['General'],true)}],
+  ['Enfrío la sala a 23 °C',function(){acs('sala',true,23,'Frío')}],
+  ['Tu música en la sala',function(){mus('sala',true,2,40)}]]},
+ {id:'cine',name:'Modo cine',say:'Alexa, modo cine',time:21,lvl:'sot',focus:'cine',steps:[
+  ['Apago las luces de la sala de cine',function(){setOn('cine',null,false)}],
+  ['Guía de luz en el pasillo',function(){setOn('pasS',['Pasillo'],true)}],
+  ['Sala de cine a 22 °C',function(){acs('cine',true,22,'Frío')}],
+  ['Sonos: banda sonora al 60 %',function(){mus('cine',true,4,60)}],
+  ['Silencio en el resto de la casa',function(){ROOMS.forEach(function(r){if(r.id!=='cine')st(r.id).mus.on=false})}]]},
+ {id:'cena',name:'Hora de cenar',say:'Alexa, hora de cenar',time:20.5,lvl:'p1',focus:'comedor',steps:[
+  ['Enciendo la lámpara del comedor',function(){setOn('comedor',null,true)}],
+  ['Luz baja en cocina y sala',function(){setOn('cocina',null,false);setOn('cocina',['Bajo muebles'],true);setOn('sala',['Sala'],false);setOn('sala',['Dicroicos'],true)}],
+  ['Reflectores de la piscina',function(){setOn('piscina',null,true)}],
+  ['Jazz para cenar en la sala',function(){mus('sala',true,0,35)}],
+  ['Sala a 23 °C',function(){acs('sala',true,23,'Frío')}]]},
+ {id:'fiesta',name:'Fiesta en la piscina',say:'Alexa, modo fiesta',time:22,lvl:'p1',focus:'piscina',steps:[
+  ['Reflectores y catarata',function(){setOn('piscina',null,true);S.cascada=true}],
+  ['Corredor, BBQ y cerco encendidos',function(){setOn('corrDer',null,true);setOn('jardin',null,true)}],
+  ['Sala y comedor encendidos',function(){setOn('sala',null,true);setOn('comedor',null,true)}],
+  ['Música de fiesta al 70 %',function(){mus('sala',true,5,70)}],
+  ['Sala a 22 °C',function(){acs('sala',true,22,'Frío')}]]},
+ {id:'noche',name:'Buenas noches',say:'Alexa, buenas noches',time:23.5,lvl:'p2',focus:'dormL',steps:[
+  ['Apago todas las luces',function(){allOff();S.cascada=false}],
+  ['Cierro cortinas y vidrio privado',function(){ROOMS.forEach(function(r){if(r.curtain)st(r.id).open=0;if(r.film)st(r.id).film=true})}],
+  ['Dormitorios a 24 °C en auto',function(){BEDS.forEach(function(id){acs(id,true,24,'Auto')});acs('sala',false);acs('cine',false)}],
+  ['Apago la música',function(){ROOMS.forEach(function(r){st(r.id).mus.on=false})}],
+  ['Cierro las puertas principales',function(){S.lock=true}],
+  ['Luz tenue en el pasillo 2 min',function(){setOn('pasInf',['Pasillo'],true)}]]}
+];
+$('scenes').innerHTML=SCENES.map(function(s){return '<button class="sc" data-scene="'+s.id+'"><b>'+s.name+'</b><span>'+s.say+'</span></button>'}).join('');
+var say='',steps=[],listening=false,running=false;
+function renderEcho(){
+ $('echo').innerHTML='<div class="eh"><span class="clock">'+hhmm(S.time)+'</span><span class="ring'+(listening?' on':'')+'"></span></div><div class="greet">'+greeting()+', familia Gibaja</div>'+
+ (say?'<div class="say">“'+esc(say)+'”</div>':'<div class="say dim">Toca una escena para hablarle a Alexa</div>')+
+ '<ol class="steps">'+steps.slice(-4).map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ol>'+
+ '<div class="stats"><span><b>'+litCount()+'</b> luces</span><span><b>'+zonesOn()+'</b> música</span><span><b>'+acOn()+'</b> aires</span><span><b>'+(S.lock?'Cerrada':'Abierta')+'</b> puerta</span></div>';
+ $('time').value=S.time;$('tl').textContent=hhmm(S.time);
+}
+function runScene(id){
+ if(running)return;var sc=SCENES.find(function(s){return s.id===id});running=true;
+ document.querySelectorAll('.sc').forEach(function(b){b.classList.toggle('run',b.dataset.scene===id)});
+ chime();say=sc.say;steps=[];listening=true;
+ var t0=S.time,t1=sc.time,tt=0;var anim=setInterval(function(){tt+=.08;S.time=lerp(t0,t1,Math.min(1,tt));applyTime();if(tt>=1)clearInterval(anim)},40);
+ if(S.mode==='orbit'){if(S.level!==sc.lvl){S.level=sc.lvl;renderLevels();applyVis()}var r=RM[sc.focus];S.sel=r.id;renderPanel();updateSel();flyTo(r.cx,r.y,r.cz,clamp(r.rad*4.5,12,30),null,.85)}
+ renderEcho();var i=0;
+ (function next(){if(i>=sc.steps.length){listening=false;running=false;renderEcho();renderPanel();return}
+  var s=sc.steps[i++];s[1]();steps.push(s[0]);updateLights();renderEcho();renderPanel();setTimeout(next,560)})();
+}
+$('scenes').addEventListener('click',function(e){var b=e.target.closest('.sc');if(b)runScene(b.dataset.scene)});
+$('section').addEventListener('click',function(e){var b=e.target.closest('.lv');if(b)setLevel(b.dataset.lv)});
+$('time').addEventListener('input',function(e){S.time=+e.target.value;applyTime();renderEcho()});
+function setMode(m){
+ S.mode=m;document.body.classList.toggle('walking',m==='walk');$('mWalk').setAttribute('aria-pressed',m==='walk');$('mOrbit').setAttribute('aria-pressed',m==='orbit');
+ if(m==='walk'){var lv=S.level==='az'?'az':S.level;var r=RM[S.sel];if(r&&r.lvl===lv&&!r.ext&&!collide(r.cx,r.cz)){walk.x=r.cx;walk.z=r.cz}else{walk.x=LV[lv].spawn[0];walk.z=LV[lv].spawn[1]}walk.pitch=0;camera.fov=70}
+ else{camera.fov=48;flyTo(walk.x,LV[S.level].y,walk.z,26,null,.9)}
+ camera.updateProjectionMatrix();applyVis();
+}
+$('mWalk').addEventListener('click',function(){setMode('walk')});$('mOrbit').addEventListener('click',function(){setMode('orbit')});
+$('snd').addEventListener('click',function(){audioInit();if(!AU.ctx)return;if(AU.ctx.state==='suspended')AU.ctx.resume();AU.on=!AU.on;$('snd').setAttribute('aria-pressed',AU.on);$('snd').querySelector('span').textContent=AU.on?'Sonido activo':'Activar sonido';if(!AU.on){Object.keys(AU.zones).forEach(function(k){try{AU.zones[k].gain.disconnect()}catch(e){}});AU.zones={}}renderPanel()});
+$('intro-go').addEventListener('click',function(){$('intro').classList.add('gone');$('app').classList.remove('pre');audioInit();});
+
+/* labels */
+var LBL=$('labels');
+function renderLabels(){
+ var vis=S.mode==='orbit'?ROOMS.filter(function(r){return r.lvl===S.level&&!r.void&&r.rects.length&&!r.ctx&&r.c.length&&(r.area>7||r.ext)}):[];
+ LBL.innerHTML=vis.map(function(r){return '<span class="lb'+(r.c.length?'':' ctx')+'" data-id="'+r.id+'">'+esc(r.name)+'</span>'}).join('');
+}
+LBL.addEventListener('click',function(e){var s=e.target.closest('.lb');if(s&&RM[s.dataset.id].c.length)select(s.dataset.id,true)});
+var _v=new THREE.Vector3();
+function placeLabels(){
+ if(S.mode!=='orbit')return;var w=canvas.clientWidth,h=canvas.clientHeight;
+ LBL.querySelectorAll('.lb').forEach(function(el){var r=RM[el.dataset.id];_v.set(r.cx,r.y+(r.ext?.3:1.2),r.cz).project(camera);var vis=_v.z<1&&Math.abs(_v.x)<1.1&&Math.abs(_v.y)<1.1;el.style.display=vis?'':'none';el.classList.toggle('sm',r.area<14&&r.id!==S.sel);if(vis){el.style.transform='translate('+((_v.x*.5+.5)*w)+'px,'+((-_v.y*.5+.5)*h)+'px) translate(-50%,-50%)';el.classList.toggle('sel',r.id===S.sel)}});
+}
+var lastLabelLevel=null;
+
+/* ================= QUOTE ================= */
+function gangs(k){return ROOMS.reduce(function(a,r){return a+(r[k]||0)},0)}
+var CAT=[
+ {id:'show15',g:'base',name:'Amazon Echo Show 15',det:'Pantalla central en la sala. Hub Zigbee y control de toda la casa.',qty:1,u:'und'},
+ {id:'dotmax',g:'base',name:'Amazon Echo Dot Max',det:'En cada dormitorio y en el sótano. Antena Zigbee que extiende la red.',qty:6,u:'und'},
+ {id:'sw1',g:'sw',name:'Interruptor inteligente 1 golpe',det:'Incluye los 16 puntos conmutados de escaleras y corredores.',qty:gangs('b1'),u:'und',two:1},
+ {id:'sw2',g:'sw',name:'Interruptor inteligente 2 golpes',det:'',qty:gangs('b2'),u:'und',two:1},
+ {id:'sw3',g:'sw',name:'Interruptor inteligente 3 golpes',det:'',qty:0,u:'und',two:1},
+ {id:'sn_cine',g:'audio',name:'Sonos · Sala de cine',det:'Arc Ultra + Sub 4 + 2 Era 100 como surround.',qty:1,u:'zona'},
+ {id:'sn_dp',g:'audio',name:'Sonos · Dormitorio principal',det:'Par estéreo Era 100.',qty:1,u:'zona'},
+ {id:'sn_bp',g:'audio',name:'Sonos · Baño principal',det:'Era 100.',qty:1,u:'zona'},
+ {id:'sn_dl',g:'audio',name:'Sonos · Dormitorio Lesly',det:'Par estéreo Era 100.',qty:1,u:'zona'},
+ {id:'sn_bl',g:'audio',name:'Sonos · Baño Lesly',det:'Era 100.',qty:1,u:'zona'},
+ {id:'sn_el',g:'audio',name:'Sonos · Estar Lesly',det:'Era 300.',qty:1,u:'zona'},
+ {id:'sn_gym',g:'audio',name:'Sonos · Gimnasio',det:'Par estéreo Era 100.',qty:1,u:'zona'},
+ {id:'ac',g:'clima',name:'Control inteligente de aire acondicionado',det:'Emisor Zigbee por equipo: encendido, temperatura y modo por voz o rutina.',qty:7,u:'equipo'},
+ {id:'prog',g:'serv',name:'Programación de escenas y rutinas Alexa',det:'Las 6 escenas de este recorrido y las que pida la familia.',qty:1,u:'global'},
+ {id:'inst',g:'serv',name:'Instalación, configuración y pruebas',det:'Montaje, emparejamiento Zigbee, grupos por ambiente y capacitación.',qty:1,u:'global'},
+ {id:'cort',g:'opt',name:'Cortinas motorizadas',det:'Dormitorios y sala.',qty:6,u:'paño'},
+ {id:'film',g:'opt',name:'Smart film en mamparas',det:'Mamparas hacia el jardín interior, 1er y 2do piso.',qty:0,u:'m²'},
+ {id:'sens',g:'opt',name:'Sensores de presencia',det:'Baño y WC del dormitorio principal, WC Lesly.',qty:3,u:'und'},
+ {id:'riego',g:'opt',name:'Riego automatizado',det:'Jardines delanteros y posterior.',qty:2,u:'zona'},
+ {id:'casc',g:'opt',name:'Piscina: catarata y recirculación',det:'Por horario, escena o voz.',qty:1,u:'global'},
+ {id:'cam',g:'opt',name:'Cámaras exteriores',det:'Vista en el Echo Show 15 y el celular.',qty:0,u:'und'},
+ {id:'tab',g:'opt',name:'Monitoreo de tableros eléctricos',det:'T-G, T-D, T-Sótano y STG.',qty:4,u:'tablero'},
+ {id:'chapa',g:'opt',name:'Chapas inteligentes',det:'Puertas principales, con registro de accesos.',qty:2,u:'und'}
+];
+var GROUPS=[{g:'base',name:'Alexa'},{g:'sw',name:'Interruptores'},{g:'audio',name:'Sonos · 7 zonas'},{g:'clima',name:'Clima'},{g:'serv',name:'Servicio'}];
+function item(c){var o=CFG.items[c.id]||{};return {id:c.id,g:c.g,name:o.name||c.name,det:o.det!=null?o.det:c.det,qty:o.qty!=null?+o.qty:c.qty,u:c.u,two:c.two,price:+(o.price||0),price2:+(o.price2||0)}}
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var Q={mode:lsGet('ds3-mode','sonoff'),opts:lsGet('ds3-opts',null)};if(!Q.opts){Q.opts={};CAT.forEach(function(c){if(c.g==='opt')Q.opts[c.id]=true})}
+var PEN;try{PEN=new Intl.NumberFormat('es-PE',{style:'currency',currency:'PEN'})}catch(e){PEN={format:function(n){return 'S/ '+n.toFixed(2)}}}
+function money(n){return PEN.format(n)}
+function un(q,u){var P={zona:'zonas',equipo:'equipos','paño':'paños',tablero:'tableros'};return q+' '+(q!==1&&P[u]?P[u]:u)}
+function unitPrice(it){return it.two&&Q.mode==='placa'?it.price2:it.price}
+function renderQuote(){
+ var base=0,opt=0,pend=0,h='<div class="qmodes"><button data-qm="sonoff" aria-pressed="'+(Q.mode==='sonoff')+'"><b>Sonoff Zigbee en la caja</b><span>El módulo va dentro de la caja y se conservan las placas.</span></button><button data-qm="placa" aria-pressed="'+(Q.mode==='placa')+'"><b>Placa domotizada</b><span>Placa táctil de 1, 2 o 3 golpes.</span></button></div><table class="qt"><tbody>';
+ GROUPS.forEach(function(G2){
+  var rows=CAT.filter(function(c){return c.g===G2.g}).map(item).filter(function(it){return !(it.g==='sw'&&it.qty===0&&!unitPrice(it))});
+  h+='<tr class="gh"><td colspan="4">'+G2.name+'</td></tr>';
+  rows.forEach(function(it){var up=unitPrice(it),sub=up*it.qty;if(it.qty>0&&!up)pend++;base+=sub;
+   h+='<tr><td><b>'+esc(it.name)+'</b>'+(it.det?'<span>'+esc(it.det)+'</span>':'')+'</td><td class="n">'+(it.qty>0?un(it.qty,it.u):'<i>por definir</i>')+'</td><td class="n">'+(up?money(up):'<i>por cotizar</i>')+'</td><td class="n">'+(up&&it.qty?money(sub):'—')+'</td></tr>'});
+ });
+ h+='</tbody></table><div class="qopt"><div class="tag">Módulos opcionales</div>';
+ CAT.filter(function(c){return c.g==='opt'}).map(item).forEach(function(it){var on=!!Q.opts[it.id],sub=it.price*it.qty;if(on){opt+=sub;if(!it.price||!it.qty)pend++}
+  h+='<label class="oi'+(on?' on':'')+'"><input type="checkbox" data-opt="'+it.id+'"'+(on?' checked':'')+'><span><b>'+esc(it.name)+'</b><small>'+esc(it.det)+' · '+(it.qty?un(it.qty,it.u):'cantidad por definir')+(it.price?' × '+money(it.price):'')+'</small></span><em>'+(it.price&&it.qty?money(sub):'—')+'</em></label>'});
+ h+='</div>';
+ var subtotal=base+opt,igv=CFG.igv==='mas'?subtotal*.18:0,c=CFG.contacto||{};
+ $('qbody').innerHTML=h;
+ $('qsum').innerHTML='<div class="tag">Total</div><div class="big">'+money(subtotal+igv)+'</div><div class="sm">'+(CFG.igv==='mas'?'Subtotal '+money(subtotal)+' + IGV '+money(igv):'Precios con IGV incluido')+'</div>'+
+  (pend?'<div class="pend">'+pend+(pend>1?' ítems pendientes':' ítem pendiente')+' de precio o cantidad</div>':'')+
+  '<div class="sm">Validez: '+esc(CFG.validez)+(CFG.nota?' · '+esc(CFG.nota):'')+'</div>'+
+  '<div class="ct"><span>'+esc(c.nombre||'DO SMART')+'</span>'+(c.telefono?'<span class="sel">'+esc(c.telefono)+'</span>':'')+(c.email?'<span class="sel">'+esc(c.email)+'</span>':'')+'</div>';
+}
+$('quote').addEventListener('click',function(e){var b=e.target.closest('[data-qm]');if(b){Q.mode=b.dataset.qm;lsSet('ds3-mode',Q.mode);renderQuote()}if(e.target.closest('#qclose'))$('quote').hidden=true});
+$('quote').addEventListener('change',function(e){var t=e.target;if(t.dataset.opt){Q.opts[t.dataset.opt]=t.checked;lsSet('ds3-opts',Q.opts);renderQuote()}});
+$('qopen').addEventListener('click',function(){renderQuote();$('quote').hidden=false});
+
+/* admin */
+var ART=null;
+function buildDoc(cfg){
+ var S1='</'+'script>';
+ var css=$('app-css').textContent,js=$('app-js').textContent,geo=$('geo').textContent;
+ var cdn=document.querySelectorAll('script[data-cdn]');var cdnH='';cdn.forEach(function(s){cdnH+='<script data-cdn src="'+s.getAttribute('src')+'">'+S1});
+ return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>'+RESET+'</style></head><body>'+HEADTAGS+'<script type="text/plain" id="headtags-src">'+HEADTAGS+S1+'<style id="app-css">'+css+'</style>'+'<script type="text/plain" id="shell-src">'+$('shell-src').textContent+S1+'<div id="app"></div>'+'<script type="application/json" id="geo">'+geo+S1+'<script type="application/json" id="cfg">'+JSON.stringify(cfg).replace(/</g,'\\u003c')+S1+cdnH+'<script id="app-js">'+js+S1+'</body></html>';
+}
+function openAdmin(){
+ var d=$('drawer'),c=CFG.contacto||{};
+ var h='<div class="din"><div class="ph"><div><div class="tag">Solo DO SMART</div><h3>Precios de la propuesta</h3></div><button class="ic" id="a-x" aria-label="Cerrar">'+I.x+'</button></div><p class="hint">Al publicar, el cliente ve los precios nuevos al instante. Montos en soles.</p><div class="gen">'+
+ '<label>Precios<select id="a-igv"><option value="incluido"'+(CFG.igv==='incluido'?' selected':'')+'>Incluyen IGV</option><option value="mas"'+(CFG.igv==='mas'?' selected':'')+'>Sin IGV (se suma 18 %)</option></select></label><label>Validez<input id="a-val" value="'+esc(CFG.validez)+'"></label><label>Contacto<input id="a-nom" value="'+esc(c.nombre||'')+'"></label><label>Teléfono<input id="a-tel" value="'+esc(c.telefono||'')+'"></label><label>Correo<input id="a-mail" value="'+esc(c.email||'')+'"></label><label>Nota<input id="a-nota" value="'+esc(CFG.nota||'')+'"></label></div>';
+ CAT.forEach(function(cat){var it=item(cat);h+='<div class="ar'+(cat.two?' two':'')+'" data-id="'+cat.id+'"><input class="a-name" value="'+esc(it.name)+'" aria-label="Nombre"><input class="a-qty" type="number" min="0" step="any" value="'+it.qty+'" aria-label="Cantidad"><input class="a-price" type="number" min="0" step="any" value="'+(it.price||'')+'" placeholder="'+(cat.two?'Sonoff':'Precio')+'" aria-label="Precio">'+(cat.two?'<input class="a-price2" type="number" min="0" step="any" value="'+(it.price2||'')+'" placeholder="Placa" aria-label="Precio placa">':'')+'</div>'});
+ h+='<div class="acts"><button class="btn p" id="a-save">Publicar precios</button></div><div class="hint" id="a-st"></div></div>';d.innerHTML=h;d.hidden=false;
+}
+$('fab').addEventListener('click',openAdmin);
+$('drawer').addEventListener('click',function(e){var d=$('drawer');if(e.target===d||e.target.closest('#a-x')){d.hidden=true;return}if(e.target.id!=='a-save')return;
+ var cfg={items:{},igv:$('a-igv').value,validez:$('a-val').value,nota:$('a-nota').value,contacto:{nombre:$('a-nom').value,telefono:$('a-tel').value,email:$('a-mail').value}};
+ d.querySelectorAll('.ar').forEach(function(row){var cat=CAT.find(function(c){return c.id===row.dataset.id}),o={};var nm=row.querySelector('.a-name').value.trim();if(nm&&nm!==cat.name)o.name=nm;var q=row.querySelector('.a-qty').value;if(q!==''&&+q!==cat.qty)o.qty=+q;var p=row.querySelector('.a-price').value;if(p!=='')o.price=+p;var p2=row.querySelector('.a-price2');if(p2&&p2.value!=='')o.price2=+p2.value;if(Object.keys(o).length)cfg.items[cat.id]=o});
+ CFG=cfg;renderQuote();var stt=$('a-st');
+ if(!ART){stt.textContent='Aplicado solo en esta pantalla. Abre la página desde tu cuenta de Claude para publicarlo.';return}
+ e.target.disabled=true;stt.textContent='Publicando…';
+ ART.publish(buildDoc(cfg)).then(function(){stt.textContent='Publicado.'},function(err){e.target.disabled=false;var c=err&&err.code;stt.textContent=c==='conflict'?'Otra persona publicó a la vez; la página se recargará.':(c==='not_writer'||c==='not_granted')?'Tu cuenta no puede publicar esta página.':'No se pudo publicar. Intenta otra vez.'})});
+(function(){if(!window.claude||!window.claude.use)return;window.claude.use('user').then(function(u){return u?u.canEdit():false}).then(function(can){if(!can)return;$('fab').hidden=false;return window.claude.use('artifact').then(function(a){ART=a})}).catch(function(){})})();
+
+/* ================= LOOP ================= */
+function resize(){var w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.floor(w*renderer.getPixelRatio())||canvas.height!==Math.floor(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}}
+var clock=new THREE.Clock(),autoSpin=true,poolT=0,audT=0,hud=0;
+function frame(){
+ var dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;resize();
+ if(S.mode==='orbit'){
+  if(orb.goal){var g=orb.goal;g.t=Math.min(1,g.t+dt/1.3);var e=g.t<.5?4*g.t*g.t*g.t:1-Math.pow(-2*g.t+2,3)/2;orb.target.set(lerp(g.from.x,g.to.x,e),lerp(g.from.y,g.to.y,e),lerp(g.from.z,g.to.z,e));orb.r=lerp(g.from.r,g.to.r,e);orb.th=lerp(g.from.th,g.to.th,e);orb.ph=lerp(g.from.ph,g.to.ph,e);if(g.t>=1)orb.goal=null}
+  else if(autoSpin)orb.th+=dt*.06;
+  placeOrbit();
+ }else stepWalk(dt);
+ water.uniforms.t.value=t;
+ /* AC particles */
+ ROOMS.forEach(function(r){var d=DEV[r.id];if(!d||!d.ac)return;var on=st(r.id).ac.on&&GROUP[r.lvl].visible,A=d.ac;A.pts.material.opacity=lerp(A.pts.material.opacity,on?.85:0,dt*3);if(A.pts.material.opacity<.01)return;
+  for(var i=0;i<A.n;i++){var p=(A.s[i]+t*.35)%1;A.a[i*3]=A.o[0]+(A.s[(i*7)%A.n]-.5)*.8;A.a[i*3+1]=A.o[1]-p*1.4;A.a[i*3+2]=A.o[2]+p*1.6+Math.sin(p*6+i)*.05}A.pts.geometry.attributes.position.needsUpdate=true});
+ /* speakers */
+ ROOMS.forEach(function(r){var d=DEV[r.id];if(!d||!d.spk)return;var on=st(r.id).mus.on;d.spk.forEach(function(sp,k){sp.rings.forEach(function(rg,i){var p=((t*.6+i/3+k*.17)%1);rg.scale.setScalar(on?.5+p*3.2:1);rg.material.opacity=on?(1-p)*.7:0});if(sp.ring)sp.ring.material.color.set(listening&&r.id===S.sel?0x46d4ff:(on?0x6f62b8:0x2b3a46))})});
+ /* cascade */
+ var cv=S.cascada&&GROUP.p1.visible;cascPts.p.visible=cv;if(cv){for(var i=0;i<cascPts.n;i++){var p=(cascPts.s[i]+t*.9)%1;cascPts.a[i*3]=21.6+cascPts.s[(i*5)%cascPts.n]*2.3;cascPts.a[i*3+1]=1.15-p*p*1.3;cascPts.a[i*3+2]=17.85-p*.35}cascPts.p.geometry.attributes.position.needsUpdate=true}
+ assignPool();
+ if(lastLabelLevel!==S.level+S.mode){lastLabelLevel=S.level+S.mode;renderLabels()}placeLabels();
+ audT+=dt;if(audT>.1){audT=0;audioTick()}
+ var nowp=performance.now();if(nowp-hud>200){hud=nowp;var x=camera.position;var here=S.mode==='walk'?RM[roomAt(S.level,walk.x,walk.z)]:RM[S.sel];$('loc').innerHTML='<b>'+(here?esc(here.name):'Exterior')+'</b><span>'+LV[S.level].name+' · '+LV[S.level].npt+'</span><span class="num">X '+(S.mode==='walk'?walk.x:orb.target.x).toFixed(2)+' · Z '+(S.mode==='walk'?walk.z:orb.target.z).toFixed(2)+'</span>'}
+ renderer.render(scene,camera);
+ requestAnimationFrame(frame);
+}
+renderLevels();applyVis();applyTime();renderPanel();updateSel();renderEcho();if(window.matchMedia('(max-width:760px)').matches)$('panel').classList.remove('open');
+orb.r=70;orb.ph=.75;orb.th=-1.2;orb.target.set(12,0,11);flyTo(10,0.2,11.5,38,-0.6,.92);
+requestAnimationFrame(frame);
+window.__dbg={S:S,orb:orb,setMode:setMode,select:select,setLevel:setLevel,runScene:runScene,walk:walk,camera:camera,renderer:renderer};
+})();
+</script>
+</body></html>
